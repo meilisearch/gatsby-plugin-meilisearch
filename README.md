@@ -2,7 +2,7 @@
   <img src="https://res.cloudinary.com/meilisearch/image/upload/v1587402338/SDKs/meilisearch_gatsby.svg" alt="MeiliSearch Gatsby" width="200" height="200" />
 </p>
 
-<h1 align="center">Gatsby plugin MeiliSearch</h1>
+<h1 align="center">Gatsby plugin MeiliSearch ⚠ WIP ⚠️</h1>
 
 <h4 align="center">
   <a href="https://github.com/meilisearch/MeiliSearch">MeiliSearch</a> |
