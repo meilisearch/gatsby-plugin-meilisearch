@@ -4,7 +4,8 @@
   "description": "Gatsby plugin to index your content to MeiliSearch based on queries",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint --ext .js ."
+    "lint": "eslint --ext .js .",
+    "lint:fix": "eslint --ext .js . --fix"
   },
   "files": [],
   "repository": {
@@ -30,6 +31,8 @@
   "homepage": "https://github.com/meilisearch/gatsby-plugin-meilisearch#readme",
   "devDependencies": {
     "eslint": "^7.29.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
     "prettier": "^2.3.2"
   }
 }
