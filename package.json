@@ -1,7 +1,7 @@
 {
   "name": "gatsby-plugin-meilisearch",
   "version": "0.1.0",
-  "description": "A plugin to index your Gatsby content to MeiliSearch based on graphQL queries",
+  "description": "Gatsby plugin to index your content to MeiliSearch based on queries",
   "main": "index.js",
   "scripts": {
     "lint": "eslint --ext .js ."
