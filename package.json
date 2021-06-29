@@ -1,0 +1,35 @@
+{
+  "name": "gatsby-plugin-meilisearch",
+  "version": "0.1.0",
+  "description": "A plugin to index your Gatsby content to MeiliSearch based on graphQL queries",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint --ext .js ."
+  },
+  "files": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/meilisearch/gatsby-plugin-meilisearch.git"
+  },
+  "author": "Morgane Dubus <morgane.dubus@meilisearch.com>",
+  "maintainers": [
+    {
+      "name": "Morgane Dubus <morgane.dubus@meilisearch.com>"
+    }
+  ],
+  "keywords": [
+    "gatsby",
+    "gatsby-plugin",
+    "meilisearch",
+    "search"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/meilisearch/gatsby-plugin-meilisearch/issues"
+  },
+  "homepage": "https://github.com/meilisearch/gatsby-plugin-meilisearch#readme",
+  "devDependencies": {
+    "eslint": "^7.29.0",
+    "prettier": "^2.3.2"
+  }
+}
