@@ -1,0 +1,31 @@
+{
+  "name": "playground",
+  "version": "0.1.0",
+  "private": true,
+  "description": "playground",
+  "author": "Morgane Dubus <morgane.dubus@meilisearch.com>",
+  "keywords": [
+    "gatsby"
+  ],
+  "scripts": {
+    "develop": "gatsby develop",
+    "start": "gatsby develop",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean"
+  },
+  "dependencies": {
+    "@mdx-js/mdx": "^1.6.22",
+    "@mdx-js/react": "^1.6.22",
+    "@meilisearch/instant-meilisearch": "^0.5.0",
+    "gatsby": "^3.8.1",
+    "gatsby-image": "^3.8.0",
+    "gatsby-plugin-mdx": "^2.8.0",
+    "gatsby-plugin-sharp": "^3.8.0",
+    "gatsby-remark-images": "^5.5.0",
+    "gatsby-source-filesystem": "^3.8.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-instantsearch-dom": "^6.11.2"
+  }
+}

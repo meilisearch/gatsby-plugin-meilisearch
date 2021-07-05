@@ -6,13 +6,27 @@
     "node": true
   },
   "globals": {},
-  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended"
+  ],
   "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "sourceType": "module",
     "ecmaVersion": 12
   },
-  "plugins": ["prettier"],
+  "plugins": ["react", "prettier"],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   "rules": {
     "react/prop-types": "off",
+    "react/jsx-closing-bracket-location": [2, "tag-aligned"],
     "no-unused-vars": ["error", { "varsIgnorePattern": "^omit.*$" }],
     "array-callback-return": "off",
     "arrow-parens": ["error", "as-needed"],
@@ -21,7 +35,8 @@
       {
         "quoteProps": "consistent",
         "semi": false,
-        "arrowParens": "avoid"
+        "arrowParens": "avoid",
+        "singleQuote": true
       }
     ]
   }
