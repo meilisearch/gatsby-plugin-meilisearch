@@ -1,3 +1,13 @@
-# Gatsby blog
+# 🪀 Gatsby Playground
 
-A simple Gatsby blog to test the indexation of its articles inside MeiliSearch
+## Project setup
+
+`yarn install`
+
+## Compiles and hot-reloads for development
+
+`yarn serve`
+
+## Compiles and minifies for production
+
+`yarn build`

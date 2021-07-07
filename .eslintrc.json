@@ -36,7 +36,9 @@
         "quoteProps": "consistent",
         "semi": false,
         "arrowParens": "avoid",
-        "singleQuote": true
+        "singleQuote": true,
+        "trailingComma": "es5",
+        "tabWidth": 2
       }
     ]
   }

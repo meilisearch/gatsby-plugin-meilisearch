@@ -32,7 +32,6 @@
 - [🎬 Usage](#-usage)
   - [Basic](#basic)
   - [Customization](#customization)
-- [💡 Run the Playground](#-run-the-playground)
 - [🤖 Compatibility with MeiliSearch and Gatsby](#-compatibility-with-meilisearch-and-gatsby)
 - [⚙️ Development Workflow and Contributing](#-development-workflow-and-contributing)
 
@@ -74,32 +73,6 @@ docker run -it --rm -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --mas
 ### Basic
 
 ### Customization
-
-## 💡 Run the Playground
-
-This plugin comes with a playground, so that you can try it and see how it works.
-
-You can use the following commands:
-
-Run the playground:
-
-```bash
-yarn playground:dev
-```
-
-Generate a build:
-
-```bash
-yarn playground:build
-```
-
-Serve your build:
-
-```bash
-yarn playground:serve
-```
-
-Note that you might need to change the host and the API Key of your MeiliSearch client [here](./playground/src/pages/index.js).
 
 ## 🤖 Compatibility with MeiliSearch and Gatsby
 
