@@ -7,8 +7,8 @@
     "lint": "eslint --ext .js .",
     "lint:fix": "eslint --ext .js . --fix",
     "playground:dev": "yarn --cwd ./playground && yarn --cwd ./playground develop",
-    "playground:build": "yarn --cwd ./playground build",
-    "playground:serve": "yarn --cwd ./playground serve"
+    "playground:build": "yarn --cwd ./playground && yarn --cwd ./playground build",
+    "playground:serve": "yarn --cwd ./playground && yarn --cwd ./playground serve"
   },
   "files": [
     "gatsby-node.js"
