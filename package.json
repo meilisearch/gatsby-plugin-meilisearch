@@ -5,9 +5,14 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint --ext .js .",
-    "lint:fix": "eslint --ext .js . --fix"
+    "lint:fix": "eslint --ext .js . --fix",
+    "playground:dev": "yarn --cwd ./playground && yarn --cwd ./playground develop",
+    "playground:build": "yarn --cwd ./playground && yarn --cwd ./playground build",
+    "playground:serve": "yarn --cwd ./playground && yarn --cwd ./playground serve"
   },
-  "files": [],
+  "files": [
+    "gatsby-node.js"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/meilisearch/gatsby-plugin-meilisearch.git"
@@ -33,6 +38,8 @@
     "eslint": "^7.29.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
-    "prettier": "^2.3.2"
+    "eslint-plugin-react": "^7.24.0",
+    "prettier": "^2.3.2",
+    "react": "^17.0.2"
   }
 }

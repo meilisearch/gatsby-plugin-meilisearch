@@ -32,7 +32,6 @@
 - [🎬 Usage](#-usage)
   - [Basic](#basic)
   - [Customization](#customization)
-- [💡 Run the Playground](#-run-the-playground)
 - [🤖 Compatibility with MeiliSearch and Gatsby](#-compatibility-with-meilisearch-and-gatsby)
 - [⚙️ Development Workflow and Contributing](#-development-workflow-and-contributing)
 
@@ -74,8 +73,6 @@ docker run -it --rm -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --mas
 ### Basic
 
 ### Customization
-
-## 💡 Run the Playground
 
 ## 🤖 Compatibility with MeiliSearch and Gatsby
 
