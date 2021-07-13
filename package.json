@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint --ext .js .",
     "lint:fix": "eslint --ext .js . --fix",
-    "playground:dev": "yarn --cwd ./playground && yarn --cwd ./playground develop",
+    "playground:dev": "yarn --cwd ./playground && yarn --cwd ./playground watch",
     "playground:build": "yarn --cwd ./playground && yarn --cwd ./playground build",
     "playground:serve": "yarn --cwd ./playground && yarn --cwd ./playground serve"
   },

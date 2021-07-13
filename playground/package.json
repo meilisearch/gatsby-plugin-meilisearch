@@ -8,11 +8,16 @@
     "gatsby"
   ],
   "scripts": {
-    "develop": "gatsby develop",
-    "start": "gatsby develop",
+    "develop": "gatsby develop --open",
+    "start": "gatsby develop --open",
     "build": "gatsby build",
-    "serve": "gatsby serve",
-    "clean": "gatsby clean"
+    "serve": "gatsby serve --open",
+    "clean": "gatsby clean",
+    "restart": "kill-port --port 8000 && yarn start",
+    "watch": "npm-watch restart"
+  },
+  "watch": {
+    "restart": "../gatsby-node.js"
   },
   "dependencies": {
     "@mdx-js/mdx": "^1.6.22",
@@ -24,6 +29,8 @@
     "gatsby-plugin-sharp": "^3.8.0",
     "gatsby-remark-images": "^5.5.0",
     "gatsby-source-filesystem": "^3.8.0",
+    "kill-port": "^1.6.1",
+    "npm-watch": "^0.10.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-instantsearch-dom": "^6.11.2"
