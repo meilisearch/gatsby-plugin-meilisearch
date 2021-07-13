@@ -17,7 +17,7 @@ const App = ({ data }) => (
 
     <p>Article List: </p>
     <ul>
-      {data.allMdx.edges.map(({ node }, index) => (
+      {data?.allMdx?.edges?.map(({ node }, index) => (
         <li key={index}>
           <a href={node.slug}>{node.frontmatter.title}</a>
         </li>
