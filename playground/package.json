@@ -9,11 +9,11 @@
   ],
   "scripts": {
     "develop": "gatsby develop --open",
-    "start": "gatsby develop --open",
+    "start": "gatsby develop",
     "build": "gatsby build",
     "serve": "gatsby serve --open",
     "clean": "gatsby clean",
-    "restart": "kill-port --port 8000 && yarn start",
+    "restart": "kill-port --port 8000 && yarn develop",
     "watch": "npm-watch restart"
   },
   "watch": {
