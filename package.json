@@ -2,11 +2,12 @@
   "name": "gatsby-plugin-meilisearch",
   "version": "0.1.0",
   "description": "Gatsby plugin to index your content to MeiliSearch based on queries",
-  "main": "index.js",
+  "main": "gatsby-node.js",
   "scripts": {
     "lint": "eslint --ext .js .",
     "lint:fix": "eslint --ext .js . --fix",
-    "playground:dev": "yarn --cwd ./playground && yarn --cwd ./playground develop",
+    "playground:dev": "yarn --cwd ./playground && yarn --cwd ./playground watch",
+    "playground:start": "yarn --cwd ./playground && yarn --cwd ./playground start",
     "playground:build": "yarn --cwd ./playground && yarn --cwd ./playground build",
     "playground:serve": "yarn --cwd ./playground && yarn --cwd ./playground serve"
   },
