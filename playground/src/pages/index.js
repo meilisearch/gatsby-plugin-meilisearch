@@ -16,7 +16,7 @@ const App = ({ data }) => (
     <h1>MeiliSearch + React InstantSearch + Gatsby</h1>
 
     <p>Article List: </p>
-    <ul>
+    <ul className="article-list">
       {data?.allMdx?.edges?.map(({ node }, index) => (
         <li key={index}>
           <a href={node.slug}>{node.frontmatter.title}</a>
@@ -47,7 +47,7 @@ function Hit(props) {
 
 export const query = graphql`
   query HomePageQuery {
-    allMdx {
+    allMdx(sort: { fields: frontmatter___title, order: ASC }) {
       edges {
         node {
           slug

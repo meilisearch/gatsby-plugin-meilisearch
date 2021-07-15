@@ -9,7 +9,12 @@
     "playground:dev": "yarn --cwd ./playground && yarn --cwd ./playground watch",
     "playground:start": "yarn --cwd ./playground && yarn --cwd ./playground start",
     "playground:build": "yarn --cwd ./playground && yarn --cwd ./playground build",
-    "playground:serve": "yarn --cwd ./playground && yarn --cwd ./playground serve"
+    "playground:serve": "yarn --cwd ./playground && yarn --cwd ./playground serve",
+    "cy:install": "node ./node_modules/cypress/bin/cypress install",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "test": "concurrently --kill-others -s first \"yarn playground:start\" \"cypress run\"",
+    "test:watch": "concurrently --kill-others -s first \"yarn playground:dev\" \"cypress open\""
   },
   "files": [
     "gatsby-node.js"
@@ -36,8 +41,11 @@
   },
   "homepage": "https://github.com/meilisearch/gatsby-plugin-meilisearch#readme",
   "devDependencies": {
+    "concurrently": "^6.2.0",
+    "cypress": "^7.7.0",
     "eslint": "^7.29.0",
     "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-cypress": "^2.11.3",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.24.0",
     "prettier": "^2.3.2",
