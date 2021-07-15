@@ -37,7 +37,9 @@ jobs:
       - name: Browser tests
         uses: cypress-io/github-action@v2
         with:
-          start: yarn test
+          start: yarn playground:start
+          wait-on: 'http://localhost:8000'
+          command: yarn cy:run
           config-file: cypress.json
       - uses: actions/upload-artifact@v1
         if: failure()
