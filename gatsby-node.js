@@ -1,17 +1,24 @@
-const path = require(`path`)
-
-// Creates a `test` page to test that the plugin and the playground are linked together
-exports.createPages = ({ actions }) => {
-  const { createPage } = actions
-  const blogPostTemplate = path.resolve(`src/components/blog-layout.js`)
-
-  createPage({
-    path: `test`,
-    component: blogPostTemplate,
-    context: {
-      frontmatter: {
-        title: 'Test page',
-      },
-    },
+exports.pluginOptionsSchema = ({ Joi }) => {
+  return Joi.object({
+    host: Joi.string().required(),
+    apiKey: Joi.any(),
+    skipIndexing: Joi.any(),
+    indexes: Joi.object({
+      indexUid: Joi.any(),
+      query: Joi.string().required(),
+    }),
   })
+}
+
+exports.onPostBuild = async function ({ graphql, reporter }, config) {
+  const activity = reporter.activityTimer(`Running gatsby-plugin-meilisearch`)
+  activity.start()
+  try {
+    const { indexes } = config
+    const { data } = await graphql(indexes.query)
+    console.log(data)
+  } catch (err) {
+    reporter.error(err)
+  }
+  activity.end()
 }
