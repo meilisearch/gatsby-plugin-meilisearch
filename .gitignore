@@ -103,10 +103,3 @@ public
 
 # TernJS port file
 .tern-port
-
-# Cypress
-cypress/screenshots
-cypress/videos
-cypress/support
-cypress/plugins
-cypress/fixtures
