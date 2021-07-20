@@ -66,17 +66,15 @@ To test directly your changes with watch mode, you can run the Gatsby playground
 
 ```bash
 # Root of repository
-yarn playground:watch:build
+yarn playground:dev
 ```
 
 This command will install the required dependencies, build the project, and serve it. You should be able to reach it on the [port 9000 of your localhost](http://localhost:9000/).
 
-You can also use the following commands:
+You may also just want to generate a build without serving it. If so, run the following command:
 
 ```bash
-yarn playground:dev # start the project in development mode
-yarn playground:build # Generate a build
-yarn playground:serve # Serve the build
+yarn playground:build
 ```
 
 Note that you might need to change the host and the API Key of your MeiliSearch client [here](./playground/src/pages/index.js).

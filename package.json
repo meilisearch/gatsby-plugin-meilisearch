@@ -6,15 +6,11 @@
   "scripts": {
     "lint": "eslint --ext .js .",
     "lint:fix": "eslint --ext .js . --fix",
-    "playground:dev": "yarn --cwd ./playground && yarn --cwd ./playground develop",
-    "playground:start": "yarn --cwd ./playground && yarn --cwd ./playground start",
     "playground:build": "yarn --cwd ./playground && yarn --cwd ./playground build",
-    "playground:serve": "yarn --cwd ./playground && yarn --cwd ./playground serve",
-    "playground:watch:build": "yarn --cwd ./playground && yarn --cwd ./playground watch",
+    "playground:dev": "yarn --cwd ./playground && yarn --cwd ./playground watch",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
-    "test": "concurrently --kill-others -s first \"yarn playground:start\" \"cypress run\"",
-    "test:watch": "concurrently --kill-others -s first \"yarn playground:watch:build\" \"cypress open\""
+    "test:watch": "concurrently --kill-others -s first \"yarn playground:dev\" \"cypress open\""
   },
   "files": [
     "gatsby-node.js"
