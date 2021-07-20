@@ -18,6 +18,12 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ./node_modules
+          key: ${{ hashFiles('yarn.lock') }}
       - name: Install dependencies
         run: yarn --dev
       - name: Run style check
@@ -32,6 +38,18 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
+      - name: Cache plugin dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ./node_modules
+          key: ${{ hashFiles('yarn.lock') }}
+      - name: Cache playground dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ./playground/node_modules
+          key: ${{ hashFiles('playground/yarn.lock') }}
       - name: Install dependencies
         run: yarn
       - name: Browser tests
