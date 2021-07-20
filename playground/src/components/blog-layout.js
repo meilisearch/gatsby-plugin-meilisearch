@@ -6,7 +6,7 @@ const Layout = ({ children, pageContext: { frontmatter } }) => {
     <div style={{ maxWidth: 800, margin: 'auto' }}>
       <a href="/">{'<- back to Home'}</a>
       <div style={{ textAlign: 'center' }}>
-        <h2>{frontmatter.title}</h2>
+        <h1>{frontmatter.title}</h1>
         <img src={frontmatter.cover} alt="" style={{ maxWidth: 400 }} />
       </div>
       <MDXProvider>{children}</MDXProvider>

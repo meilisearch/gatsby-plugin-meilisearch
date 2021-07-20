@@ -43,33 +43,38 @@ Each PR should pass the tests and the linter to be accepted.
 docker pull getmeili/meilisearch:latest # Fetch the latest version of MeiliSearch image from Docker Hub
 docker run -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=masterKey --no-analytics=true
 
+# Tests the project
+yarn test
+# Tests the project in watch/open mode
+yarn test:watch
 # Linter
 yarn lint
 # Linter with fixing
 yarn lint:fix
 ```
 
+If you already have the playground running in local, you can run the following commands:
+
+```bash
+yarn cy:run # Run all tests
+yarn cy:open # Choose a specific test to run
+```
+
 ### Run Playground
 
-To test directly your changes on the plugin in Gatsby, you can run the Gatsby playground:
+To test directly your changes with watch mode, you can run the Gatsby playground:
 
 ```bash
 # Root of repository
 yarn playground:dev
 ```
 
-This command will install required dependencies and launch the app in development mode. You should be able to reach it on the [port 8000 of your localhost](http://localhost:8000/).
+This command will install the required dependencies, build the project, and serve it. You should be able to reach it on the [port 9000 of your localhost](http://localhost:9000/).
 
-Generate a build:
+You may also just want to generate a build without serving it. If so, run the following command:
 
 ```bash
 yarn playground:build
-```
-
-Serve your build:
-
-```bash
-yarn playground:serve
 ```
 
 Note that you might need to change the host and the API Key of your MeiliSearch client [here](./playground/src/pages/index.js).
