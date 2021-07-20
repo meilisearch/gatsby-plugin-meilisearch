@@ -53,6 +53,13 @@ yarn lint
 yarn lint:fix
 ```
 
+If you already have the playground running in local, you can run the following commands:
+
+```bash
+yarn cy:run # Run all tests
+yarn cy:open # Choose a specific test to run
+```
+
 ### Run Playground
 
 To test directly your changes on the plugin in Gatsby, you can run the Gatsby playground:
