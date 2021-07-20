@@ -10,6 +10,7 @@
     "playground:dev": "yarn --cwd ./playground && yarn --cwd ./playground watch",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
+    "test": "yarn playground:build && concurrently --kill-others -s first \"yarn --cwd ./playground serve\" \"cypress run\"",
     "test:watch": "concurrently --kill-others -s first \"yarn playground:dev\" \"cypress open\""
   },
   "files": [
