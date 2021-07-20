@@ -62,25 +62,21 @@ yarn cy:open # Choose a specific test to run
 
 ### Run Playground
 
-To test directly your changes on the plugin in Gatsby, you can run the Gatsby playground:
+To test directly your changes with watch mode, you can run the Gatsby playground:
 
 ```bash
 # Root of repository
-yarn playground:dev
+yarn playground:watch:build
 ```
 
-This command will install required dependencies and launch the app in development mode. You should be able to reach it on the [port 8000 of your localhost](http://localhost:8000/).
+This command will install the required dependencies, build the project, and serve it. You should be able to reach it on the [port 9000 of your localhost](http://localhost:9000/).
 
-Generate a build:
-
-```bash
-yarn playground:build
-```
-
-Serve your build:
+You can also use the following commands:
 
 ```bash
-yarn playground:serve
+yarn playground:dev # start the project in development mode
+yarn playground:build # Generate a build
+yarn playground:serve # Serve the build
 ```
 
 Note that you might need to change the host and the API Key of your MeiliSearch client [here](./playground/src/pages/index.js).

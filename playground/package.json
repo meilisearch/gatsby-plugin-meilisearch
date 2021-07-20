@@ -11,13 +11,22 @@
     "develop": "gatsby develop --open",
     "start": "gatsby develop",
     "build": "gatsby build",
-    "serve": "gatsby serve --open",
+    "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "restart": "kill-port --port 8000 && yarn develop",
+    "restart": "kill-port --port 9000 && yarn build && yarn serve",
     "watch": "npm-watch restart"
   },
   "watch": {
-    "restart": "../gatsby-node.js"
+    "restart": {
+      "patterns": [
+        "../gatsby-node.js",
+        "../package.json",
+        "./src",
+        "./gatsby-config",
+        "./package.json"
+      ],
+      "quiet": true
+    }
   },
   "dependencies": {
     "@mdx-js/mdx": "^1.6.22",
