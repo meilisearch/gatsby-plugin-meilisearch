@@ -10,7 +10,6 @@
     "playground:start": "yarn --cwd ./playground && yarn --cwd ./playground start",
     "playground:build": "yarn --cwd ./playground && yarn --cwd ./playground build",
     "playground:serve": "yarn --cwd ./playground && yarn --cwd ./playground serve",
-    "cy:install": "node ./node_modules/cypress/bin/cypress install",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "test": "concurrently --kill-others -s first \"yarn playground:start\" \"cypress run\"",
