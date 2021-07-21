@@ -13,11 +13,11 @@ const validatePluginOptions = (queries, host) => {
   if (!isObject(queries)) {
     throw `[${PLUGIN_NAME}] The field "queries" must be of type object and contain the fields "query" and "indexUid"`
   }
-  if (!queries.query) {
-    throw getValidationError('"query" in the "queries" object')
-  }
   if (!queries.indexUid) {
     throw getValidationError('"indexUid" in the "queries" object')
+  }
+  if (!queries.query) {
+    throw getValidationError('"query" in the "queries" object')
   }
 }
 
