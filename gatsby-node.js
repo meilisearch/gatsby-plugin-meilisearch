@@ -1,18 +1,26 @@
-const validatePluginOptions = config => {
-  if (!config.host) {
-    throw new Error(`gatsby-plugin-meilisearch: option "host" missing`)
+const PLUGIN_NAME = 'gatsby-plugin-meilisearch'
+
+const getValidationError = field =>
+  `[${PLUGIN_NAME}] Field "${field}" is not defined in the collection schema`
+
+const validatePluginOptions = (indexes, host) => {
+  if (!host) {
+    throw new Error(getValidationError('host'))
   }
-  if (!config.indexes || !config.indexes.query) {
-    throw new Error(`gatsby-plugin-meilisearch: option "indexes.query" missing`)
+  if (!indexes.query) {
+    throw new Error(getValidationError('indexes.query'))
+  }
+  if (!indexes.indexUid) {
+    throw new Error(getValidationError('indexes.indexUid'))
   }
 }
 
 exports.onPostBuild = async function ({ graphql, reporter }, config) {
-  const activity = reporter.activityTimer(`gatsby-plugin-meilisearch`)
+  const activity = reporter.activityTimer(PLUGIN_NAME)
   activity.start()
   try {
-    validatePluginOptions(config)
-    const { indexes } = config
+    const { indexes = {}, host } = config
+    validatePluginOptions(indexes, host)
     const { data } = await graphql(indexes.query)
     console.log(data)
   } catch (err) {
