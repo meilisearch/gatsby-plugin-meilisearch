@@ -37,6 +37,28 @@ module.exports = {
     },
     {
       resolve: require.resolve(`../`),
+      options: {
+        host: 'http://127.0.0.1:7700',
+        apiKey: 'masterKey',
+        skipIndexing: true,
+        queries: {
+          indexUid: 'MyBlog',
+          query: `
+            query MyQuery {
+              allMdx {
+                edges {
+                  node {
+                    frontmatter {
+                      title
+                    }
+                    tableOfContents
+                  }
+                }
+              }
+            }
+          `,
+        },
+      },
     },
   ],
 }
