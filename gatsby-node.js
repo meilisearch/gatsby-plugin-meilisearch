@@ -1,7 +1,7 @@
 const PLUGIN_NAME = 'gatsby-plugin-meilisearch'
 
 const getValidationError = field =>
-  `[${PLUGIN_NAME}] The Field ${field} is required in the plugin configuration`
+  `[${PLUGIN_NAME}] The field ${field} is required in the plugin configuration`
 
 const validatePluginOptions = (indexes, host) => {
   if (!host) {
