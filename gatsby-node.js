@@ -24,7 +24,7 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
     const { data } = await graphql(indexes.query)
     console.log(data)
   } catch (err) {
-    reporter.error(err)
+    reporter.error(err.message)
     activity.setStatus('Failed to index to MeiliSearch')
   }
   activity.end()
