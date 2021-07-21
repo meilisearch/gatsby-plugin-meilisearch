@@ -1,17 +1,17 @@
 const PLUGIN_NAME = 'gatsby-plugin-meilisearch'
 
 const getValidationError = field =>
-  `[${PLUGIN_NAME}] Field "${field}" is not defined in the collection schema`
+  `[${PLUGIN_NAME}] The Field ${field} is required in the plugin configuration`
 
 const validatePluginOptions = (indexes, host) => {
   if (!host) {
-    throw new Error(getValidationError('host'))
+    throw getValidationError('host')
   }
   if (!indexes.query) {
-    throw new Error(getValidationError('indexes.query'))
+    throw getValidationError('query in the indexes object')
   }
   if (!indexes.indexUid) {
-    throw new Error(getValidationError('indexes.indexUid'))
+    throw getValidationError('indexUid in the indexes object')
   }
 }
 
@@ -24,7 +24,7 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
     const { data } = await graphql(indexes.query)
     console.log(data)
   } catch (err) {
-    reporter.error(err.message)
+    reporter.error(err)
     activity.setStatus('Failed to index to MeiliSearch')
   }
   activity.end()
