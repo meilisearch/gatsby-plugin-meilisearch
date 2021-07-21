@@ -41,7 +41,7 @@ module.exports = {
         host: 'http://127.0.0.1:7700',
         apiKey: 'masterKey',
         skipIndexing: true,
-        indexes: {
+        queries: {
           indexUid: 'MyBlog',
           query: `
             query MyQuery {
