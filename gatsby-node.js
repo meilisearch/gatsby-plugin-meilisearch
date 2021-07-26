@@ -56,8 +56,7 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
     // Prepare data for indexation
     const transformedData = await queries.transformer(data)
 
-    // Create index
-    const index = await client.getOrCreateIndex(queries.indexUid)
+    const index = client.index(queries.indexUid)
 
     // Index data to MeiliSearch
     const { updateId } = await index.addDocuments(transformedData)
