@@ -69,6 +69,3 @@ module.exports = {
     },
   ],
 }
-
-// transformer : obligatoire
-// Si pas de `id` -> reporter.error

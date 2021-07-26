@@ -77,7 +77,14 @@ You may also just want to generate a build without serving it. If so, run the fo
 yarn playground:build
 ```
 
-Note that you might need to change the host and the API Key of your MeiliSearch client [here](./playground/src/pages/index.js).
+If you want to specify your host, API key and index name, you can do so by adding a `.env` file inside the playground folder.
+The following environement variables are provided :
+
+```bash
+GATSBY_MEILI_SERVER_ADDRESS
+GATSBY_MEILI_API_KEY
+GATSBY_MEILI_INDEX_NAME
+```
 
 ## Git Guidelines
 
