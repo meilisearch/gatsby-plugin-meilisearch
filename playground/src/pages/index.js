@@ -1,64 +1,46 @@
 import React from 'react'
-import { graphql } from 'gatsby'
-import {
-  InstantSearch,
-  Hits,
-  SearchBox,
-  Pagination,
-  Highlight,
-} from 'react-instantsearch-dom'
+import { InstantSearch, Hits, SearchBox } from 'react-instantsearch-dom'
+import { Link } from 'gatsby'
+import 'instantsearch.css/themes/algolia-min.css'
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
 
-const searchClient = instantMeiliSearch('http://localhost:7700', 'masterKey')
+const SERVER_ADDRESS =
+  process.env.GATSBY_MEILI_SERVER_ADDRESS || 'http://localhost:7700'
+const API_KEY = process.env.GATSBY_MEILI_API_KEY || 'masterKey'
+const INDEX_NAME = process.env.GATSBY_MEILI_INDEX_NAME || 'my_blog'
 
-const App = ({ data }) => (
+const searchClient = instantMeiliSearch(SERVER_ADDRESS, API_KEY, {
+  primaryKey: 'id',
+})
+
+const App = () => (
   <div className="ais-InstantSearch">
     <h1>MeiliSearch + React InstantSearch + Gatsby</h1>
-
-    <p>Article List: </p>
-    <ul className="article-list">
-      {data?.allMdx?.edges?.map(({ node }, index) => (
-        <li key={index}>
-          <a href={node.slug}>{node.frontmatter.title}</a>
-        </li>
-      ))}
-    </ul>
     <h2>Search in this blog’s articles </h2>
-    <InstantSearch indexName="animals" searchClient={searchClient}>
-      <div className="right-panel">
+    <InstantSearch indexName={INDEX_NAME} searchClient={searchClient}>
+      <div style={{ marginBottom: 16 }}>
         <SearchBox />
-        <Hits hitComponent={Hit} />
-        <Pagination showLast={true} />
       </div>
+      <Hits hitComponent={Hit} />
     </InstantSearch>
   </div>
 )
 
-function Hit(props) {
-  return (
-    <div key={props.hit.id}>
-      <div className="hit-title">
-        <Highlight attribute="title" hit={props.hit} />
-      </div>
-      <img src={props.hit.image} align="left" alt={props.hit.title} />
-    </div>
-  )
-}
-
-export const query = graphql`
-  query HomePageQuery {
-    allMdx(sort: { fields: frontmatter___title, order: ASC }) {
-      edges {
-        node {
-          slug
-          frontmatter {
-            title
-            cover
-          }
-        }
-      }
-    }
-  }
-`
+const Hit = ({ hit }) => (
+  <div
+    key={hit.id}
+    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+  >
+    <h3 className="hit-title" style={{ marginTop: 0 }}>
+      {hit.frontmatter.title}
+    </h3>
+    <img
+      src={hit.frontmatter.cover}
+      alt={hit.frontmatter.title}
+      style={{ maxWidth: '100%' }}
+    />
+    <Link to={`/${hit.slug}`}>See page</Link>
+  </div>
+)
 
 export default App

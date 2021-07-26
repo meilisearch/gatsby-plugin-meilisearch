@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 module.exports = {
   siteMetadata: {
     siteUrl: 'https://www.yourdomain.tld',
@@ -38,18 +40,23 @@ module.exports = {
     {
       resolve: require.resolve(`../`),
       options: {
-        host: 'http://127.0.0.1:7700',
-        apiKey: 'masterKey',
-        skipIndexing: true,
+        host:
+          process.env.GATSBY_MEILI_SERVER_ADDRESS || 'http://localhost:7700',
+        apiKey: process.env.GATSBY_MEILI_API_KEY || 'masterKey',
+        // skipIndexing: true,
         queries: {
-          indexUid: 'MyBlog',
+          indexUid: process.env.GATSBY_MEILI_INDEX_NAME || 'my_blog',
+          transformer: data => data.allMdx.edges.map(({ node }) => node),
           query: `
             query MyQuery {
               allMdx {
                 edges {
                   node {
+                    id
+                    slug
                     frontmatter {
                       title
+                      cover
                     }
                     tableOfContents
                   }
@@ -62,3 +69,6 @@ module.exports = {
     },
   ],
 }
+
+// transformer : obligatoire
+// Si pas de `id` -> reporter.error

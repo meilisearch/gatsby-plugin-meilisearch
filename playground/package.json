@@ -22,7 +22,7 @@
         "../gatsby-node.js",
         "../package.json",
         "./src",
-        "./gatsby-config",
+        "./gatsby-config.js",
         "./package.json"
       ],
       "quiet": true
@@ -38,6 +38,7 @@
     "gatsby-plugin-sharp": "^3.8.0",
     "gatsby-remark-images": "^5.5.0",
     "gatsby-source-filesystem": "^3.8.0",
+    "instantsearch.css": "^7.4.5",
     "kill-port": "^1.6.1",
     "npm-watch": "^0.10.0",
     "react": "^17.0.1",
