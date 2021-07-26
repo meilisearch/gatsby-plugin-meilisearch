@@ -78,10 +78,11 @@ yarn playground:build
 ```
 
 If you want to specify your host, API key and index name, you can do so by editing the `gatsby-config.js` file, as well as the `src/pages/index.js` file if you want to test the playground's front-end.
-You can also use the environment variables `GATSBY_MEILI_HTTP_ADDR`, `GATSBY_MEILI_MASTER_KEY`, and `GATSBY_MEILI_INDEX_NAME`. This can also be done with a `.env` file:
+Alternatively, you can set the environment variables `GATSBY_MEILI_HTTP_ADDR`, `GATSBY_MEILI_MASTER_KEY`, and `GATSBY_MEILI_INDEX_NAME`. It is possible to provide them in a `.env` file at the root of the playground.
+
+Example of `.env`:
 
 ```bash
-// .env
 GATSBY_MEILI_HTTP_ADDR="http://localhost:7700"
 GATSBY_MEILI_MASTER_KEY="masterKey"
 GATSBY_MEILI_INDEX_NAME="myIndex"
