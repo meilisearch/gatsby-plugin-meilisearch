@@ -79,14 +79,14 @@ docker run -it --rm -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --mas
 {
   resolve: 'gatsby-plugin-meilisearch',
   options: {
-    // Your MeiliSearch host
+    // Host on which your MeiliSearch instance is running
     host: 'http://localhost:7700',
     queries: {
-      // Your index name
+      // Index in which the content will be added
       indexUid: `my_blog`,
-      // Your transformer, to transform the data before sending it to MeiliSearch
+      // Function that transforms the fetched data before sending it to MeiliSearch
       transformer: data => data.allMdx.edges.map(({ node }) => node),
-      // Your query containing the data you want to retrieve and index
+      // graphQL query that fetches the data to index in MeiliSearch
       query: `
         query MyQuery {
           allMdx {
@@ -116,9 +116,9 @@ The plugin accepts the following options for further customization :
 {
   resolve: 'gatsby-plugin-meilisearch',
   options: {
-    // Your MeiliSearch API key
-    apiKey: process.env.GATSBY_MEILI_API_KEY,
-    skipIndexing: true, // Default to false
+    // API key if the MeiliSearch instance is password protected
+    apiKey: "masterKey",
+    skipIndexing: true, // Run script without indexing to MeiliSearch. Default to false
   },
 }
 

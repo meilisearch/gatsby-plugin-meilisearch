@@ -45,7 +45,7 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
     }
     validatePluginOptions(queries, host)
 
-    // Get graphQL data
+    // Fetch data with graphQL query
     const { data } = await graphql(queries.query)
 
     const client = new MeiliSearch({
