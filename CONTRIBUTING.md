@@ -77,13 +77,14 @@ You may also just want to generate a build without serving it. If so, run the fo
 yarn playground:build
 ```
 
-If you want to specify your host, API key and index name, you can do so by adding a `.env` file inside the playground folder.
-The following environement variables are provided :
+If you want to specify your host, API key and index name, you can do so by editing the `gatsby-config.js` file, as well as the `src/pages/index.js` file if you want to test the playground's front-end.
+You can also use the environment variables `GATSBY_MEILI_HTTP_ADDR`, `GATSBY_MEILI_MASTER_KEY`, and `GATSBY_MEILI_INDEX_NAME`. This can also be done with a `.env` file:
 
 ```bash
-GATSBY_MEILI_HTTP_ADDR
-GATSBY_MEILI_MASTER_KEY
-GATSBY_MEILI_INDEX_NAME
+// .env
+GATSBY_MEILI_HTTP_ADDR="http://localhost:7700"
+GATSBY_MEILI_MASTER_KEY="masterKey"
+GATSBY_MEILI_INDEX_NAME="myIndex"
 ```
 
 ## Git Guidelines
