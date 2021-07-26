@@ -40,9 +40,8 @@ module.exports = {
     {
       resolve: require.resolve(`../`),
       options: {
-        host:
-          process.env.GATSBY_MEILI_SERVER_ADDRESS || 'http://localhost:7700',
-        apiKey: process.env.GATSBY_MEILI_API_KEY || 'masterKey',
+        host: process.env.GATSBY_MEILI_HTTP_ADDR || 'http://localhost:7700',
+        apiKey: process.env.GATSBY_MEILI_MASTER_KEY || 'masterKey',
         // skipIndexing: true,
         queries: {
           indexUid: process.env.GATSBY_MEILI_INDEX_NAME || 'my_blog',

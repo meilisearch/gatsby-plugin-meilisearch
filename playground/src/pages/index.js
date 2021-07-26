@@ -5,8 +5,8 @@ import 'instantsearch.css/themes/algolia-min.css'
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
 
 const SERVER_ADDRESS =
-  process.env.GATSBY_MEILI_SERVER_ADDRESS || 'http://localhost:7700'
-const API_KEY = process.env.GATSBY_MEILI_API_KEY || 'masterKey'
+  process.env.GATSBY_MEILI_HTTP_ADDR || 'http://localhost:7700'
+const API_KEY = process.env.GATSBY_MEILI_MASTER_KEY || 'masterKey'
 const INDEX_NAME = process.env.GATSBY_MEILI_INDEX_NAME || 'my_blog'
 
 const searchClient = instantMeiliSearch(SERVER_ADDRESS, API_KEY, {

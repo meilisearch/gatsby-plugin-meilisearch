@@ -81,8 +81,8 @@ If you want to specify your host, API key and index name, you can do so by addin
 The following environement variables are provided :
 
 ```bash
-GATSBY_MEILI_SERVER_ADDRESS
-GATSBY_MEILI_API_KEY
+GATSBY_MEILI_HTTP_ADDR
+GATSBY_MEILI_MASTER_KEY
 GATSBY_MEILI_INDEX_NAME
 ```
 
