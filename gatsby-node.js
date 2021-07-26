@@ -61,7 +61,7 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
     // Index data to MeiliSearch
     const { updateId } = await index.addDocuments(transformedData)
 
-    // Check status
+    // Wait for indexation to be completed
     await index.waitForPendingUpdate(updateId)
     const res = await index.getUpdateStatus(updateId)
     if (res.status === 'failed') {
