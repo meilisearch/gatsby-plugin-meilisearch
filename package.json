@@ -39,7 +39,7 @@
   "homepage": "https://github.com/meilisearch/gatsby-plugin-meilisearch#readme",
   "devDependencies": {
     "concurrently": "^6.2.0",
-    "cypress": "^7.7.0",
+    "cypress": "^8.0.0",
     "eslint": "^7.29.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-cypress": "^2.11.3",
