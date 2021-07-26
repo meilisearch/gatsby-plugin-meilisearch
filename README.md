@@ -72,7 +72,57 @@ docker run -it --rm -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --mas
 
 ### Basic
 
+
+`gatsby-config.js`
+
+```node
+{
+  resolve: 'gatsby-plugin-meilisearch',
+  options: {
+    // Host on which your MeiliSearch instance is running
+    host: 'http://localhost:7700',
+    queries: {
+      // Index in which the content will be added
+      indexUid: `my_blog`,
+      // Function that transforms the fetched data before sending it to MeiliSearch
+      transformer: data => data.allMdx.edges.map(({ node }) => node),
+      // graphQL query that fetches the data to index in MeiliSearch
+      query: `
+        query MyQuery {
+          allMdx {
+            edges {
+              node {
+                id
+                slug
+                frontmatter {
+                  title
+                  cover
+                }
+                tableOfContents
+              }
+            }
+          }
+        }
+      `,
+    },
+  },
+}
+```
+
 ### Customization
+
+The plugin accepts the following options for further customization :
+```node
+{
+  resolve: 'gatsby-plugin-meilisearch',
+  options: {
+    // API key if the MeiliSearch instance is password protected
+    apiKey: "masterKey",
+    skipIndexing: true, // Run script without indexing to MeiliSearch. Default to false
+  },
+}
+
+```
 
 ## 🤖 Compatibility with MeiliSearch and Gatsby
 
