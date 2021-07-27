@@ -15,5 +15,10 @@ describe(`Home page`, () => {
     cy.get('input[type="search"]')
       .type('Axolotl')
       .should('have.value', 'Axolotl')
+    cy.get('button[type="reset"]').click()
+    cy.get('input[type="search"]').should('be.empty')
+  })
+  it('Should have articles', () => {
+    cy.contains('Shoebill')
   })
 })

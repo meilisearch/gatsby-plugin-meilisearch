@@ -31,6 +31,14 @@ jobs:
   cypress-run:
     runs-on: ubuntu-latest
     container: cypress/browsers:node12.18.3-chrome87-ff82
+    services:
+      meilisearch:
+        image: getmeili/meilisearch:v0.21.0-alpha.5
+        env:
+          MEILI_MASTER_KEY: 'masterKey'
+          MEILI_NO_ANALYTICS: 'true'
+        ports:
+          - '7700:7700'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -59,6 +67,10 @@ jobs:
           wait-on: 'http://localhost:9000'
           command: yarn cy:run
           config-file: cypress.json
+        env:
+          GATSBY_MEILI_HTTP_ADDR: "http://meilisearch:7700"
+          GATSBY_MEILI_MASTER_KEY: masterKey
+          GATSBY_MEILI_INDEX_NAME: my_blog
       - uses: actions/upload-artifact@v1
         if: failure()
         with:
