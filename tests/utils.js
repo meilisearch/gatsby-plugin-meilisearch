@@ -1,12 +1,11 @@
 /* eslint-disable no-undef */
-const axios = require('axios')
 
 const fakeConfig = {
-  host: 'http://localhost:7700',
-  apiKey: 'masterKey',
+  host: process.env.MEILI_HTTP_ADDR,
+  apiKey: process.env.MEILI_MASTER_KEY,
   // skipIndexing: true,
   queries: {
-    indexUid: 'my_blog',
+    indexUid: process.env.MEILI_INDEX_NAME,
     transformer: data => data.allMdx.edges.map(({ node }) => node),
     query: `
       query MyQuery {
@@ -28,12 +27,17 @@ const fakeConfig = {
   },
 }
 const fakeGraphql = async query => {
-  return await axios({
-    method: 'post',
-    url: 'http://localhost:8000/___graphql',
-    headers: { 'Content-Type': 'application/json' },
-    data: query,
-  })
+  try {
+    const res = await fetch('http://localhost:8000/___graphql', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query }),
+    })
+    return await res.json()
+  } catch (err) {
+    console.log({ err })
+    return {}
+  }
 }
 
 const activityTimer = {

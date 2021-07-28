@@ -44,9 +44,9 @@ docker pull getmeili/meilisearch:latest # Fetch the latest version of MeiliSearc
 docker run -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=masterKey --no-analytics=true
 
 # Tests the project
-yarn test
+yarn test:e2e
 # Tests the project in watch/open mode
-yarn test:watch
+yarn test:e2e:watch
 # Linter
 yarn lint
 # Linter with fixing

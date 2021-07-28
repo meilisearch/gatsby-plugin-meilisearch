@@ -4,21 +4,7 @@ const { fakeConfig, fakeGraphql, fakeReporter } = require('./utils')
 
 const activity = fakeReporter.activityTimer()
 
-describe('validate options', () => {
-  test('Has no host', async () => {
-    await onPostBuild(
-      { graphql: fakeGraphql, reporter: fakeReporter },
-      { ...fakeConfig, host: null }
-    )
-    expect(fakeReporter.error).toHaveBeenCalledTimes(1)
-    expect(fakeReporter.error).toHaveBeenCalledWith(
-      `[gatsby-plugin-meilisearch] The field "host" is required in the plugin configuration`
-    )
-    expect(activity.setStatus).toHaveBeenCalledTimes(1)
-    expect(activity.setStatus).toHaveBeenCalledWith(
-      'Failed to index to MeiliSearch'
-    )
-  })
+describe('index to MeiliSearch', () => {
   test('Has no queries', async () => {
     await onPostBuild(
       { graphql: fakeGraphql, reporter: fakeReporter },
@@ -29,60 +15,104 @@ describe('validate options', () => {
       `[gatsby-plugin-meilisearch] No queries provided, nothing has been indexed to MeiliSearch`
     )
   })
-  test('Queries is an object', async () => {
+
+  test('Wrong graphQL query', async () => {
+    const wrongQuery = `
+    query MyQuery {
+      allMdx {
+        id
+      }
+    }
+  `
     await onPostBuild(
       { graphql: fakeGraphql, reporter: fakeReporter },
-      { ...fakeConfig, queries: [] }
+      { ...fakeConfig, queries: { ...fakeConfig.queries, query: wrongQuery } }
     )
     expect(fakeReporter.error).toHaveBeenCalledTimes(1)
     expect(fakeReporter.error).toHaveBeenCalledWith(
-      `[gatsby-plugin-meilisearch] The field "queries" must be of type object and contain the following fields: "indexUid", "query", "transformer"`
+      `Cannot read property 'allMdx' of undefined`
     )
     expect(activity.setStatus).toHaveBeenCalledTimes(1)
     expect(activity.setStatus).toHaveBeenCalledWith(
       'Failed to index to MeiliSearch'
     )
   })
-  test('Has indexUid', async () => {
+
+  test('Wrong transformer', async () => {
+    const wrongTransformer = data => data.allMdx.map(({ node }) => node)
+
     await onPostBuild(
       { graphql: fakeGraphql, reporter: fakeReporter },
-      { ...fakeConfig, queries: { ...fakeConfig.queries, indexUid: null } }
+      {
+        ...fakeConfig,
+        queries: { ...fakeConfig.queries, transformer: wrongTransformer },
+      }
     )
     expect(fakeReporter.error).toHaveBeenCalledTimes(1)
     expect(fakeReporter.error).toHaveBeenCalledWith(
-      `[gatsby-plugin-meilisearch] The field "indexUid" in the "queries" object is required in the plugin configuration`
+      `data.allMdx.map is not a function`
     )
     expect(activity.setStatus).toHaveBeenCalledTimes(1)
     expect(activity.setStatus).toHaveBeenCalledWith(
       'Failed to index to MeiliSearch'
     )
   })
-  test('Has query', async () => {
+
+  test('Wrong document format sent to MeiliSearch', async () => {
+    const wrongTransformer = data => data
+
     await onPostBuild(
       { graphql: fakeGraphql, reporter: fakeReporter },
-      { ...fakeConfig, queries: { ...fakeConfig.queries, query: null } }
+      {
+        ...fakeConfig,
+        queries: { ...fakeConfig.queries, transformer: wrongTransformer },
+      }
     )
     expect(fakeReporter.error).toHaveBeenCalledTimes(1)
     expect(fakeReporter.error).toHaveBeenCalledWith(
-      `[gatsby-plugin-meilisearch] The field "query" in the "queries" object is required in the plugin configuration`
+      `[gatsby-plugin-meilisearch] invalid type: map, expected a sequence at line 1 column 1`
     )
     expect(activity.setStatus).toHaveBeenCalledTimes(1)
     expect(activity.setStatus).toHaveBeenCalledWith(
       'Failed to index to MeiliSearch'
     )
   })
-  test('Has transformer', async () => {
+
+  test('Document has no id', async () => {
+    const wrongQuery = `
+    query MyQuery {
+      allMdx(filter: {frontmatter: {title: {eq: "Axolotl"}}}) {
+        edges {
+          node {
+            slug
+          }
+        }
+      }
+    }`
     await onPostBuild(
       { graphql: fakeGraphql, reporter: fakeReporter },
-      { ...fakeConfig, queries: { ...fakeConfig.queries, transformer: null } }
+      {
+        ...fakeConfig,
+        queries: { ...fakeConfig.queries, query: wrongQuery },
+      }
     )
     expect(fakeReporter.error).toHaveBeenCalledTimes(1)
     expect(fakeReporter.error).toHaveBeenCalledWith(
-      `[gatsby-plugin-meilisearch] The field "transformer" in the "queries" object is required in the plugin configuration`
+      `[gatsby-plugin-meilisearch] document doesn't have an identifier {"slug":"axolotl"}`
     )
     expect(activity.setStatus).toHaveBeenCalledTimes(1)
     expect(activity.setStatus).toHaveBeenCalledWith(
       'Failed to index to MeiliSearch'
+    )
+  })
+  test('Indexation succeeded', async () => {
+    await onPostBuild(
+      { graphql: fakeGraphql, reporter: fakeReporter },
+      fakeConfig
+    )
+    expect(activity.setStatus).toHaveBeenCalledTimes(1)
+    expect(activity.setStatus).toHaveBeenCalledWith(
+      'Documents added to MeiliSearch'
     )
   })
 })

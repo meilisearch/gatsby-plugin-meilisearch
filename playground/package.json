@@ -21,6 +21,7 @@
       "patterns": [
         "../gatsby-node.js",
         "../package.json",
+        "../src",
         "./src",
         "./gatsby-config.js",
         "./package.json"
