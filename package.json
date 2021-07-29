@@ -6,6 +6,7 @@
   "scripts": {
     "lint": "eslint --ext .js .",
     "lint:fix": "eslint --ext .js . --fix",
+    "playground:start": "yarn --cwd ./playground && yarn --cwd ./playground start",
     "playground:build": "yarn --cwd ./playground && yarn --cwd ./playground build",
     "playground:dev": "yarn --cwd ./playground && yarn --cwd ./playground watch",
     "cy:open": "cypress open",
@@ -14,10 +15,11 @@
     "test:e2e:watch": "concurrently --kill-others -s first \"yarn playground:dev\" \"cypress open\"",
     "test": "jest --testPathPattern=tests",
     "test:watch": "jest --testPathPattern=tests --watch",
-    "test:ci": "concurrently si CI wait for ne fonctionne pas"
+    "test:ci": "concurrently --kill-others -s first \"yarn playground:start\" \"wait-port http://localhost:8000/___graphql && yarn test\""
   },
   "files": [
-    "gatsby-node.js", "src/validate.js"
+    "gatsby-node.js",
+    "src/validate.js"
   ],
   "repository": {
     "type": "git",
@@ -51,7 +53,8 @@
     "gatsby": "^3.10.2",
     "jest": "^27.0.6",
     "prettier": "^2.3.2",
-    "react": "^17.0.2"
+    "react": "^17.0.2",
+    "wait-port": "^0.2.9"
   },
   "dependencies": {
     "meilisearch": "^0.19.0"

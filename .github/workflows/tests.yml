@@ -28,7 +28,7 @@ jobs:
         run: yarn --dev
       - name: Run style check
         run: yarn lint
-  cypress-run:
+  tests-run:
     runs-on: ubuntu-latest
     container: cypress/browsers:node12.18.3-chrome87-ff82
     services:
@@ -81,3 +81,9 @@ jobs:
         with:
           name: cypress-videos
           path: cypress/videos
+      - name: Jest tests
+        run: yarn test:ci
+        env:
+          MEILI_HTTP_ADDR: "http://meilisearch:7700"
+          MEILI_MASTER_KEY: masterKey
+          MEILI_INDEX_NAME: my_blog
