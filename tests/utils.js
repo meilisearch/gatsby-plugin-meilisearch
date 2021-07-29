@@ -26,6 +26,7 @@ const fakeConfig = {
     `,
   },
 }
+
 const fakeGraphql = async query => {
   try {
     const res = await fetch('http://localhost:8000/___graphql', {
@@ -34,7 +35,7 @@ const fakeGraphql = async query => {
       body: JSON.stringify({ query }),
     })
     return await res.json()
-  } catch (err) {
+  } catch (err) /* istanbul ignore next */ {
     console.log({ err })
     return {}
   }

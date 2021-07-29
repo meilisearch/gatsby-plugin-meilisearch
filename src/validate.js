@@ -30,6 +30,7 @@ const validatePluginOptions = (queries, host) => {
 
 module.exports = {
   validatePluginOptions,
+  getValidationError,
   getErrorMsg,
   PLUGIN_NAME,
 }
