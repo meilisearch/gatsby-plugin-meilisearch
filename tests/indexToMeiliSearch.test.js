@@ -1,10 +1,23 @@
 /* eslint-disable no-undef */
+const { MeiliSearch } = require('meilisearch')
 const { onPostBuild } = require('../gatsby-node.js')
 const { fakeConfig, fakeGraphql, fakeReporter } = require('./utils')
 
 const activity = fakeReporter.activityTimer()
 
+const client = new MeiliSearch({
+  host: process.env.MEILI_HTTP_ADDR,
+  apiKey: process.env.MEILI_MASTER_KEY,
+})
+
 describe('index to MeiliSearch', () => {
+  beforeEach(async () => {
+    try {
+      await client.deleteIndex(process.env.MEILI_INDEX_NAME)
+    } catch (e) {
+      return
+    }
+  })
   test('Has no queries', async () => {
     await onPostBuild(
       { graphql: fakeGraphql, reporter: fakeReporter },
@@ -81,7 +94,7 @@ describe('index to MeiliSearch', () => {
   test('Document has no id', async () => {
     const wrongQuery = `
     query MyQuery {
-      allMdx(filter: {frontmatter: {title: {eq: "Axolotl"}}}) {
+      allMdx {
         edges {
           node {
             slug
@@ -98,7 +111,7 @@ describe('index to MeiliSearch', () => {
     )
     expect(fakeReporter.error).toHaveBeenCalledTimes(1)
     expect(fakeReporter.error).toHaveBeenCalledWith(
-      `[gatsby-plugin-meilisearch] document doesn't have an identifier {"slug":"axolotl"}`
+      `[gatsby-plugin-meilisearch] missing primary key`
     )
     expect(activity.setStatus).toHaveBeenCalledTimes(1)
     expect(activity.setStatus).toHaveBeenCalledWith(
