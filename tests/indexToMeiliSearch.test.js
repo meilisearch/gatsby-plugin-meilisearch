@@ -83,7 +83,7 @@ describe('index to MeiliSearch', () => {
     )
     expect(fakeReporter.error).toHaveBeenCalledTimes(1)
     expect(fakeReporter.error).toHaveBeenCalledWith(
-      `[gatsby-plugin-meilisearch] invalid type: map, expected a sequence at line 1 column 1`
+      `invalid type: map, expected a Seq at line 1 column 1`
     )
     expect(activity.setStatus).toHaveBeenCalledTimes(1)
     expect(activity.setStatus).toHaveBeenCalledWith(
