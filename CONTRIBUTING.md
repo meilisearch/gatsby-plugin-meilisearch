@@ -38,6 +38,17 @@ yarn
 
 Each PR should pass the tests and the linter to be accepted.
 
+#### Linter
+
+```bash
+# Linter
+yarn lint
+# Linter with fixing
+yarn lint:fix
+```
+
+#### End-to-End tests
+
 ```bash
 # Run a MeiliSearch instance
 docker pull getmeili/meilisearch:latest # Fetch the latest version of MeiliSearch image from Docker Hub
@@ -47,10 +58,6 @@ docker run -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=m
 yarn test:e2e
 # Tests the project in watch/open mode
 yarn test:e2e:watch
-# Linter
-yarn lint
-# Linter with fixing
-yarn lint:fix
 ```
 
 If you already have the playground running in local, you can run the following commands:
@@ -58,6 +65,25 @@ If you already have the playground running in local, you can run the following c
 ```bash
 yarn cy:run # Run all tests
 yarn cy:open # Choose a specific test to run
+```
+
+#### Integration tests
+
+```bash
+# Tests the project
+yarn test
+# Tests the project in watch/open mode
+yarn test:watch
+```
+
+Some environement variables are needed in order to run this tests: `MEILI_HTTP_ADDR`, `MEILI_MASTER_KEY`, and `MEILI_INDEX_NAME`. It is possible to provide them in a `.env` file inside the `tests` folder.
+
+Example of `.env`:
+
+```bash
+MEILI_HTTP_ADDR="http://localhost:7700"
+MEILI_MASTER_KEY="masterKey"
+MEILI_INDEX_NAME="myIndex"
 ```
 
 ### Run Playground
