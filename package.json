@@ -13,9 +13,8 @@
     "cy:run": "cypress run",
     "test:e2e": "yarn playground:build && concurrently --kill-others -s first \"yarn --cwd ./playground serve\" \"cypress run\"",
     "test:e2e:watch": "concurrently --kill-others -s first \"yarn playground:dev\" \"cypress open\"",
-    "test": "jest --testPathPattern=tests",
-    "test:watch": "jest --testPathPattern=tests --watch",
-    "test:ci": "concurrently --kill-others -s first \"yarn playground:start\" \"wait-port http://localhost:8000/___graphql && yarn test\""
+    "test": "concurrently --kill-others -s first \"yarn playground:start\" \"wait-port http://localhost:8000/___graphql && jest --testPathPattern=tests\"",
+    "test:watch": "concurrently --kill-others -s first \"yarn playground:start\" \"wait-port http://localhost:8000/___graphql && jest --testPathPattern=tests  --watch\""
   },
   "files": [
     "gatsby-node.js",
