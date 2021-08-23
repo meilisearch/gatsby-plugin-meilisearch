@@ -66,7 +66,7 @@ Example of `.env`:
 ```bash
 MEILI_HTTP_ADDR="http://localhost:7700"
 MEILI_MASTER_KEY="masterKey"
-MEILI_INDEX_NAME="myIndex"
+MEILI_INDEX_NAME="my_index"
 ```
 
 ### Run Playground
@@ -94,7 +94,7 @@ Example of `.env`:
 ```bash
 GATSBY_MEILI_HTTP_ADDR="http://localhost:7700"
 GATSBY_MEILI_MASTER_KEY="masterKey"
-GATSBY_MEILI_INDEX_NAME="myIndex"
+GATSBY_MEILI_INDEX_NAME="my_index"
 ```
 
 ## Git Guidelines
