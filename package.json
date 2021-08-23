@@ -52,7 +52,6 @@
     "gatsby": "^3.10.2",
     "jest": "^27.0.6",
     "prettier": "^2.3.2",
-    "react": "^17.0.2",
     "wait-port": "^0.2.9"
   },
   "dependencies": {
