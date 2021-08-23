@@ -1,11 +1,11 @@
 /* eslint-disable no-undef */
 
 const fakeConfig = {
-  host: process.env.MEILI_HTTP_ADDR,
-  apiKey: process.env.MEILI_MASTER_KEY,
+  host: process.env.MEILI_HTTP_ADDR || 'http://localhost:7700',
+  apiKey: process.env.MEILI_MASTER_KEY || 'masterKey',
   // skipIndexing: true,
   queries: {
-    indexUid: process.env.MEILI_INDEX_NAME,
+    indexUid: process.env.MEILI_INDEX_NAME || 'my_blog',
     transformer: data => data.allMdx.edges.map(({ node }) => node),
     query: `
       query MyQuery {

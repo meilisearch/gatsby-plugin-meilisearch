@@ -6,14 +6,14 @@ const { fakeConfig, fakeGraphql, fakeReporter } = require('./utils')
 const activity = fakeReporter.activityTimer()
 
 const client = new MeiliSearch({
-  host: process.env.MEILI_HTTP_ADDR,
-  apiKey: process.env.MEILI_MASTER_KEY,
+  host: fakeConfig.host,
+  apiKey: fakeConfig.apiKey,
 })
 
 describe('index to MeiliSearch', () => {
   beforeEach(async () => {
     try {
-      await client.deleteIndex(process.env.MEILI_INDEX_NAME)
+      await client.deleteIndex(fakeConfig.queries.indexUid)
     } catch (e) {
       return
     }
