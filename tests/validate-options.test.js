@@ -13,7 +13,6 @@ describe('validate options', () => {
     const validate = () => {
       validatePluginOptions(fakeConfig.queries, null)
     }
-    expect(() => validate()).toThrow()
     expect(() => validate()).toThrow(
       `[gatsby-plugin-meilisearch] The field "host" is required in the plugin configuration`
     )
@@ -35,7 +34,6 @@ describe('validate options', () => {
     const validate = () => {
       validatePluginOptions([], fakeConfig.host)
     }
-    expect(() => validate()).toThrow()
     expect(() => validate()).toThrow(
       `[gatsby-plugin-meilisearch] The field "queries" must be of type object and contain the following fields: "indexUid", "query", "transformer"`
     )
@@ -47,7 +45,6 @@ describe('validate options', () => {
         fakeConfig.host
       )
     }
-    expect(() => validate()).toThrow()
     expect(() => validate()).toThrow(
       `[gatsby-plugin-meilisearch] The field "indexUid" in the "queries" object is required in the plugin configuration`
     )
@@ -59,7 +56,6 @@ describe('validate options', () => {
         fakeConfig.host
       )
     }
-    expect(() => validate()).toThrow()
     expect(() => validate()).toThrow(
       `[gatsby-plugin-meilisearch] The field "query" in the "queries" object is required in the plugin configuration`
     )
@@ -71,7 +67,6 @@ describe('validate options', () => {
         fakeConfig.host
       )
     }
-    expect(() => validate()).toThrow()
     expect(() => validate()).toThrow(
       `[gatsby-plugin-meilisearch] The field "transformer" in the "queries" object is required in the plugin configuration`
     )
