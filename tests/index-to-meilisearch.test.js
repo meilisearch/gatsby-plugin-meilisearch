@@ -10,7 +10,7 @@ const client = new MeiliSearch({
   apiKey: fakeConfig.apiKey,
 })
 
-describe('index to MeiliSearch', () => {
+describe('Index to MeiliSearch', () => {
   beforeEach(async () => {
     try {
       await client.deleteIndex(fakeConfig.queries.indexUid)
