@@ -110,3 +110,6 @@ cypress/videos
 cypress/support
 cypress/plugins
 cypress/fixtures
+
+# Misc
+.DS_Store

@@ -44,20 +44,28 @@ docker pull getmeili/meilisearch:latest # Fetch the latest version of MeiliSearc
 docker run -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=masterKey --no-analytics=true
 
 # Tests the project
-yarn test
+yarn test # integration tests
+yarn test:e2e # end to end tests
+
 # Tests the project in watch/open mode
 yarn test:watch
+yarn test:e2e:watch
+
 # Linter
 yarn lint
 # Linter with fixing
 yarn lint:fix
 ```
 
-If you already have the playground running in local, you can run the following commands:
+
+Some environement variables are needed in order to run the `test` command: `MEILI_HTTP_ADDR`, `MEILI_MASTER_KEY`, and `MEILI_INDEX_NAME`. It is possible to provide them in a `.env` file inside the `tests` folder.
+
+Example of `.env`:
 
 ```bash
-yarn cy:run # Run all tests
-yarn cy:open # Choose a specific test to run
+MEILI_HTTP_ADDR="http://localhost:7700"
+MEILI_MASTER_KEY="masterKey"
+MEILI_INDEX_NAME="my_index"
 ```
 
 ### Run Playground
@@ -85,7 +93,7 @@ Example of `.env`:
 ```bash
 GATSBY_MEILI_HTTP_ADDR="http://localhost:7700"
 GATSBY_MEILI_MASTER_KEY="masterKey"
-GATSBY_MEILI_INDEX_NAME="myIndex"
+GATSBY_MEILI_INDEX_NAME="my_index"
 ```
 
 ## Git Guidelines
