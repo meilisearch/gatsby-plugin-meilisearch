@@ -38,7 +38,6 @@ yarn
 
 Each PR should pass the tests and the linter to be accepted.
 
-
 ```bash
 # Run a MeiliSearch instance
 docker pull getmeili/meilisearch:latest # Fetch the latest version of MeiliSearch image from Docker Hub
