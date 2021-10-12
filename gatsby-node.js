@@ -10,7 +10,7 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
   const activity = reporter.activityTimer(PLUGIN_NAME)
   activity.start()
   try {
-    const { queries, host, apiKey = '' } = config
+    const { queries, host, apiKey = '', batchSize = 1000 } = config
     if (!queries) {
       reporter.warn(
         getErrorMsg(
@@ -35,14 +35,19 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
     const index = client.index(queries.indexUid)
 
     // Index data to MeiliSearch
-    const { updateId } = await index.addDocuments(transformedData)
+    const enqueuedUpdates = await index.addDocumentsInBatches(
+      transformedData,
+      batchSize
+    )
 
     // Wait for indexation to be completed
-    await index.waitForPendingUpdate(updateId)
-    const res = await index.getUpdateStatus(updateId)
-    if (res.status === 'failed') {
-      throw getErrorMsg(res.message)
-    }
+    enqueuedUpdates.forEach(async enqueuedUpdate => {
+      await index.waitForPendingUpdate(enqueuedUpdate.updateId)
+      const res = await index.getUpdateStatus(enqueuedUpdate.updateId)
+      if (res.status === 'failed') {
+        throw getErrorMsg(res.message)
+      }
+    })
 
     activity.setStatus('Documents added to MeiliSearch')
   } catch (err) {

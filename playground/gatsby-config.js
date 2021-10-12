@@ -43,6 +43,7 @@ module.exports = {
         host: process.env.GATSBY_MEILI_HTTP_ADDR || 'http://localhost:7700',
         apiKey: process.env.GATSBY_MEILI_MASTER_KEY || 'masterKey',
         // skipIndexing: true,
+        batchSize: 1,
         queries: {
           indexUid: process.env.GATSBY_MEILI_INDEX_NAME || 'my_blog',
           transformer: data => data.allMdx.edges.map(({ node }) => node),
