@@ -41,13 +41,13 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
     )
 
     // Wait for indexation to be completed
-    enqueuedUpdates.forEach(async enqueuedUpdate => {
+    for (const enqueuedUpdate of enqueuedUpdates) {
       await index.waitForPendingUpdate(enqueuedUpdate.updateId)
       const res = await index.getUpdateStatus(enqueuedUpdate.updateId)
       if (res.status === 'failed') {
         throw getErrorMsg(res.message)
       }
-    })
+    }
 
     activity.setStatus('Documents added to MeiliSearch')
   } catch (err) {
