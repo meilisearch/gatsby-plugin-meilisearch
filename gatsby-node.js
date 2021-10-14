@@ -40,6 +40,12 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
       batchSize
     )
 
+    if (enqueuedUpdates.length === 0) {
+      throw getErrorMsg(
+        'Nothing has been indexed to MeiliSearch. Make sure your documents are transformed into an array of objects'
+      )
+    }
+
     // Wait for indexation to be completed
     for (const enqueuedUpdate of enqueuedUpdates) {
       await index.waitForPendingUpdate(enqueuedUpdate.updateId)
