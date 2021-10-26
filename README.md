@@ -119,6 +119,7 @@ The plugin accepts the following options for further customization :
     // API key if the MeiliSearch instance is password protected
     apiKey: "masterKey",
     skipIndexing: true, // Run script without indexing to MeiliSearch. Default to false
+    batchSize: 1000, // The number of documents that should be included in each batch. Default to 1000
   },
 }
 
