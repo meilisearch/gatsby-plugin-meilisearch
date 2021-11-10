@@ -17,8 +17,6 @@ categories:
   - title: '🔒 Security'
     label: 'security'
 template: |
-  ## Changes
-
   $CHANGES
 
   Thanks again to $CONTRIBUTORS! 🎉
