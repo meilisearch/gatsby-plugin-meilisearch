@@ -33,7 +33,7 @@ jobs:
     container: cypress/browsers:node12.18.3-chrome87-ff82
     services:
       meilisearch:
-        image: getmeili/meilisearch:v0.21.0rc6
+        image: getmeili/meilisearch:latest
         env:
           MEILI_MASTER_KEY: 'masterKey'
           MEILI_NO_ANALYTICS: 'true'
@@ -68,7 +68,7 @@ jobs:
           command: yarn cy:run
           config-file: cypress.json
         env:
-          GATSBY_MEILI_HTTP_ADDR: "http://meilisearch:7700"
+          GATSBY_MEILI_HTTP_ADDR: 'http://meilisearch:7700'
           GATSBY_MEILI_MASTER_KEY: masterKey
           GATSBY_MEILI_INDEX_NAME: my_blog
       - uses: actions/upload-artifact@v1
@@ -84,6 +84,6 @@ jobs:
       - name: Jest tests
         run: yarn test
         env:
-          MEILI_HTTP_ADDR: "http://meilisearch:7700"
+          MEILI_HTTP_ADDR: 'http://meilisearch:7700'
           MEILI_MASTER_KEY: masterKey
           MEILI_INDEX_NAME: my_blog
