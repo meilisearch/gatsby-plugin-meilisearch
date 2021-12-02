@@ -111,7 +111,7 @@ describe('Index to MeiliSearch', () => {
     )
     expect(fakeReporter.error).toHaveBeenCalledTimes(1)
     expect(fakeReporter.error).toHaveBeenCalledWith(
-      `[gatsby-plugin-meilisearch] The primary key inference process failed because the engine did not find any fields containing \`id\` substring in their name. If your document identifier does not contain any \`id\` substring, you can set the primary key of the index.`
+      `[gatsby-plugin-meilisearch] The primary key inference process failed because the engine did not find any fields containing \`id\` substring in their name. If your document identifier does not contain any \`id\` substring, you can set the primary key of the index. (primary_key_inference_failed)`
     )
     expect(activity.setStatus).toHaveBeenCalledTimes(1)
     expect(activity.setStatus).toHaveBeenCalledWith(

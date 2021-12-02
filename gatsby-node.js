@@ -51,7 +51,7 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
       await index.waitForPendingUpdate(enqueuedUpdate.updateId)
       const res = await index.getUpdateStatus(enqueuedUpdate.updateId)
       if (res.status === 'failed') {
-        throw getErrorMsg(res.error.message)
+        throw getErrorMsg(`${res.error.message} (${res.error.code})`)
       }
     }
 
