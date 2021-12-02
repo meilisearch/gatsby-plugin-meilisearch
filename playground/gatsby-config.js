@@ -46,7 +46,12 @@ module.exports = {
         batchSize: 1,
         queries: {
           indexUid: process.env.GATSBY_MEILI_INDEX_NAME || 'my_blog',
-          transformer: data => data.allMdx.edges.map(({ node }) => node),
+          transformer: data =>
+            data.allMdx.edges.map(({ node }) => ({
+              ...node,
+              title: node.frontmatter.title,
+              cover: node.frontmatter.cover,
+            })),
           query: `
             query MyQuery {
               allMdx {
