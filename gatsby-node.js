@@ -10,7 +10,20 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
   const activity = reporter.activityTimer(PLUGIN_NAME)
   activity.start()
   try {
-    const { queries, host, apiKey = '', batchSize = 1000 } = config
+    const {
+      queries,
+      host,
+      apiKey = '',
+      batchSize = 1000,
+      skipIndexing = false,
+    } = config
+
+    if (skipIndexing) {
+      activity.setStatus('Indexation skipped')
+      activity.end()
+      return
+    }
+
     if (!queries) {
       reporter.warn(
         getErrorMsg(

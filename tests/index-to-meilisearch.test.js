@@ -118,6 +118,16 @@ describe('Index to MeiliSearch', () => {
       'Failed to index to MeiliSearch'
     )
   })
+
+  test('Skip indexing', async () => {
+    await onPostBuild(
+      { graphql: fakeGraphql, reporter: fakeReporter },
+      { ...fakeConfig, skipIndexing: true }
+    )
+    expect(activity.setStatus).toHaveBeenCalledTimes(1)
+    expect(activity.setStatus).toHaveBeenCalledWith('Indexation skipped')
+  })
+
   test('Indexation succeeded', async () => {
     await onPostBuild(
       { graphql: fakeGraphql, reporter: fakeReporter },
