@@ -72,7 +72,6 @@ docker run -it --rm -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --mas
 
 ### Basic
 
-
 `gatsby-config.js`
 
 ```node
@@ -112,14 +111,17 @@ docker run -it --rm -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --mas
 ### Customization
 
 The plugin accepts the following options for further customization :
+
 ```node
 {
   resolve: 'gatsby-plugin-meilisearch',
   options: {
-    // API key if the MeiliSearch instance is password protected
-    apiKey: "masterKey",
+    apiKey: "masterKey", // API key if the MeiliSearch instance is password protected
     skipIndexing: true, // Run script without indexing to MeiliSearch. Default to false
     batchSize: 1000, // The number of documents that should be included in each batch. Default to 1000
+    settings: {
+      searchableAttributes: ['title'], // MeiliSearch's settings. See https://docs.meilisearch.com/reference/features/settings.html
+    },
   },
 }
 

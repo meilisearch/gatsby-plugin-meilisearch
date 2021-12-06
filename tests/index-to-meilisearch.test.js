@@ -119,6 +119,46 @@ describe('Index to MeiliSearch', () => {
     )
   })
 
+  test('Wrong settings format', async () => {
+    await onPostBuild(
+      { graphql: fakeGraphql, reporter: fakeReporter },
+      {
+        ...fakeConfig,
+        queries: {
+          ...fakeConfig.queries,
+          settings: { wrongSettings: 'wrongSettings' },
+        },
+      }
+    )
+    expect(fakeReporter.error).toHaveBeenCalledTimes(1)
+    expect(fakeReporter.error).toHaveBeenCalledWith(
+      `Json deserialize error: unknown field \`wrongSettings\`, expected one of \`displayedAttributes\`, \`searchableAttributes\`, \`filterableAttributes\`, \`sortableAttributes\`, \`rankingRules\`, \`stopWords\`, \`synonyms\`, \`distinctAttribute\` at line 1 column 16`
+    )
+    expect(activity.setStatus).toHaveBeenCalledTimes(1)
+    expect(activity.setStatus).toHaveBeenCalledWith(
+      'Failed to index to MeiliSearch'
+    )
+  })
+
+  test('Good settings format', async () => {
+    await onPostBuild(
+      { graphql: fakeGraphql, reporter: fakeReporter },
+      {
+        ...fakeConfig,
+        queries: {
+          ...fakeConfig.queries,
+          settings: { searchableAttributes: ['title'] },
+        },
+      }
+    )
+    const { searchableAttributes } = await client
+      .index(fakeConfig.queries.indexUid)
+      .getSettings()
+    console.log(searchableAttributes)
+    expect(Array.isArray(searchableAttributes)).toBe(true)
+    expect(searchableAttributes).toEqual(['title'])
+  })
+
   test('Skip indexing', async () => {
     await onPostBuild(
       { graphql: fakeGraphql, reporter: fakeReporter },
