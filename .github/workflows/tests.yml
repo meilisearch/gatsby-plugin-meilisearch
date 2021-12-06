@@ -60,10 +60,13 @@ jobs:
           key: ${{ hashFiles('playground/yarn.lock') }}
       - name: Install dependencies
         run: yarn
+      - name: Install playground dependencies
+        run: yarn --dev && yarn --cwd ./playground
       - name: Browser tests
         uses: cypress-io/github-action@v2
         with:
-          start: yarn playground:dev
+          build: yarn playground:build
+          start: yarn playground:serve
           wait-on: 'http://127.0.0.1:9000'
           command: yarn cy:run
           config-file: cypress.json
