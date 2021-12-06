@@ -31,15 +31,15 @@ const Hit = ({ hit }) => (
     key={hit.id}
     style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
   >
-    <h3 className="hit-title" style={{ marginTop: 0 }}>
-      {hit.frontmatter.title}
-    </h3>
-    <img
-      src={hit.frontmatter.cover}
-      alt={hit.frontmatter.title}
-      style={{ maxWidth: '100%' }}
-    />
-    <Link to={`/${hit.slug}`}>See page</Link>
+    {hit.title && (
+      <h3 className="hit-title" style={{ marginTop: 0 }}>
+        {hit.title}
+      </h3>
+    )}
+    {hit.cover && (
+      <img src={hit.cover} alt={hit.title || ''} style={{ maxWidth: '100%' }} />
+    )}
+    <Link to={`/${hit.slug || ''}`}>See page</Link>
   </div>
 )
 

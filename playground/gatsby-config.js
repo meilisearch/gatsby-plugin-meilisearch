@@ -46,6 +46,9 @@ module.exports = {
         batchSize: 1,
         queries: {
           indexUid: process.env.GATSBY_MEILI_INDEX_NAME || 'my_blog',
+          settings: {
+            searchableAttributes: ['title'],
+          },
           transformer: data =>
             data.allMdx.edges.map(({ node }) => ({
               ...node,

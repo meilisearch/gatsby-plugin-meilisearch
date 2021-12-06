@@ -42,10 +42,16 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
       apiKey: apiKey,
     })
 
+    const index = client.index(queries.indexUid)
+
+    // Add settings to Index
+    if (queries.settings) {
+      const { updateId } = await index.updateSettings(queries.settings)
+      index.waitForPendingUpdate(updateId)
+    }
+
     // Prepare data for indexation
     const transformedData = await queries.transformer(data)
-
-    const index = client.index(queries.indexUid)
 
     // Index data to MeiliSearch
     const enqueuedUpdates = await index.addDocumentsInBatches(
