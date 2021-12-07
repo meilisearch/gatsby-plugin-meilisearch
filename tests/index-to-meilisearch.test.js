@@ -13,23 +13,28 @@ const client = new MeiliSearch({
 describe('Index to MeiliSearch', () => {
   beforeEach(async () => {
     try {
-      await client.deleteIndex(fakeConfig.queries.indexUid)
+      await Promise.all(
+        fakeConfig.indexes.map(
+          async index => await client.deleteIndex(index.indexUid)
+        )
+      )
     } catch (e) {
       return
     }
   })
-  test('Has no queries', async () => {
+
+  test('Should fail if the indexes field is not provided', async () => {
     await onPostBuild(
       { graphql: fakeGraphql, reporter: fakeReporter },
-      { ...fakeConfig, queries: null }
+      { ...fakeConfig, indexes: null }
     )
     expect(fakeReporter.warn).toHaveBeenCalledTimes(1)
     expect(fakeReporter.warn).toHaveBeenCalledWith(
-      `[gatsby-plugin-meilisearch] No queries provided, nothing has been indexed to MeiliSearch`
+      `[gatsby-plugin-meilisearch] No indexes provided, nothing has been indexed to MeiliSearch`
     )
   })
 
-  test('Wrong graphQL query', async () => {
+  test('Should fail on wrong graphQL query', async () => {
     const wrongQuery = `
     query MyQuery {
       allMdx {
@@ -37,9 +42,13 @@ describe('Index to MeiliSearch', () => {
       }
     }
   `
+
     await onPostBuild(
       { graphql: fakeGraphql, reporter: fakeReporter },
-      { ...fakeConfig, queries: { ...fakeConfig.queries, query: wrongQuery } }
+      {
+        ...fakeConfig,
+        indexes: [{ ...fakeConfig.indexes[0], query: wrongQuery }],
+      }
     )
     expect(fakeReporter.error).toHaveBeenCalledTimes(1)
     expect(fakeReporter.error).toHaveBeenCalledWith(
@@ -51,14 +60,14 @@ describe('Index to MeiliSearch', () => {
     )
   })
 
-  test('Wrong transformer', async () => {
+  test('Should fail on wrong transformer format', async () => {
     const wrongTransformer = data => data.allMdx.map(({ node }) => node)
 
     await onPostBuild(
       { graphql: fakeGraphql, reporter: fakeReporter },
       {
         ...fakeConfig,
-        queries: { ...fakeConfig.queries, transformer: wrongTransformer },
+        indexes: [{ ...fakeConfig.indexes[0], transformer: wrongTransformer }],
       }
     )
     expect(fakeReporter.error).toHaveBeenCalledTimes(1)
@@ -71,14 +80,14 @@ describe('Index to MeiliSearch', () => {
     )
   })
 
-  test('Wrong document format sent to MeiliSearch', async () => {
+  test('Should fail on wrong document format sent to MeiliSearch', async () => {
     const wrongTransformer = data => data
 
     await onPostBuild(
       { graphql: fakeGraphql, reporter: fakeReporter },
       {
         ...fakeConfig,
-        queries: { ...fakeConfig.queries, transformer: wrongTransformer },
+        indexes: [{ ...fakeConfig.indexes[0], transformer: wrongTransformer }],
       }
     )
     expect(fakeReporter.error).toHaveBeenCalledTimes(1)
@@ -91,7 +100,7 @@ describe('Index to MeiliSearch', () => {
     )
   })
 
-  test('Document has no id', async () => {
+  test('Should fail if there are no primary key in the documents', async () => {
     const wrongQuery = `
     query MyQuery {
       allMdx {
@@ -106,7 +115,7 @@ describe('Index to MeiliSearch', () => {
       { graphql: fakeGraphql, reporter: fakeReporter },
       {
         ...fakeConfig,
-        queries: { ...fakeConfig.queries, query: wrongQuery },
+        indexes: [{ ...fakeConfig.indexes[0], query: wrongQuery }],
       }
     )
     expect(fakeReporter.error).toHaveBeenCalledTimes(1)
@@ -119,15 +128,17 @@ describe('Index to MeiliSearch', () => {
     )
   })
 
-  test('Wrong settings format', async () => {
+  test('Should fail on wrong settings format', async () => {
     await onPostBuild(
       { graphql: fakeGraphql, reporter: fakeReporter },
       {
         ...fakeConfig,
-        queries: {
-          ...fakeConfig.queries,
-          settings: { wrongSettings: 'wrongSettings' },
-        },
+        indexes: [
+          {
+            ...fakeConfig.indexes[0],
+            settings: { wrongSettings: 'wrongSettings' },
+          },
+        ],
       }
     )
     expect(fakeReporter.error).toHaveBeenCalledTimes(1)
@@ -140,26 +151,27 @@ describe('Index to MeiliSearch', () => {
     )
   })
 
-  test('Good settings format', async () => {
+  test('Should succeed on good settings format', async () => {
     await onPostBuild(
       { graphql: fakeGraphql, reporter: fakeReporter },
       {
         ...fakeConfig,
-        queries: {
-          ...fakeConfig.queries,
-          settings: { searchableAttributes: ['title'] },
-        },
+        indexes: [
+          {
+            ...fakeConfig.indexes[0],
+            settings: { searchableAttributes: ['title'] },
+          },
+        ],
       }
     )
     const { searchableAttributes } = await client
-      .index(fakeConfig.queries.indexUid)
+      .index(fakeConfig.indexes[0].indexUid)
       .getSettings()
-    console.log(searchableAttributes)
     expect(Array.isArray(searchableAttributes)).toBe(true)
     expect(searchableAttributes).toEqual(['title'])
   })
 
-  test('Skip indexing', async () => {
+  test('Should skip the indexation', async () => {
     await onPostBuild(
       { graphql: fakeGraphql, reporter: fakeReporter },
       { ...fakeConfig, skipIndexing: true }
@@ -168,7 +180,36 @@ describe('Index to MeiliSearch', () => {
     expect(activity.setStatus).toHaveBeenCalledWith('Indexation skipped')
   })
 
-  test('Indexation succeeded', async () => {
+  test('Should succeed on multi indexing', async () => {
+    await onPostBuild(
+      { graphql: fakeGraphql, reporter: fakeReporter },
+      {
+        ...fakeConfig,
+        indexes: [
+          ...fakeConfig.indexes,
+          {
+            indexUid: 'index2',
+            transformer: data => data.allMdx.edges.map(({ node }) => node),
+            query: `
+                query MyQuery {
+                  allMdx {
+                    edges {
+                      node {
+                        id
+                      }
+                    }
+                  }
+                }
+              `,
+          },
+        ],
+      }
+    )
+    const indexes = await client.getIndexes()
+    expect(indexes).toHaveLength(2)
+  })
+
+  test('Should succeed and index with good config format', async () => {
     await onPostBuild(
       { graphql: fakeGraphql, reporter: fakeReporter },
       fakeConfig

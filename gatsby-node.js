@@ -2,6 +2,7 @@ const { MeiliSearch } = require('meilisearch')
 
 const {
   validatePluginOptions,
+  validateIndexOptions,
   PLUGIN_NAME,
   getErrorMsg,
 } = require('./src/validate')
@@ -11,11 +12,11 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
   activity.start()
   try {
     const {
-      queries,
       host,
       apiKey = '',
-      batchSize = 1000,
       skipIndexing = false,
+      batchSize = 1000,
+      indexes,
     } = config
 
     if (skipIndexing) {
@@ -24,55 +25,62 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
       return
     }
 
-    if (!queries) {
+    if (!indexes) {
       reporter.warn(
         getErrorMsg(
-          'No queries provided, nothing has been indexed to MeiliSearch'
+          'No indexes provided, nothing has been indexed to MeiliSearch'
         )
       )
       return
     }
-    validatePluginOptions(queries, host)
 
-    // Fetch data with graphQL query
-    const { data } = await graphql(queries.query)
+    validatePluginOptions(indexes, host)
+    await Promise.all(
+      indexes.map(async (currentIndex, key) => {
+        // Check that the index options are valid
+        validateIndexOptions(currentIndex, key)
 
-    const client = new MeiliSearch({
-      host: host,
-      apiKey: apiKey,
-    })
+        // Fetch data with graphQL query
+        const { data } = await graphql(currentIndex.query)
 
-    const index = client.index(queries.indexUid)
+        const client = new MeiliSearch({
+          host: host,
+          apiKey: apiKey,
+        })
 
-    // Add settings to Index
-    if (queries.settings) {
-      const { updateId } = await index.updateSettings(queries.settings)
-      index.waitForPendingUpdate(updateId)
-    }
+        const index = client.index(currentIndex.indexUid)
 
-    // Prepare data for indexation
-    const transformedData = await queries.transformer(data)
+        // Add settings to Index
+        if (currentIndex.settings) {
+          const { updateId } = await index.updateSettings(currentIndex.settings)
+          index.waitForPendingUpdate(updateId)
+        }
 
-    // Index data to MeiliSearch
-    const enqueuedUpdates = await index.addDocumentsInBatches(
-      transformedData,
-      batchSize
+        // Prepare data for indexation
+        const transformedData = await currentIndex.transformer(data)
+
+        // Index data to MeiliSearch
+        const enqueuedUpdates = await index.addDocumentsInBatches(
+          transformedData,
+          batchSize
+        )
+
+        if (enqueuedUpdates.length === 0) {
+          throw getErrorMsg(
+            'Nothing has been indexed to MeiliSearch. Make sure your documents are transformed into an array of objects'
+          )
+        }
+
+        // Wait for indexation to be completed
+        for (const enqueuedUpdate of enqueuedUpdates) {
+          await index.waitForPendingUpdate(enqueuedUpdate.updateId)
+          const res = await index.getUpdateStatus(enqueuedUpdate.updateId)
+          if (res.status === 'failed') {
+            throw getErrorMsg(`${res.error.message} (${res.error.code})`)
+          }
+        }
+      })
     )
-
-    if (enqueuedUpdates.length === 0) {
-      throw getErrorMsg(
-        'Nothing has been indexed to MeiliSearch. Make sure your documents are transformed into an array of objects'
-      )
-    }
-
-    // Wait for indexation to be completed
-    for (const enqueuedUpdate of enqueuedUpdates) {
-      await index.waitForPendingUpdate(enqueuedUpdate.updateId)
-      const res = await index.getUpdateStatus(enqueuedUpdate.updateId)
-      if (res.status === 'failed') {
-        throw getErrorMsg(`${res.error.message} (${res.error.code})`)
-      }
-    }
 
     activity.setStatus('Documents added to MeiliSearch')
   } catch (err) {

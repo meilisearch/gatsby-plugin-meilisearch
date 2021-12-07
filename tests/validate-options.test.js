@@ -1,6 +1,10 @@
 /* eslint-disable no-undef */
 const { fakeConfig } = require('./utils')
-const { validatePluginOptions, getValidationError } = require('../src/validate')
+const {
+  validatePluginOptions,
+  validateIndexOptions,
+  getValidationError,
+} = require('../src/validate')
 
 const fakeGetValidationError = jest.fn(getValidationError)
 
@@ -9,7 +13,7 @@ const validateError = param => {
 }
 
 describe('validate options', () => {
-  test('Has no host', async () => {
+  test('Should fail with no "host" field', async () => {
     const validate = () => {
       validatePluginOptions(fakeConfig.queries, null)
     }
@@ -17,7 +21,7 @@ describe('validate options', () => {
       `[gatsby-plugin-meilisearch] The field "host" is required in the plugin configuration`
     )
   })
-  test('Calls getValidationError function', async () => {
+  test('Should call "getValidationError" function', async () => {
     const validate = () => {
       validatePluginOptions(fakeConfig.queries, null)
     }
@@ -30,50 +34,51 @@ describe('validate options', () => {
     )
   })
 
-  test("Queries isn't an object", async () => {
+  test('Should fail if "indexes" field isn’t an array', async () => {
     const validate = () => {
-      validatePluginOptions([], fakeConfig.host)
+      validatePluginOptions({}, fakeConfig.host)
     }
     expect(() => validate()).toThrow(
-      `[gatsby-plugin-meilisearch] The field "queries" must be of type object and contain the following fields: "indexUid", "query", "transformer"`
+      `[gatsby-plugin-meilisearch] The "indexes" option should be of type array`
     )
   })
-  test('Has no indexUid', async () => {
+
+  test('Should fail "index" field isn’t an object', async () => {
     const validate = () => {
-      validatePluginOptions(
-        { ...fakeConfig.queries, indexUid: null },
-        fakeConfig.host
-      )
+      validateIndexOptions([], 0)
     }
     expect(() => validate()).toThrow(
-      `[gatsby-plugin-meilisearch] The field "indexUid" in the "queries" object is required in the plugin configuration`
+      `[gatsby-plugin-meilisearch] Each index inside the "indexes" field must be of type object and contain the following fields: "indexUid", "query", "transformer" (in "indexes" at position 0)`
     )
   })
-  test('Has no query', async () => {
+
+  test('Should fail if "index" field has no indexUid', async () => {
     const validate = () => {
-      validatePluginOptions(
-        { ...fakeConfig.queries, query: null },
-        fakeConfig.host
-      )
+      validateIndexOptions({ ...fakeConfig.indexes[0], indexUid: null }, 0)
     }
     expect(() => validate()).toThrow(
-      `[gatsby-plugin-meilisearch] The field "query" in the "queries" object is required in the plugin configuration`
+      `[gatsby-plugin-meilisearch] The field "indexUid" (in "indexes" at position 0) is required in the plugin configuration`
     )
   })
-  test('Has no transformer', async () => {
+  test('Should fail if "index" field has no query', async () => {
     const validate = () => {
-      validatePluginOptions(
-        { ...fakeConfig.queries, transformer: null },
-        fakeConfig.host
-      )
+      validateIndexOptions({ ...fakeConfig.indexes[0], query: null }, 0)
     }
     expect(() => validate()).toThrow(
-      `[gatsby-plugin-meilisearch] The field "transformer" in the "queries" object is required in the plugin configuration`
+      `[gatsby-plugin-meilisearch] The field "query" (in "indexes" at position 0) is required in the plugin configuration`
     )
   })
-  test('Has valid options', async () => {
+  test('Should fail if "index" field has no transformer', async () => {
     const validate = () => {
-      validatePluginOptions(fakeConfig.queries, fakeConfig.host)
+      validateIndexOptions({ ...fakeConfig.indexes[0], transformer: null }, 0)
+    }
+    expect(() => validate()).toThrow(
+      `[gatsby-plugin-meilisearch] The field "transformer" (in "indexes" at position 0) is required in the plugin configuration`
+    )
+  })
+  test('Should succeed if "index" field has valid options', async () => {
+    const validate = () => {
+      validatePluginOptions(fakeConfig.indexes, fakeConfig.host)
     }
     expect(() => validate()).not.toThrow()
   })
