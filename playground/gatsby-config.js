@@ -44,35 +44,37 @@ module.exports = {
         apiKey: process.env.GATSBY_MEILI_MASTER_KEY || 'masterKey',
         // skipIndexing: true,
         batchSize: 1,
-        queries: {
-          indexUid: process.env.GATSBY_MEILI_INDEX_NAME || 'my_blog',
-          settings: {
-            searchableAttributes: ['title'],
-          },
-          transformer: data =>
-            data.allMdx.edges.map(({ node }) => ({
-              ...node,
-              title: node.frontmatter.title,
-              cover: node.frontmatter.cover,
-            })),
-          query: `
-            query MyQuery {
-              allMdx {
-                edges {
-                  node {
-                    id
-                    slug
-                    frontmatter {
-                      title
-                      cover
+        indexes: [
+          {
+            indexUid: process.env.GATSBY_MEILI_INDEX_NAME || 'my_blog',
+            settings: {
+              searchableAttributes: ['title'],
+            },
+            transformer: data =>
+              data.allMdx.edges.map(({ node }) => ({
+                ...node,
+                title: node.frontmatter.title,
+                cover: node.frontmatter.cover,
+              })),
+            query: `
+              query MyQuery {
+                allMdx {
+                  edges {
+                    node {
+                      id
+                      slug
+                      frontmatter {
+                        title
+                        cover
+                      }
+                      tableOfContents
                     }
-                    tableOfContents
                   }
                 }
               }
-            }
-          `,
-        },
+            `,
+          },
+        ],
       },
     },
   ],
