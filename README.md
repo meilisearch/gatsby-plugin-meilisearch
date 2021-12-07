@@ -80,30 +80,32 @@ docker run -it --rm -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --mas
   options: {
     // Host on which your MeiliSearch instance is running
     host: 'http://localhost:7700',
-    queries: {
-      // Index in which the content will be added
-      indexUid: `my_blog`,
-      // Function that transforms the fetched data before sending it to MeiliSearch
-      transformer: data => data.allMdx.edges.map(({ node }) => node),
-      // graphQL query that fetches the data to index in MeiliSearch
-      query: `
-        query MyQuery {
-          allMdx {
-            edges {
-              node {
-                id
-                slug
-                frontmatter {
-                  title
-                  cover
+    indexes: [
+      {
+        // Index in which the content will be added
+        indexUid: `my_blog`,
+        // Function that transforms the fetched data before sending it to MeiliSearch
+        transformer: data => data.allMdx.edges.map(({ node }) => node),
+        // graphQL query that fetches the data to index in MeiliSearch
+        query: `
+          query MyQuery {
+            allMdx {
+              edges {
+                node {
+                  id
+                  slug
+                  frontmatter {
+                    title
+                    cover
+                  }
+                  tableOfContents
                 }
-                tableOfContents
               }
             }
           }
-        }
-      `,
-    },
+        `,
+      }
+    ],
   },
 }
 ```
