@@ -34,21 +34,12 @@ describe('validate options', () => {
     )
   })
 
-  test('Should fail if "indexes" field is empty', async () => {
-    const validate = () => {
-      validatePluginOptions(null, fakeConfig.host)
-    }
-    expect(() => validate()).toThrow(
-      `[gatsby-plugin-meilisearch] The "indexes" option must not be empty`
-    )
-  })
-
   test('Should fail if "indexes" field isn’t an array', async () => {
     const validate = () => {
       validatePluginOptions({}, fakeConfig.host)
     }
     expect(() => validate()).toThrow(
-      `[gatsby-plugin-meilisearch] The "indexes" option must be an array`
+      `[gatsby-plugin-meilisearch] The "indexes" option should be of type array`
     )
   })
 

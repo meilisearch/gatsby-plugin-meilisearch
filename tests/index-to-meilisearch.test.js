@@ -34,7 +34,7 @@ describe('Index to MeiliSearch', () => {
     )
   })
 
-  test('Should fail on Wrong graphQL query', async () => {
+  test('Should fail on wrong graphQL query', async () => {
     const wrongQuery = `
     query MyQuery {
       allMdx {

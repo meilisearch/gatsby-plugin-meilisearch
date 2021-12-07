@@ -30,12 +30,8 @@ const validatePluginOptions = (indexes, host) => {
     throw getValidationError('"host"')
   }
 
-  if (!indexes || indexes.length === 0) {
-    throw getErrorMsg('The "indexes" option must not be empty')
-  }
-
   if (!Array.isArray(indexes)) {
-    throw getErrorMsg('The "indexes" option must be an array')
+    throw getErrorMsg('The "indexes" option should be of type array')
   }
 }
 
