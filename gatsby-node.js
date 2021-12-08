@@ -48,6 +48,16 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
           apiKey: apiKey,
         })
 
+        // Check if the index already exists, then delete and recreate it
+        try {
+          await client.getIndex(currentIndex.indexUid)
+          await client.deleteIndex(currentIndex.indexUid)
+        } catch {
+          // If index doesn't exist, do nothing and wait for the finally block
+        } finally {
+          await client.createIndex(currentIndex.indexUid)
+        }
+
         const index = client.index(currentIndex.indexUid)
 
         // Add settings to Index

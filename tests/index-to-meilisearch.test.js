@@ -209,6 +209,71 @@ describe('Index to MeiliSearch', () => {
     expect(indexes).toHaveLength(2)
   })
 
+  test('Should delete index and recreate a new one', async () => {
+    const firstQuery = `
+    query MyQuery {
+      allMdx(filter: {frontmatter: {title: {eq: "Axolotl"}}}) {
+        edges {
+          node {
+            id
+            slug
+          }
+        }
+      }
+    }
+  `
+    const secondQuery = `
+      query MyQuery {
+        allMdx(filter: {frontmatter: {title: {eq: "Shoebill"}}}) {
+          edges {
+            node {
+              id
+              slug
+            }
+          }
+        }
+      }
+    `
+
+    await onPostBuild(
+      { graphql: fakeGraphql, reporter: fakeReporter },
+      {
+        ...fakeConfig,
+        indexes: [
+          {
+            ...fakeConfig.indexes[0],
+            query: firstQuery,
+          },
+        ],
+      }
+    )
+
+    const firstQueryResult = await client
+      .index(fakeConfig.indexes[0].indexUid)
+      .search('Axolotl')
+
+    expect(firstQueryResult.nbHits).toBe(1)
+
+    await onPostBuild(
+      { graphql: fakeGraphql, reporter: fakeReporter },
+      {
+        ...fakeConfig,
+        indexes: [
+          {
+            ...fakeConfig.indexes[0],
+            query: secondQuery,
+          },
+        ],
+      }
+    )
+
+    const secondQueryResult = await client
+      .index(fakeConfig.indexes[0].indexUid)
+      .search('Axolotl')
+
+    expect(secondQueryResult.nbHits).toBe(0)
+  })
+
   test('Should succeed and index with good config format', async () => {
     await onPostBuild(
       { graphql: fakeGraphql, reporter: fakeReporter },
