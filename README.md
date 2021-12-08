@@ -20,7 +20,6 @@
 <br/>
 
 <p align="center" style="font-weight:bold;" >A plugin to index your Gatsby content to MeiliSearch based on graphQL queries</p>
-<p align="center">This is still a work-in-progress. Thereby, PRs and bug issues are welcome, but please do not submit any new feature requests 🙏</p>
 
 <br/>
 
@@ -130,6 +129,25 @@ The plugin accepts the following options for further customization :
 ```
 
 ## 🤖 Compatibility with MeiliSearch and Gatsby
+
+**Supported Gatsby versions**:
+
+Complete installation requirements are the same as for Gatsby itself and can be found in the documentation under [Development Environment](https://www.gatsbyjs.com/docs/tutorial/part-0/).
+
+- Strapi v3.6.x
+
+(This plugin may work with the older Strapi versions, but these are not tested nor officially supported at this time.)
+
+**Supported MeiliSearch versions**:
+
+This package only guarantees the compatibility with the [version v0.24.0 of MeiliSearch](https://github.com/meilisearch/MeiliSearch/releases/tag/v0.24.0).
+
+**Node / NPM versions**:
+
+- NodeJS >= 12.10 <= 14
+- NPM >= 6.x
+
+**We recommend always using the latest version of Strapi to start your new projects**.
 
 ## ⚙️ Development Workflow and Contributing
 
