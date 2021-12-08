@@ -132,11 +132,9 @@ The plugin accepts the following options for further customization :
 
 **Supported Gatsby versions**:
 
-Complete installation requirements are the same as for Gatsby itself and can be found in the documentation under [Development Environment](https://www.gatsbyjs.com/docs/tutorial/part-0/).
+- Gastby v4.3.x
 
-- Strapi v3.6.x
-
-(This plugin may work with the older Strapi versions, but these are not tested nor officially supported at this time.)
+(This plugin may work with the older Gatsby versions, but these are not tested nor officially supported at this time.)
 
 **Supported MeiliSearch versions**:
 
@@ -147,7 +145,7 @@ This package only guarantees the compatibility with the [version v0.24.0 of Meil
 - NodeJS >= 12.10 <= 14
 - NPM >= 6.x
 
-**We recommend always using the latest version of Strapi to start your new projects**.
+**We recommend always using the latest version of Gatsby to start your new projects**.
 
 ## ⚙️ Development Workflow and Contributing
 
