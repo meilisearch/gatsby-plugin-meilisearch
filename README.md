@@ -2,7 +2,7 @@
   <img src="https://res.cloudinary.com/meilisearch/image/upload/v1587402338/SDKs/meilisearch_gatsby.svg" alt="MeiliSearch Gatsby" width="200" height="200" />
 </p>
 
-<h1 align="center">Gatsby plugin MeiliSearch ⚠ WIP ⚠️</h1>
+<h1 align="center">Gatsby plugin MeiliSearch</h1>
 
 <h4 align="center">
   <a href="https://github.com/meilisearch/MeiliSearch">MeiliSearch</a> |
@@ -142,7 +142,7 @@ This package only guarantees the compatibility with the [version v0.24.0 of Meil
 
 **Node / NPM versions**:
 
-- NodeJS >= 12.10 <= 14
+- NodeJS >= 14.15.X && <= 16.X
 - NPM >= 6.x
 
 **We recommend always using the latest version of Gatsby to start your new projects**.
