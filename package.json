@@ -51,7 +51,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.24.0",
     "gatsby": "^4.3.0",
-    "jest": "^27.4.3",
+    "jest": "^27.4.4",
     "prettier": "^2.3.2",
     "wait-port": "^0.2.9"
   },
