@@ -7,6 +7,17 @@ const {
   getErrorMsg,
 } = require('./src/validate')
 
+/**
+ * Function triggered after Gatsby's build
+ *
+ * @async
+ * @param {Object} gatsbyNodeHelpers - An object containing a set of helpers
+ * @param {function} gatsbyNodeHelpers.graphql - Query GraphQL API
+ * @param {object} gatsbyNodeHelpers.reporter - Log issues
+ * @param {object} config - Plugin's connector.
+ * @return {Promise<void>}
+ */
+
 exports.onPostBuild = async function ({ graphql, reporter }, config) {
   const activity = reporter.activityTimer(PLUGIN_NAME)
   activity.start()
