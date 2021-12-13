@@ -2,7 +2,7 @@
   <img src="https://res.cloudinary.com/meilisearch/image/upload/v1587402338/SDKs/meilisearch_gatsby.svg" alt="MeiliSearch Gatsby" width="200" height="200" />
 </p>
 
-<h1 align="center">Gatsby plugin MeiliSearch ⚠ WIP ⚠️</h1>
+<h1 align="center">Gatsby plugin MeiliSearch</h1>
 
 <h4 align="center">
   <a href="https://github.com/meilisearch/MeiliSearch">MeiliSearch</a> |
@@ -20,7 +20,6 @@
 <br/>
 
 <p align="center" style="font-weight:bold;" >A plugin to index your Gatsby content to MeiliSearch based on graphQL queries</p>
-<p align="center">This is still a work-in-progress. Thereby, PRs and bug issues are welcome, but please do not submit any new feature requests 🙏</p>
 
 <br/>
 
@@ -130,6 +129,23 @@ The plugin accepts the following options for further customization :
 ```
 
 ## 🤖 Compatibility with MeiliSearch and Gatsby
+
+**Supported Gatsby versions**:
+
+- Gastby v4.3.x
+
+(This plugin may work with the older Gatsby versions, but these are not tested nor officially supported at this time.)
+
+**Supported MeiliSearch versions**:
+
+This package only guarantees the compatibility with the [version v0.24.0 of MeiliSearch](https://github.com/meilisearch/MeiliSearch/releases/tag/v0.24.0).
+
+**Node / NPM versions**:
+
+- NodeJS >= 14.15.X && <= 16.X
+- NPM >= 6.x
+
+**We recommend always using the latest version of Gatsby to start your new projects**.
 
 ## ⚙️ Development Workflow and Contributing
 

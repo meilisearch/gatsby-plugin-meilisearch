@@ -30,6 +30,41 @@ jobs:
         run: yarn lint
   tests-run:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Gatsby >= 4 is not compatible anymore with node 12
+        node: ['14', '16']
+    name: tests-run (Node.js ${{ matrix.node }})
+    services:
+      meilisearch:
+        image: getmeili/meilisearch:latest
+        env:
+          MEILI_MASTER_KEY: 'masterKey'
+          MEILI_NO_ANALYTICS: 'true'
+        ports:
+          - '7700:7700'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Cache plugin dependencies
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ hashFiles('yarn.lock') }}
+      - name: Install dependencies
+        run: yarn
+      - name: Jest tests
+        run: yarn test
+        env:
+          MEILI_HTTP_ADDR: 'http://localhost:7700'
+          MEILI_MASTER_KEY: masterKey
+          MEILI_INDEX_NAME: my_blog
+  cypress_tests:
+    runs-on: ubuntu-latest
     container: cypress/browsers:node12.18.3-chrome87-ff82
     services:
       meilisearch:
@@ -49,8 +84,7 @@ jobs:
       - name: Cache plugin dependencies
         uses: actions/cache@v2
         with:
-          path: |
-            ./node_modules
+          path: node_modules
           key: ${{ hashFiles('yarn.lock') }}
       - name: Cache playground dependencies
         uses: actions/cache@v2
@@ -84,9 +118,3 @@ jobs:
         with:
           name: cypress-videos
           path: cypress/videos
-      - name: Jest tests
-        run: yarn test
-        env:
-          MEILI_HTTP_ADDR: 'http://meilisearch:7700'
-          MEILI_MASTER_KEY: masterKey
-          MEILI_INDEX_NAME: my_blog

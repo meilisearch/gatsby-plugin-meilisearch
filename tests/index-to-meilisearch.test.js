@@ -52,7 +52,7 @@ describe('Index to MeiliSearch', () => {
     )
     expect(fakeReporter.error).toHaveBeenCalledTimes(1)
     expect(fakeReporter.error).toHaveBeenCalledWith(
-      `Cannot read property 'allMdx' of undefined`
+      `[gatsby-plugin-meilisearch] You must provide a valid graphQL query`
     )
     expect(activity.setStatus).toHaveBeenCalledTimes(1)
     expect(activity.setStatus).toHaveBeenCalledWith(

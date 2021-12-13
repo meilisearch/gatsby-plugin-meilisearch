@@ -42,6 +42,9 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
 
         // Fetch data with graphQL query
         const { data } = await graphql(currentIndex.query)
+        if (!data) {
+          throw getErrorMsg('You must provide a valid graphQL query')
+        }
 
         const client = new MeiliSearch({
           host: host,
