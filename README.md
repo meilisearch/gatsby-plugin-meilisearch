@@ -28,9 +28,7 @@
 - [📖 Documentation](#-documentation)
 - [🔧 Installation](#-installation)
 - [🏃‍♀️ Run MeiliSearch](#-run-meilisearch)
-- [🎬 Usage](#-usage)
-  - [Basic](#basic)
-  - [Customization](#customization)
+- [🎬 Getting started](#-getting-started)
 - [🤖 Compatibility with MeiliSearch and Gatsby](#-compatibility-with-meilisearch-and-gatsby)
 - [⚙️ Development Workflow and Contributing](#-development-workflow-and-contributing)
 
@@ -67,9 +65,22 @@ docker pull getmeili/meilisearch:latest # Fetch the latest version of MeiliSearc
 docker run -it --rm -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=masterKey
 ```
 
-## 🎬 Usage
+## 🎬 Getting started
 
-### Basic
+This plugin makes it possible for you to get the content of your Gatsby website, and index it to MeiliSearch.
+
+This plugin is not a scrapper, and therefore you will need to tell it which content it has to retrieve. This is made possible thanks to GraphQL and the queries you'll provide in your `gatsby-config.js` file. To learn more about Gatsby and GraphQL queries, you can [discover how it works](https://www.gatsbyjs.com/docs/conceptual/graphql-concepts/).
+
+Once the content has been retrieved, it is send to your MeiliSearch instance for indexation.
+
+If you need tools to integrate a search experience on your app, we also have what you need:
+
+- [docs-searchbar](https://github.com/meilisearch/docs-searchbar.js): a tool to display a searchbar on your website
+- [instant-meilisearch](https://github.com/meilisearch/instant-meilisearch): a UI library that lets you quickly build a search interface in your front-end application
+
+### Usage
+
+#### Basic
 
 `gatsby-config.js`
 
@@ -109,7 +120,7 @@ docker run -it --rm -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --mas
 }
 ```
 
-### Customization
+#### Customization
 
 The plugin accepts the following options for further customization :
 
