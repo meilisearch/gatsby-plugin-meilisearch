@@ -27,7 +27,6 @@
 
 - [📖 Documentation](#-documentation)
 - [🔧 Installation](#-installation)
-- [🏃‍♀️ Run MeiliSearch](#-run-meilisearch)
 - [🎬 Getting started](#-getting-started)
 - [🛼 Usage](#-usage)
 - [🤖 Compatibility with MeiliSearch and Gatsby](#-compatibility-with-meilisearch-and-gatsby)
@@ -55,7 +54,7 @@ With `yarn`:
 yarn add gatsby-plugin-meilisearch
 ```
 
-## 🏃‍♀️ Run MeiliSearch
+### 🏃‍♀️ Run MeiliSearch
 
 There are many easy ways to [download and run a MeiliSearch instance](https://docs.meilisearch.com/reference/features/installation.html#download-and-launch).
 
@@ -66,101 +65,136 @@ docker pull getmeili/meilisearch:latest # Fetch the latest version of MeiliSearc
 docker run -it --rm -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=masterKey
 ```
 
-## 🎬 Getting started
+### 🚀 Run Gatsby
 
-**Creation of a Gastby project**
+If you already have a Gatsby app, run it:
 
-If you already have an existing Gatsby project, you can pass this stage and go to the next one.
-To create a new Gastby project, simply run this command:
+```bash
+gatsby develop
+```
 
-`gastby new`
-
-Follow the steps, then go to the newly created repository and start Gastby:
-
-`yarn develop` or `npm run develop`
-
-You have now access to 2 URL:
+With your running Gatsby app you should have access to the following URLs:
 
 - `http://localhost:8000/` where your website runs
 - `http://localhost:8000/___graphql` where you can discover and build graphQL queries
 
-**Installation of gatsby-plugin-meilisearch**
+If you don't have a Gatsby app yet, you can follow [this step-by-step tutorial from Gastby](https://www.gatsbyjs.com/docs/tutorial) in order to create one.
 
-Add the plugin to your project's dependencies:
+## 🎬 Getting started
 
-`yarn add gatsby-plugin-meilisearch` or `npm install gatsby-plugin-meilisearch`
+Now that you have a running Gatsby app with `gatsby-plugin-meilisearch` installed and a running MeiliSearch instance, we can go to the next step and add the plugin's options inside your `gatsby-config.js` configuration file.
 
-Then you must add it to your `gatsby-config.js` configuration file:
+### ⚙️ Configure your plugin options
+
+#### 🔑 Add your MeiliSearch credentials
+
+First, you should add your MeiliSearch instance credentials:
 
 ```node
-module.exports = {
-  siteMetadata: {
-    siteUrl: "https://www.yourdomain.tld",
-    title: "The great Gatsby",
+plugins: [
+  {
+    resolve: 'gatsby-plugin-meilisearch,
+    options: {
+      host: 'http://localhost:7700',
+      apiKey: 'masterKey',
+      indexes: [],
+    },
   },
-  plugins: [
-    {
-      resolve: 'gatsby-plugin-meilisearch,
-      options: {
-        host: 'http://localhost:7700',
-        indexes: [
-          {
-            indexUid: 'the_great_gastby',
-            transformer: data =>
-              data.allSitePage.edges.map(({ node }, index) => ({
-                id: index,
-                ...node,
-              })),
-            query: `
-            query MyQuery {
-              allSitePage {
-                edges {
-                  node {
-                    componentChunkName
-                    internalComponentName
-                    path
-                  }
+]
+```
+
+#### ☝️ Fill in the indexes field
+
+Then, you should fill in the `indexes` array field with each index object containing the following information:
+
+**indexUid**
+
+Name of your MeiliSearch index. Note that if your index already exists, it will be deleted and recreated.
+
+```bash
+indexUid: 'my_index'
+```
+
+**query**
+
+This is the graphQL query you want to be executed in order to retrieve your documents.
+
+```bash
+query: ``
+```
+
+**transformer**
+
+Function that transforms the fetched data before sending it to MeiliSearch.
+
+```bash
+transformer: () => {}
+```
+
+To learn more about these options, see [indexes options](#indexes-)
+
+After filling in those fields, your plugin configuration file should look like this:
+
+```node
+plugins: [
+  {
+    resolve: 'gatsby-plugin-meilisearch,
+    options: {
+      host: 'http://localhost:7700',
+      apiKey: 'masterKey',
+      indexes: [
+        {
+          indexUid: 'my_index',
+          transformer: data =>
+            data.allSitePage.edges.map(({ node }, index) => ({
+              id: index,
+              ...node,
+            })),
+          query MyQuery {
+            allSitePage {
+              edges {
+                node {
+                  componentChunkName
+                  internalComponentName
+                  path
                 }
               }
             }
-            `,
-          },
-        ],
-      },
+          }
+          `,
+        },
+      ],
     },
-  ],
-};
+  },
+]
 ```
 
-**Run a MeiliSearch instance**
+### 🥁 Build your project
 
-If you already have a running MeiliSearch instance, you can replace the `host` field in the plugin option and add a new `apiKey` field with your MeiliSearch credentials.
+The `gatsby-plugin-meilisearch` fetches and sends your documents for indexation to MeiliSearch on build, using the graphQL queries provided in the `gatsby-config.js` file.
 
-I you don't, you can quickly start a new MeiliSearch instance by running the following commands:
+To start a build, simply run:
 
 ```bash
-docker pull getmeili/meilisearch:latest # Fetch the latest version of MeiliSearch image from Docker Hub
-docker run -it --rm -p 7700:7700 getmeili/meilisearch:latest ./meilisearch
+gatsby build
 ```
 
-If you go to http://0.0.0.0:7700/, you should see our [mini-dashboard](https://github.com/meilisearch/mini-dashboard/) without any index nor documents inside. So let's fill it !
+After the build, a message in your terminal should confirm that your content was successfully indexed:
 
-**Add your documents to MeiliSearch**
+```bash
+success gatsby-plugin-meilisearch - x.xxxs - Documents added to MeiliSearch
+```
 
-The `gatsby-plugin-meilisearch` fetches and sends your documents for indexation to MeiliSearch on build, thanks to your graphQL queries. You can try it by triggering a build of your website:
-
-`yarn build` or `npm run build`
-
-The build should succeed, and you should see an information telling you that your content was successfully indexed: `success gatsby-plugin-meilisearch - x.xxxs - Documents added to MeiliSearch`
-
-Go back to http://0.0.0.0:7700/, the data you requested was fetched and indexed to MeiliSearch 🎉
+### 🪄 Integrate search components
 
 If you need tools to integrate a search experience on your app, we also have what you need:
 
 - [docs-searchbar](https://github.com/meilisearch/docs-searchbar.js): a tool to display a searchbar on your website
-- [instant-meilisearch](https://github.com/meilisearch/instant-meilisearch): a UI library that lets you quickly build a search interface in your front-end application
+- [meilisearch-react](https://github.com/meilisearch/meilisearch-react): a React UI library that lets you quickly build a search interface in your front-end application
 
 ## 🛼 Usage
+
+In the gatsby-config.js file, the MeiliSearch plugin accepts the following options:
 
 ### `host` (required)
 
@@ -174,18 +208,32 @@ You can have one or multiple `index` objects, which can be useful if you want to
 
 Each `index` object should contain the following fields:
 
-- `indexUid` (required): Name of your MeiliSearch index. Note that if your index already exists, it will be deleted and recreated
-- `transformer` (required): function that transforms the fetched data before sending it to MeiliSearch
-- `query` (required): the graphQL query you want to be executed in order to retrieve your documents
+`indexUid` (required)
+
+This is the name of your MeiliSearch index. If you provide an index name that already exists, the index will be deleted and recreated.
+You can [learn more about indexes](https://docs.meilisearch.com/learn/core_concepts/indexes.html) on our documentation.
+
+`query` (required)
+
+This is the graphQL query that will be executed in order to retrieve your documents.
+Your query can be very specific depending on the plugins you're using. If you're not sure about your query, you can use the GraphiQL tool (http://localhost:8000/\_\_\_graphql) provided by Gatsby on development mode to help you build it.
+
+You can also check [our playground's configuration file](playground/gatsby-config.js) to have an example of a graphQL query using the `gatsby-plugin-mdx` plugin.
+
+`transformer` (required)
+
+This is a function that transforms the fetched data before sending it to MeiliSearch.
+
+After executing the graphQL query, a data object is received with a structure that can differ from one project to another, depending on the query you provided. Therefore, your data needs to be transformed in order to be indexed by MeiliSearch, which accepts an array of documents.
+Moreover, each of your documents needs to have a `unique identifier`. If you couldn't retrieve one with your graphQL query, the `transformer` function is the correct place to add one.
+
+If you want to learn more about MeiliSearch's documents structure, you can do so in [our documentation](https://docs.meilisearch.com/learn/core_concepts/documents.html#structure).
 
 ### `apiKey` (optional)
 
 The `apiKey` field contains the API key if the MeiliSearch instance is password protected.
 
 Example:
-
-Start a MeiliSearch instance with an API key:
-`docker run --rm -it -p 7700:7700 -e MEILI_MASTER_KEY=masterKey getmeili/meilisearch:latest`
 
 Set your API key in your `gatsby-config` file:
 
@@ -195,7 +243,9 @@ options: {
   apiKey: 'masterKey',
   indexes: [
     {
-      ...yourIndexOptions
+      indexUid: 'my_index',
+      transformer: () => {},
+      query: ``
     },
   ],
 },
@@ -219,6 +269,8 @@ Example:
 ```node
 {
   resolve: 'gatsby-plugin-meilisearch',
+  skipIndexing: false,
+  batchSize: 1000,
   options: {
     settings: {
       searchableAttributes: ['title'],
