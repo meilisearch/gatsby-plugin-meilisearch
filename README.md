@@ -69,7 +69,7 @@ With this command, your MeiliSearch instance `host` is `http://localhost:7700` a
 
 ### 🚀 Run Gatsby
 
-To use this plugin you need to have a Gatsby app. If you don't have a Gatsby app, you can either run the [playground present in this project)(#link) or create a [Gatsby](https://www.gatsbyjs.com/docs/quick-start/) project.
+To use this plugin you need to have a Gatsby app. If you don't have one, you can either run the [playground present in this project)(./playground/README.md) or create a [Gatsby](https://www.gatsbyjs.com/docs/quick-start/) project.
 
 Let's run your app:
 
@@ -80,7 +80,7 @@ gatsby develop
 With your running Gatsby app you should have access to the following URLs:
 
 - `http://localhost:8000/` URL of your web app.
-- `http://localhost:8000/___graphql`: URL to the GrapQL API where you can build graphQL queries on the playground and request them.
+- `http://localhost:8000/___graphql`: URL to the GraphiQL tool where you can build graphQL queries on the playground and request them.
 
 If you don't have a Gatsby app yet, you can follow [this step-by-step tutorial from Gastby](https://www.gatsbyjs.com/docs/tutorial) in order to create one.
 
@@ -88,7 +88,7 @@ If you don't have a Gatsby app yet, you can follow [this step-by-step tutorial f
 
 Now you should have a running Gatsby app with `gatsby-plugin-meilisearch` installed and a running MeiliSearch instance.
 
-Let's configure our plugin to make it work! 
+Let's configure our plugin to make it work! In this example, we will fetch every page's URL of our Gatsby website, and index them to MeiliSearch.
 
 All the plugin configuration happens inside your `gatsby-config.js` configuration file that should be at the root of your Gatsby project.
 
@@ -122,9 +122,10 @@ The `indexes` field is an array that can be composed of multiple index objects. 
 **indexUid**
 
 Name of the index in which the requested data is added. Note that if your index already exists, it will be deleted and recreated.
-For the example of this getting started, let's create the `page_content` index where we will store the content of the default pages provided by a new Gatsby project.
+For the example of this getting started, let's create the `pages_url` index where we will store the URL of the default pages provided by a new Gatsby project.
+
 ```bash
-indexUid: 'page_content'
+indexUid: 'pages_url'
 ```
 
 **query**
@@ -132,18 +133,54 @@ indexUid: 'page_content'
 Then, we need to provide the graphQL query that retrieves the content of your pages.
 
 ```bash
-query: ``
+query: `
+  query MyQuery {
+    allSitePage {
+      nodes {
+        path
+      }
+    }
+  }
+`,
+```
+
+After executing this query, we receive a `data` object matching the query:
+
+```node
+"data": {
+  "allSitePage": {
+    "nodes": [
+      {
+        "path": "/404/"
+      },
+      {
+        "path": "/404.html"
+      },
+      {
+        "path": "/"
+      }
+    ]
+  }
+}
 ```
 
 **transformer**
 
 Function that transforms the fetched data before sending it to MeiliSearch.
 
+The format of the data retrieved with the previousy executed graphQL query is not compatible with the format expected by MeiliSearch. Therefore, it should be transformed to a compatible format with the help of the `transformer` function.
+
 ```bash
-transformer: () => {}
+transformer: data =>
+  data.allSitePage.nodes.map((node, index) => ({
+    id: index,
+    ...node,
+  })),
 ```
 
-To learn more about these options, see [indexes options](#i-ndexes)
+In this function, we map on `data.allSitePage.nodes` in order to return an array of objects that can be indexed by MeiliSearch. We add an `id` field as MeiliSearch needs it for the indexation. As we don't have any field here that can be used as an `id`, we use the index of the current element in the array.
+
+If you want to learn more about these options (`indexUid`, `query` and `transformer`) see [indexes options](#-indexes)
 
 After filling in those fields, your MeiliSearch configuration should look like this:
 
@@ -156,23 +193,20 @@ plugins: [
       apiKey: 'masterKey',
       indexes: [
         {
-          indexUid: 'my_index',
+          indexUid: 'pages_url'
           transformer: data =>
-            data.allSitePage.edges.map(({ node }, index) => ({
+            data.allSitePage.nodes.map((node, index) => ({
               id: index,
               ...node,
             })),
-          query MyQuery {
-            allSitePage {
-              edges {
-                node {
-                  componentChunkName
-                  internalComponentName
+          query: `
+            query MyQuery {
+              allSitePage {
+                nodes {
                   path
                 }
               }
             }
-          }
           `,
         },
       ],
@@ -183,7 +217,7 @@ plugins: [
 
 ### 🥁 Build your project
 
-The `gatsby-plugin-meilisearch` fetches and sends your documents for indexation to MeiliSearch on build, using the graphQL queries provided in the `gatsby-config.js` file.
+The `gatsby-plugin-meilisearch` fetches and sends your data for indexation to MeiliSearch on build.
 
 To start a build, simply run:
 
@@ -196,6 +230,8 @@ After the build, a message in your terminal should confirm that your content was
 ```bash
 success gatsby-plugin-meilisearch - x.xxxs - Documents added to MeiliSearch
 ```
+
+By going to `http://localhost:7700`, you should also have access to our mini-dashboard and see that your content was indexed 🎉
 
 ### 🪄 Integrate search components
 
@@ -210,58 +246,11 @@ In the gatsby-config.js file, the MeiliSearch plugin accepts the following optio
 
 ### `host` (required)
 
-The `host` field is the address where your MeiliSearch instance is running. `gatsby-plugin-meilisearch` needs it in order to communicate with your MeiliSearch instance, and send your documents to it.
-
-### `indexes` (required)
-
-The `indexes` field in an array of objects, each of them representing an [index](https://docs.meilisearch.com/learn/core_concepts/indexes.html#indexes)
-
-You can have one or multiple `index` objects, which can be useful if you want to index your content in separate indexes.
-
-Each `index` object should contain the following fields:
-
-`indexUid` (required)
-
-This is the name of your MeiliSearch index. If you provide an index name that already exists, the index will be deleted and recreated.
-You can [learn more about indexes](https://docs.meilisearch.com/learn/core_concepts/indexes.html) on our documentation.
-
-`query` (required)
-
-This is the graphQL query that will be executed in order to retrieve your documents.
-Your query can be very specific depending on the plugins you're using. If you're not sure about your query, you can use the GraphiQL tool (http://localhost:8000/\_\_\_graphql) provided by Gatsby on development mode to help you build it.
-
-You can also check [our playground's configuration file](playground/gatsby-config.js) to have an example of a graphQL query using the `gatsby-plugin-mdx` plugin.
-
-`transformer` (required)
-
-This is a function that transforms the fetched data before sending it to MeiliSearch.
-
-After executing the graphQL query, a data object is received with a structure that can differ from one project to another, depending on the query you provided. Therefore, your data needs to be transformed in order to be indexed by MeiliSearch, which accepts an array of documents.
-Moreover, each of your documents needs to have a `unique identifier`. If you couldn't retrieve one with your graphQL query, the `transformer` function is the correct place to add one.
-
-If you want to learn more about MeiliSearch's documents structure, you can do so in [our documentation](https://docs.meilisearch.com/learn/core_concepts/documents.html#structure).
+The `host` field is the address where your MeiliSearch instance is running. `gatsby-plugin-meilisearch` needs it in order to communicate with your MeiliSearch instance, and send your data to it.
 
 ### `apiKey` (optional)
 
 The `apiKey` field contains the API key if the MeiliSearch instance is password protected.
-
-Example:
-
-Set your API key in your `gatsby-config` file:
-
-```node
-options: {
-  host: 'http://localhost:7700',
-  apiKey: 'masterKey',
-  indexes: [
-    {
-      indexUid: 'my_index',
-      transformer: () => {},
-      query: ``
-    },
-  ],
-},
-```
 
 ### `skipIndexing` (optional)
 
@@ -276,18 +265,128 @@ The number of documents that should be included in each batch. Default to 1000
 If you want to pass settings to your MeiliSearch instance, you can do it here.
 [Read more about MeiliSearch settings](https://docs.meilisearch.com/reference/features/settings.html)
 
+### `indexes` (required)
+
+The `indexes` field in an array of objects, each of them representing an [index](https://docs.meilisearch.com/learn/core_concepts/indexes.html#indexes)
+
+You can have one or multiple `index` objects, which can be useful if you want to index your content in separate indexes.
+
+Each `index` object should contain the following fields:
+
+`indexUid` (required)
+
+This is the name of your MeiliSearch index. This is an important field as it is where the retrieved data of the current `index` object will be indexed inside MeiliSearch. For example if your `indexUid` is `pages_url`, your content will be indexed inside the `pages_url` index in MeiliSearch.
+If you provide an index name that already exists, the index will be deleted and recreated.
+
 Example:
+
+```bash
+indexUid: 'pages_url'
+```
+
+You can [learn more about indexes](https://docs.meilisearch.com/learn/core_concepts/indexes.html) on our documentation.
+
+`query` (required)
+
+This is the graphQL query that will be executed in order to retrieve your data.
+Your query can be very specific depending on the plugins you're using. If you're not sure about your query, you can use the GraphiQL tool (http://localhost:8000/\_\_\_graphql) provided by Gatsby on development mode to help you build it.
+
+Example:
+
+```bash
+query: `
+  query MyQuery {
+    allSitePage {
+      nodes {
+        path
+      }
+    }
+  }
+`,
+```
+
+You can also check [our playground's configuration file](playground/gatsby-config.js) to have an example of a graphQL query using the `gatsby-plugin-mdx` plugin.
+
+`transformer` (required)
+
+This is a function that transforms the fetched data before sending it to MeiliSearch.
+
+After executing the graphQL query, a data object is received with a structure that can differ from one project to another, depending on the query you provided.
+As MeiliSearch requires a unique identifier at the root of each document and it should avoid nested objects, you will need to transform your data object accordingly. The `transformer` function is the correct place to do so.
+
+Example:
+
+```bash
+transformer: data =>
+  data.allSitePage.nodes.map((node, index) => ({
+    id: index,
+    ...node,
+  })),
+```
+
+Without using the `transformer` function, the data will look like this:
+
+```node
+"data": {
+  "allSitePage": {
+    "nodes": [
+      {
+        "path": "/404/"
+      },
+      {
+        "path": "/404.html"
+      },
+      {
+        "path": "/"
+      }
+    ]
+  }
+}
+```
+
+After using the `transformer` function as in the above example, the data will look like this, and will be ready for indexation:
+
+```node
+[
+  {
+    id: 0,
+    path: '/404/',
+  },
+  {
+    id: 1,
+    path: '/404.html',
+  },
+  {
+    id: 2,
+    path: '/',
+  },
+];
+```
+
+If you want to learn more about MeiliSearch's documents structure, you can do so in [our documentation](https://docs.meilisearch.com/learn/core_concepts/documents.html#structure).
+
+Full usage example:
 
 ```node
 {
   resolve: 'gatsby-plugin-meilisearch',
-  skipIndexing: false,
-  batchSize: 1000,
   options: {
-    settings: {
-      searchableAttributes: ['title'],
+    host: 'http://localhost:7700',
+    apiKey: 'masterKey',
+    skipIndexing: false,
+    batchSize: 1000,
+    options: {
+      settings: {
+        searchableAttributes: ["*"],
+      },
     },
-  },
+    indexes: [
+    {
+      indexUid: 'my_index',
+      transformer: () => {},
+      query: ``
+    },
+  ],
 }
 ```
 
