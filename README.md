@@ -65,9 +65,13 @@ docker pull getmeili/meilisearch:latest # Fetch the latest version of MeiliSearc
 docker run -it --rm -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=masterKey
 ```
 
+With this command, your MeiliSearch instance `host` is `http://localhost:7700` and your master-key is `masterKey`
+
 ### 🚀 Run Gatsby
 
-If you already have a Gatsby app, run it:
+To use this plugin you need to have a Gatsby app. If you don't have a Gatsby app, you can either run the [playground present in this project)(#link) or create a [Gatsby](https://www.gatsbyjs.com/docs/quick-start/) project.
+
+Let's run your app:
 
 ```bash
 gatsby develop
@@ -75,20 +79,24 @@ gatsby develop
 
 With your running Gatsby app you should have access to the following URLs:
 
-- `http://localhost:8000/` where your website runs
-- `http://localhost:8000/___graphql` where you can discover and build graphQL queries
+- `http://localhost:8000/` URL of your web app.
+- `http://localhost:8000/___graphql`: URL to the GrapQL API where you can build graphQL queries on the playground and request them.
 
 If you don't have a Gatsby app yet, you can follow [this step-by-step tutorial from Gastby](https://www.gatsbyjs.com/docs/tutorial) in order to create one.
 
 ## 🎬 Getting started
 
-Now that you have a running Gatsby app with `gatsby-plugin-meilisearch` installed and a running MeiliSearch instance, we can go to the next step and add the plugin's options inside your `gatsby-config.js` configuration file.
+Now you should have a running Gatsby app with `gatsby-plugin-meilisearch` installed and a running MeiliSearch instance.
+
+Let's configure our plugin to make it work! 
+
+All the plugin configuration happens inside your `gatsby-config.js` configuration file that should be at the root of your Gatsby project.
 
 ### ⚙️ Configure your plugin options
 
 #### 🔑 Add your MeiliSearch credentials
 
-First, you should add your MeiliSearch instance credentials:
+First, you should add your MeiliSearch instance credentials!
 
 ```node
 plugins: [
@@ -103,21 +111,25 @@ plugins: [
 ]
 ```
 
+See [this section](#-run-meilisearch) if you don't know what your credentials are.
+
 #### ☝️ Fill in the indexes field
 
-Then, you should fill in the `indexes` array field with each index object containing the following information:
+The next step is to configure the `indexes` field. This field is the heart of your plugin. It is where you describe what data you want to add in MeiliSearch and how.
+
+The `indexes` field is an array that can be composed of multiple index objects. Each index object contains the following information:
 
 **indexUid**
 
-Name of your MeiliSearch index. Note that if your index already exists, it will be deleted and recreated.
-
+Name of the index in which the requested data is added. Note that if your index already exists, it will be deleted and recreated.
+For the example of this getting started, let's create the `page_content` index where we will store the content of the default pages provided by a new Gatsby project.
 ```bash
-indexUid: 'my_index'
+indexUid: 'page_content'
 ```
 
 **query**
 
-This is the graphQL query you want to be executed in order to retrieve your documents.
+Then, we need to provide the graphQL query that retrieves the content of your pages.
 
 ```bash
 query: ``
@@ -131,9 +143,9 @@ Function that transforms the fetched data before sending it to MeiliSearch.
 transformer: () => {}
 ```
 
-To learn more about these options, see [indexes options](#indexes-)
+To learn more about these options, see [indexes options](#i-ndexes)
 
-After filling in those fields, your plugin configuration file should look like this:
+After filling in those fields, your MeiliSearch configuration should look like this:
 
 ```node
 plugins: [
@@ -187,7 +199,7 @@ success gatsby-plugin-meilisearch - x.xxxs - Documents added to MeiliSearch
 
 ### 🪄 Integrate search components
 
-If you need tools to integrate a search experience on your app, we also have what you need:
+If you need tools to integrate a search experience on your app, we have tools that might help you:
 
 - [docs-searchbar](https://github.com/meilisearch/docs-searchbar.js): a tool to display a searchbar on your website
 - [meilisearch-react](https://github.com/meilisearch/meilisearch-react): a React UI library that lets you quickly build a search interface in your front-end application
