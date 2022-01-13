@@ -32,7 +32,7 @@
   "dependencies": {
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
-    "@meilisearch/instant-meilisearch": "^0.5.10",
+    "@meilisearch/instant-meilisearch": "^0.6.0-beta.0",
     "gatsby": "^4.3.0",
     "gatsby-image": "^3.11.0",
     "gatsby-plugin-mdx": "^3.3.0",

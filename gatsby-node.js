@@ -52,12 +52,14 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
         })
 
         const index = client.index(currentIndex.indexUid)
-        await index.deleteIfExists()
+        if (index) await index.delete()
 
         // Add settings to Index
         if (currentIndex.settings) {
-          const { updateId } = await index.updateSettings(currentIndex.settings)
-          index.waitForPendingUpdate(updateId)
+          const { uid: settingsUid } = await index.updateSettings(
+            currentIndex.settings
+          )
+          index.waitForTask(settingsUid)
         }
 
         // Prepare data for indexation
@@ -77,8 +79,8 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
 
         // Wait for indexation to be completed
         for (const enqueuedUpdate of enqueuedUpdates) {
-          await index.waitForPendingUpdate(enqueuedUpdate.updateId)
-          const res = await index.getUpdateStatus(enqueuedUpdate.updateId)
+          await index.waitForTask(enqueuedUpdate.uid)
+          const res = await index.getTask(enqueuedUpdate.uid)
           if (res.status === 'failed') {
             throw getErrorMsg(`${res.error.message} (${res.error.code})`)
           }

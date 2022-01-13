@@ -1969,12 +1969,12 @@
   resolved "https://registry.yarnpkg.com/@mdx-js/util/-/util-2.0.0-next.8.tgz#66ecc27b78e07a3ea2eb1a8fc5a99dfa0ba96690"
   integrity sha512-T0BcXmNzEunFkuxrO8BFw44htvTPuAoKbLvTG41otyZBDV1Rs+JMddcUuaP5vXpTWtgD3grhcrPEwyx88RUumQ==
 
-"@meilisearch/instant-meilisearch@^0.5.10":
-  version "0.5.10"
-  resolved "https://registry.yarnpkg.com/@meilisearch/instant-meilisearch/-/instant-meilisearch-0.5.10.tgz#c65cf42895f88b75bef7fe64c3f7f8c92e646261"
-  integrity sha512-8AUxx+o9l+Jv/l54URhKeHWl4zOIySbuWwcIOXJId9+vGiig+uDekUYXmEc5BLe6O3hr6cF/Gg8Rrli8PLYHVw==
+"@meilisearch/instant-meilisearch@^0.6.0-beta.0":
+  version "0.6.0-beta.0"
+  resolved "https://registry.yarnpkg.com/@meilisearch/instant-meilisearch/-/instant-meilisearch-0.6.0-beta.0.tgz#2e5fe17cb23d3218e186da29cb48610aa668b0e3"
+  integrity sha512-Wt8R0Ei8zXK2cLVqs8nHJ/FyUK+y85hVqony/c/z3IZK1MUpjk6AysEU8NNFoN0ZezW5vd3AzH4uZ/YadQGhDw==
   dependencies:
-    meilisearch "^0.23.0"
+    meilisearch "0.24.0-beta.1"
 
 "@microsoft/fetch-event-source@2.0.1":
   version "2.0.1"
@@ -8203,10 +8203,10 @@ media-typer@0.3.0:
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
   integrity sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=
 
-meilisearch@^0.23.0:
-  version "0.23.0"
-  resolved "https://registry.yarnpkg.com/meilisearch/-/meilisearch-0.23.0.tgz#eed5098bd147c13658c3f92e658df9cbfb9e8953"
-  integrity sha512-bLNonPJK2pJz2akjwolcc/Eqnz/GKJ7y1I4Flg4zjL+v0yPFyIGFFdfe0dw93JWFJWj/RbLS2Q6dDTobZQ9Ehg==
+meilisearch@0.24.0-beta.1:
+  version "0.24.0-beta.1"
+  resolved "https://registry.yarnpkg.com/meilisearch/-/meilisearch-0.24.0-beta.1.tgz#3152f9e58717ef8a9784666c80f9881eba0454b2"
+  integrity sha512-4Kl0CZOz1nBQ0O6H/W/5BtJMikKO4EhnpVIdlR9p1shTfVvwZh87bt4BPzuwyyQTsVqn7sPLV/WSnciZuDDSzw==
   dependencies:
     cross-fetch "^3.1.4"
 
