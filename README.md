@@ -187,14 +187,14 @@ After filling in those fields, your MeiliSearch configuration should look like t
 ```node
 plugins: [
   {
-    resolve: 'gatsby-plugin-meilisearch,
+    resolve: 'gatsby-plugin-meilisearch',
     options: {
       host: 'http://localhost:7700',
       apiKey: 'masterKey',
       indexes: [
         {
-          indexUid: 'pages_url'
-          transformer: data =>
+          indexUid: 'pages_url',
+          transformer: (data) =>
             data.allSitePage.nodes.map((node, index) => ({
               id: index,
               ...node,
@@ -212,7 +212,7 @@ plugins: [
       ],
     },
   },
-]
+];
 ```
 
 ### 🥁 Build your project
