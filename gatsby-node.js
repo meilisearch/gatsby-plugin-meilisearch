@@ -8,7 +8,7 @@ const {
 } = require('./src/validate')
 
 /**
- * Function triggered after Gatsby's build
+ * Function triggered after Gatsby's build. Responsible to add the specified data to MeiliSearch.
  *
  * @async
  * @param {Object} gatsbyNodeHelpers - Object containing a set of helpers
