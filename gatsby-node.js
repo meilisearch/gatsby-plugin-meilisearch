@@ -52,7 +52,7 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
         })
 
         const index = client.index(currentIndex.indexUid)
-        if (index) await index.delete()
+        await index.delete()
 
         // Add settings to Index
         if (currentIndex.settings) {
