@@ -7,6 +7,16 @@ const {
   getErrorMsg,
 } = require('./src/validate')
 
+/**
+ * Function triggered after Gatsby's build. Responsible to add the specified data to MeiliSearch.
+ *
+ * @async
+ * @param {Object} gatsbyNodeHelpers - Object containing a set of helpers
+ * @param {function} gatsbyNodeHelpers.graphql - Query GraphQL API
+ * @param {object} gatsbyNodeHelpers.reporter - Log issues
+ * @param {object} config - Plugin's connector.
+ * @returns {Promise<void>}
+ */
 exports.onPostBuild = async function ({ graphql, reporter }, config) {
   const activity = reporter.activityTimer(PLUGIN_NAME)
   activity.start()
