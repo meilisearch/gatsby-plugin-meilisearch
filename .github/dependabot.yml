@@ -16,3 +16,4 @@ updates:
       - dependency-name: "*prettier*"
       - dependency-name: "*jest*"
       - dependency-name: "*cypress*"
+      - dependency-name: "*concurrently*"
