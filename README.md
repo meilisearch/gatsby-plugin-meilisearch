@@ -71,7 +71,7 @@ With this command, your MeiliSearch instance `host` is `http://localhost:7700` a
 
 If you don't have a running Gatsby, you can either launch the [playground present in this project)(./playground/README.md) or [create a Gatsby project](https://www.gatsbyjs.com/docs/tutorial).
 
-Let's run your app:
+Run your app if it is not running yet:
 
 ```bash
 gatsby develop
@@ -102,18 +102,20 @@ The credentials are composed of:
 
 ⚠️ The `master` or `private` key should never be used to `search` on your front end. For searching, use the `public` key available on [the `key` route](https://docs.meilisearch.com/reference/api/keys.html#get-keys).
 
-Add the credentials the following way in your `gatsby-config.js` file: 
+Add the credentials the following way in your `gatsby-config.js` file:
 
-```node
-plugins: [
-  {
-    resolve: 'gatsby-plugin-meilisearch,
-    options: {
-      host: 'http://localhost:7700',
-      apiKey: 'masterKey',
+```js
+{
+  plugins: [
+    {
+      resolve: 'gatsby-plugin-meilisearch',
+      options: {
+        host: 'http://localhost:7700',
+        apiKey: 'masterKey',
+      },
     },
-  },
-]
+  ]
+}
 ```
 
 See [this section](#-run-meilisearch) if you don't know what your credentials are.
@@ -124,20 +126,21 @@ The next step is to define which data we want to add in MeiliSearch and how. Thi
 
 The `indexes` field is an array that can be composed of multiple index objects. Each index object contains the following information:
 
-**indexUid**
+**`indexUid`**: The name of the index in which the data is added.
 
-This field contains the name of the index in which the data is added.
-Let's create the `pages_url` index. This index will contain the URL's of the pages of our application.
+Let's define the index uid to `pages_url`. On build, the `pages_url` index is created inside MeiliSearch.
 
 ```bash
 indexUid: 'pages_url'
 ```
 
-**query**
+_if `pages_url` already existed, it is deleted and recreated on build_
 
-Then, we need to provide the graphQL query that retrieves the content of your pages.
+**`query`**: GraphQL query fetching the data to add in MeiliSearch
 
-```bash
+Let's provide the graphQL query that retrieves the URL's of the pages of our application.
+
+```js
 query: `
   query MyQuery {
     allSitePage {
@@ -149,47 +152,93 @@ query: `
 `,
 ```
 
-After executing this query, we receive a `data` object matching the query:
+After executing this query, we receive a `data` object containing the following:
 
-```node
-"data": {
-  "allSitePage": {
-    "nodes": [
-      {
-        "path": "/404/"
-      },
-      {
-        "path": "/404.html"
-      },
-      {
-        "path": "/"
-      }
-    ]
+```js
+{
+  data: {
+    allSitePage: {
+      nodes: [
+        {
+          path: '/404/'
+        },
+        {
+          path: '/404.html'
+        },
+        {
+          path: '/'
+        }
+      ]
+    }
   }
 }
 ```
 
-**transformer**
+**`transformer`**: Transform the data fetched to a format compatible to MeiliSearch.
 
-Function that transforms the fetched data before sending it to MeiliSearch.
+Now that we have fetched the data with the `query` field, it is not yet ready to be sent to MeiliSearch.
 
-The format of the data retrieved with the previousy executed graphQL query is not compatible with the format expected by MeiliSearch. Therefore, it should be transformed to a compatible format with the help of the `transformer` function.
+Using a `transformer` function, we can transform the fetched data to a compatible format.
 
-```bash
-transformer: data =>
-  data.allSitePage.nodes.map((node, index) => ({
-    id: index,
-    ...node,
-  })),
+The first problem of the fetched data is that the documents to send to MeiliSearch are nested, while they should be at the root in an array. So the content of `nodes` should be at the root.
+
+```js
+{
+  data: {
+    allSitePages: {
+     nodes: [
+       {
+        'path': '/404/'
+      },
+     ]
+    }
+  }
+}
+```
+
+should become:
+```js
+[
+  {
+    'path': '/404/'
+  },
+  {
+    'path': '/'
+  },
+]
+```
+
+The second problem is that each document in MeiliSearch requires an unique indentifier called [primary key](https://docs.meilisearch.com/learn/core_concepts/documents.html#primary-field).
+
+Thus every document needs a unique field called `id`.
+For example:
+```js
+{
+  'id': 1
+  'path': '/404/'
+},
+```
+
+To do so, we need to use the transformer method to create the final compatible array of objects:
+```js
+{
+  transformer: data =>
+    data.allSitePage.nodes.map((node, index) => ({
+      id: index,
+      ...node,
+    })),
+}
 ```
 
 In this function, we map on `data.allSitePage.nodes` in order to return an array of objects that can be indexed by MeiliSearch. We add an `id` field as MeiliSearch needs it for the indexation. As we don't have any field here that can be used as an `id`, we use the index of the current element in the array.
 
 If you want to learn more about these options (`indexUid`, `query` and `transformer`) see [indexes options](#-indexes)
 
+#### 🎉 Complete configuration
+
 After filling in those fields, your MeiliSearch configuration should look like this:
 
-```node
+```js
 plugins: [
   {
     resolve: 'gatsby-plugin-meilisearch',
@@ -222,21 +271,17 @@ plugins: [
 
 ### 🥁 Build your project
 
-The `gatsby-plugin-meilisearch` fetches and sends your data for indexation to MeiliSearch on build.
-
-To start a build, simply run:
+The `gatsby-plugin-meilisearch` fetches and adds your data to MeiliSearch on your Gatsby build.
 
 ```bash
 gatsby build
 ```
 
-After the build, a message in your terminal should confirm that your content was successfully indexed:
+After the build, a message in your terminal confirms that your content was successfully indexed:
 
 ```bash
 success gatsby-plugin-meilisearch - x.xxxs - Documents added to MeiliSearch
 ```
-
-By going to `http://localhost:7700`, you should also have access to our mini-dashboard and see that your content was indexed 🎉
 
 ### 🪄 Integrate search components
 
@@ -272,15 +317,15 @@ If you want to pass settings to your MeiliSearch instance, you can do it here.
 
 ### `indexes` (required)
 
-The `indexes` field in an array of objects, each of them representing an [index](https://docs.meilisearch.com/learn/core_concepts/indexes.html#indexes)
+The `indexes` field is an array of objects, each of them represents how to add data to a specific [index](https://docs.meilisearch.com/learn/core_concepts/indexes.html#indexes)
 
-You can have one or multiple `index` objects, which can be useful if you want to index your content in separate indexes.
+You can have one or multiple `index` objects in `indexes`, which can be useful if you want to index different content in different indexes (or multiple different data to the same index).
 
 Each `index` object should contain the following fields:
 
 `indexUid` (required)
 
-This is the name of your MeiliSearch index. This is an important field as it is where the retrieved data of the current `index` object will be indexed inside MeiliSearch. For example if your `indexUid` is `pages_url`, your content will be indexed inside the `pages_url` index in MeiliSearch.
+This is the name of your MeiliSearch index. This is a required field as it is where the retrieved data is added inside MeiliSearch. For example if your `indexUid` is `pages_url`, your content will be indexed inside the `pages_url` index in MeiliSearch.
 If you provide an index name that already exists, the index will be deleted and recreated.
 
 Example:
@@ -321,7 +366,7 @@ As MeiliSearch requires a unique identifier at the root of each document and it 
 
 Example:
 
-```bash
+```js
 transformer: data =>
   data.allSitePage.nodes.map((node, index) => ({
     id: index,
@@ -331,27 +376,29 @@ transformer: data =>
 
 Without using the `transformer` function, the data will look like this:
 
-```node
-"data": {
-  "allSitePage": {
-    "nodes": [
-      {
-        "path": "/404/"
-      },
-      {
-        "path": "/404.html"
-      },
-      {
-        "path": "/"
-      }
-    ]
+```js
+{
+  data: {
+    allSitePage: {
+      nodes: [
+        {
+          path: '/404/'
+        },
+        {
+          path: '/404.html'
+        },
+        {
+          path: '/'
+        }
+      ]
+    }
   }
 }
 ```
 
 After using the `transformer` function as in the above example, the data will look like this, and will be ready for indexation:
 
-```node
+```js
 [
   {
     id: 0,
@@ -372,7 +419,7 @@ If you want to learn more about MeiliSearch's documents structure, you can do so
 
 Full usage example:
 
-```node
+```js
 {
   resolve: 'gatsby-plugin-meilisearch',
   options: {
