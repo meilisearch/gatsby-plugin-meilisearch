@@ -69,7 +69,7 @@ With this command, your MeiliSearch instance `host` is `http://localhost:7700` a
 
 ### 🚀 Run Gatsby
 
-To use this plugin you need to have a Gatsby app. If you don't have one, you can either run the [playground present in this project)(./playground/README.md) or create a [Gatsby](https://www.gatsbyjs.com/docs/quick-start/) project.
+If you don't have a running Gatsby, you can either launch the [playground present in this project)(./playground/README.md) or [create a Gatsby project](https://www.gatsbyjs.com/docs/tutorial).
 
 Let's run your app:
 
@@ -77,12 +77,10 @@ Let's run your app:
 gatsby develop
 ```
 
-With your running Gatsby app you should have access to the following URLs:
+Now that your Gatsby app is running you have access to the following URLs:
 
 - `http://localhost:8000/` URL of your web app.
 - `http://localhost:8000/___graphql`: URL to the GraphiQL tool where you can build graphQL queries on the playground and request them.
-
-If you don't have a Gatsby app yet, you can follow [this step-by-step tutorial from Gastby](https://www.gatsbyjs.com/docs/tutorial) in order to create one.
 
 ## 🎬 Getting started
 
@@ -90,13 +88,21 @@ Now you should have a running Gatsby app with `gatsby-plugin-meilisearch` instal
 
 Let's configure our plugin to make it work! In this example, we will fetch every page's URL of our Gatsby website, and index them to MeiliSearch.
 
-All the plugin configuration happens inside your `gatsby-config.js` configuration file that should be at the root of your Gatsby project.
+To make the plugin work, open the `gatsby-config.js` configuration file located at the root of your Gatsby project. All the configuration takes place in that file.
 
 ### ⚙️ Configure your plugin options
 
 #### 🔑 Add your MeiliSearch credentials
 
-First, you should add your MeiliSearch instance credentials!
+First, you need to add your MeiliSearch credentials.
+
+The credentials are composed of:
+- The `host`: The url to your running MeiliSearch instance.
+- The `api_key`: The `master` or `private` key as the plugin requires administration permission on MeiliSearch.[More about permissions here](https://docs.meilisearch.com/reference/features/authentication.html).
+
+⚠️ The `master` or `private` key should never be used to `search` on your front end. For searching, use the `public` key available on [the `key` route](https://docs.meilisearch.com/reference/api/keys.html#get-keys).
+
+Add the credentials the following way in your `gatsby-config.js` file: 
 
 ```node
 plugins: [
@@ -105,7 +111,6 @@ plugins: [
     options: {
       host: 'http://localhost:7700',
       apiKey: 'masterKey',
-      indexes: [],
     },
   },
 ]
@@ -115,14 +120,14 @@ See [this section](#-run-meilisearch) if you don't know what your credentials ar
 
 #### ☝️ Fill in the indexes field
 
-The next step is to configure the `indexes` field. This field is the heart of your plugin. It is where you describe what data you want to add in MeiliSearch and how.
+The next step is to define which data we want to add in MeiliSearch and how. This happens in the `indexes` field.
 
 The `indexes` field is an array that can be composed of multiple index objects. Each index object contains the following information:
 
 **indexUid**
 
-Name of the index in which the requested data is added. Note that if your index already exists, it will be deleted and recreated.
-For the example of this getting started, let's create the `pages_url` index where we will store the URL of the default pages provided by a new Gatsby project.
+This field contains the name of the index in which the data is added.
+Let's create the `pages_url` index. This index will contain the URL's of the pages of our application.
 
 ```bash
 indexUid: 'pages_url'
