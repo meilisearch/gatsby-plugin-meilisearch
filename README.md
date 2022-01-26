@@ -98,9 +98,9 @@ First, you need to add your MeiliSearch credentials.
 
 The credentials are composed of:
 - The `host`: The url to your running MeiliSearch instance.
-- The `api_key`: The `master` key or another `key` with the permission to add documents in MeiliSearch. [More about permissions and api keys here](https://docs.meilisearch.com/learn/advanced/security.html).
+- The `api_key`: The `master` key or another `key` with the permission to add documents in MeiliSearch. [More about permissions and API keys here](https://docs.meilisearch.com/learn/advanced/security.html).
 
-⚠️ Keys with permissions other than `search` should never be used on your front end. For searching, use the `Default Search Key` key available on [the `key` route](https://docs.meilisearch.com/reference/api/keys.html#get-keys) or [create a `custom api key`](https://docs.meilisearch.com/learn/advanced/security.html) with only search rights.
+⚠️ Keys with permissions other than `search` should never be used on your front end. For searching, use the `Default Search Key` key available on [the `key` route](https://docs.meilisearch.com/reference/api/keys.html#get-keys) or [create a custom API key](https://docs.meilisearch.com/learn/advanced/security.html) with only search rights.
 
 Add the credentials the following way in your `gatsby-config.js` file:
 
