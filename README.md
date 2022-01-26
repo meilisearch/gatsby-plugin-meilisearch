@@ -1,11 +1,11 @@
 <p align="center">
-  <img src="https://res.cloudinary.com/meilisearch/image/upload/v1587402338/SDKs/meilisearch_gatsby.svg" alt="MeiliSearch Gatsby" width="200" height="200" />
+  <img src="https://res.cloudinary.com/meilisearch/image/upload/v1587402338/SDKs/meilisearch_gatsby.svg" alt="meilisearch Gatsby" width="200" height="200" />
 </p>
 
-<h1 align="center">Gatsby plugin MeiliSearch</h1>
+<h1 align="center">Gatsby plugin meilisearch</h1>
 
 <h4 align="center">
-  <a href="https://github.com/meilisearch/MeiliSearch">MeiliSearch</a> |
+  <a href="https://github.com/meilisearch/meilisearch">meilisearch</a> |
   <a href="https://docs.meilisearch.com">Documentation</a> |
   <a href="https://slack.meilisearch.com">Slack</a> |
   <a href="https://www.meilisearch.com">Website</a> |
@@ -19,7 +19,7 @@
 </p>
 <br/>
 
-<p align="center" style="font-weight:bold;" >A plugin to index your Gatsby content to MeiliSearch based on graphQL queries</p>
+<p align="center" style="font-weight:bold;" >A plugin to index your Gatsby content to meilisearch based on graphQL queries</p>
 
 <br/>
 
@@ -29,12 +29,12 @@
 - [🔧 Installation](#-installation)
 - [🎬 Getting started](#-getting-started)
 - [🛼 Usage](#-usage)
-- [🤖 Compatibility with MeiliSearch and Gatsby](#-compatibility-with-meilisearch-and-gatsby)
+- [🤖 Compatibility with meilisearch and Gatsby](#-compatibility-with-meilisearch-and-gatsby)
 - [⚙️ Development Workflow and Contributing](#-development-workflow-and-contributing)
 
 ## 📖 Documentation
 
-To understand MeiliSearch and how it works, see the [MeiliSearch's documentation](https://docs.meilisearch.com/learn/what_is_meilisearch/).
+To understand meilisearch and how it works, see the [meilisearch's documentation](https://docs.meilisearch.com/learn/what_is_meilisearch/).
 
 To understand Gatsby and how it works, see [Gatsby's documentation](https://www.gatsbyjs.com/docs/tutorial/).
 
@@ -54,18 +54,18 @@ With `yarn`:
 yarn add gatsby-plugin-meilisearch
 ```
 
-### 🏃‍♀️ Run MeiliSearch
+### 🏃‍♀️ Run meilisearch
 
-There are many easy ways to [download and run a MeiliSearch instance](https://docs.meilisearch.com/reference/features/installation.html#download-and-launch).
+There are many easy ways to [download and run a meilisearch instance](https://docs.meilisearch.com/reference/features/installation.html#download-and-launch).
 
 For example, if you use Docker:
 
 ```bash
-docker pull getmeili/meilisearch:latest # Fetch the latest version of MeiliSearch image from Docker Hub
+docker pull getmeili/meilisearch:latest # Fetch the latest version of meilisearch image from Docker Hub
 docker run -it --rm -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=masterKey
 ```
 
-With this command, your MeiliSearch instance `host` is `http://localhost:7700` and your master key is `masterKey`
+With this command, your meilisearch instance `host` is `http://localhost:7700` and your master key is `masterKey`
 
 ### 🚀 Run Gatsby
 
@@ -84,21 +84,21 @@ Now that your Gatsby app is running you have access to the following URLs:
 
 ## 🎬 Getting started
 
-Now you should have a running Gatsby app with `gatsby-plugin-meilisearch` installed and a running MeiliSearch instance.
+Now you should have a running Gatsby app with `gatsby-plugin-meilisearch` installed and a running meilisearch instance.
 
-Let's configure our plugin to make it work! In this example, we will fetch every page's URL of our Gatsby website, and index them to MeiliSearch.
+Let's configure our plugin to make it work! In this example, we will fetch every page's URL of our Gatsby website, and index them to meilisearch.
 
 To make the plugin work, open the `gatsby-config.js` configuration file located at the root of your Gatsby project. All the configuration takes place in that file.
 
 ### ⚙️ Configure your plugin options
 
-#### 🔑 Add your MeiliSearch credentials
+#### 🔑 Add your meilisearch credentials
 
-First, you need to add your MeiliSearch credentials.
+First, you need to add your meilisearch credentials.
 
 The credentials are composed of:
-- The `host`: The url to your running MeiliSearch instance.
-- The `api_key`: The `master` or `private` key as the plugin requires administration permission on MeiliSearch.[More about permissions here](https://docs.meilisearch.com/reference/features/authentication.html).
+- The `host`: The url to your running meilisearch instance.
+- The `api_key`: The `master` or `private` key as the plugin requires administration permission on meilisearch.[More about permissions here](https://docs.meilisearch.com/reference/features/authentication.html).
 
 ⚠️ The `master` or `private` key should never be used to `search` on your front end. For searching, use the `public` key available on [the `key` route](https://docs.meilisearch.com/reference/api/keys.html#get-keys).
 
@@ -122,13 +122,13 @@ See [this section](#-run-meilisearch) if you don't know what your credentials ar
 
 #### ☝️ Fill in the indexes field
 
-The next step is to define which data we want to add in MeiliSearch and how. This happens in the `indexes` field.
+The next step is to define which data we want to add in meilisearch and how. This happens in the `indexes` field.
 
 The `indexes` field is an array that can be composed of multiple index objects. Each index object contains the following information:
 
 **`indexUid`**: The name of the index in which the data is added.
 
-Let's define the index uid to `pages_url`. On build, the `pages_url` index is created inside MeiliSearch.
+Let's define the index uid to `pages_url`. On build, the `pages_url` index is created inside meilisearch.
 
 ```bash
 indexUid: 'pages_url'
@@ -136,7 +136,7 @@ indexUid: 'pages_url'
 
 _if `pages_url` already existed, it is deleted and recreated on build_
 
-**`query`**: GraphQL query fetching the data to add in MeiliSearch
+**`query`**: GraphQL query fetching the data to add in meilisearch
 
 Let's provide the graphQL query that retrieves the URL's of the pages of our application.
 
@@ -174,13 +174,13 @@ After executing this query, we receive a `data` object containing the following:
 }
 ```
 
-**`transformer`**: Transform the data fetched to a format compatible to MeiliSearch.
+**`transformer`**: Transform the data fetched to a format compatible to meilisearch.
 
-Now that we have fetched the data with the `query` field, it is not yet ready to be sent to MeiliSearch.
+Now that we have fetched the data with the `query` field, it is not yet ready to be sent to meilisearch.
 
 Using a `transformer` function, we can transform the fetched data to a compatible format.
 
-The first problem of the fetched data is that the documents to send to MeiliSearch are nested, while they should be at the root in an array. So the content of `nodes` should be at the root.
+The first problem of the fetched data is that the documents to send to meilisearch are nested, while they should be at the root in an array. So the content of `nodes` should be at the root.
 
 ```js
 {
@@ -208,7 +208,7 @@ should become:
 ]
 ```
 
-The second problem is that each document in MeiliSearch requires an unique indentifier called [primary key](https://docs.meilisearch.com/learn/core_concepts/documents.html#primary-field).
+The second problem is that each document in meilisearch requires an unique indentifier called [primary key](https://docs.meilisearch.com/learn/core_concepts/documents.html#primary-field).
 
 Thus every document needs a unique field called `id`.
 For example:
@@ -230,13 +230,13 @@ To do so, we need to use the transformer method to create the final compatible a
 }
 ```
 
-In this function, we map on `data.allSitePage.nodes` in order to return an array of objects that can be indexed by MeiliSearch. We add an `id` field as MeiliSearch needs it for the indexation. As we don't have any field here that can be used as an `id`, we use the index of the current element in the array.
+In this function, we map on `data.allSitePage.nodes` in order to return an array of objects that can be indexed by meilisearch. We add an `id` field as meilisearch needs it for the indexation. As we don't have any field here that can be used as an `id`, we use the index of the current element in the array.
 
 If you want to learn more about these options (`indexUid`, `query` and `transformer`) see [indexes options](#-indexes)
 
 #### 🎉 Complete configuration
 
-After filling in those fields, your MeiliSearch configuration should look like this:
+After filling in those fields, your meilisearch configuration should look like this:
 
 ```js
 plugins: [
@@ -271,7 +271,7 @@ plugins: [
 
 ### 🥁 Build your project
 
-The `gatsby-plugin-meilisearch` fetches and adds your data to MeiliSearch on your Gatsby build.
+The `gatsby-plugin-meilisearch` fetches and adds your data to meilisearch on your Gatsby build.
 
 ```bash
 gatsby build
@@ -280,7 +280,7 @@ gatsby build
 After the build, a message in your terminal confirms that your content was successfully indexed:
 
 ```bash
-success gatsby-plugin-meilisearch - x.xxxs - Documents added to MeiliSearch
+success gatsby-plugin-meilisearch - x.xxxs - Documents added to meilisearch
 ```
 
 ### 🪄 Integrate search components
@@ -292,19 +292,19 @@ If you need tools to integrate a search experience on your app, we have tools th
 
 ## 🛼 Usage
 
-In the gatsby-config.js file, the MeiliSearch plugin accepts the following options:
+In the gatsby-config.js file, the meilisearch plugin accepts the following options:
 
 ### `host` (required)
 
-The `host` field is the address where your MeiliSearch instance is running. `gatsby-plugin-meilisearch` needs it in order to communicate with your MeiliSearch instance, and send your data to it.
+The `host` field is the address where your meilisearch instance is running. `gatsby-plugin-meilisearch` needs it in order to communicate with your meilisearch instance, and send your data to it.
 
 ### `apiKey` (optional)
 
-The `apiKey` field contains the API key if the MeiliSearch instance is password protected.
+The `apiKey` field contains the API key if the meilisearch instance is password protected.
 
 ### `skipIndexing` (optional)
 
-This option allows you to build your website without indexing to MeiliSearch. Default to false
+This option allows you to build your website without indexing to meilisearch. Default to false
 
 ### `batchSize` (optional)
 
@@ -312,8 +312,8 @@ The number of documents that should be included in each batch. Default to 1000
 
 ### `settings` (optional)
 
-If you want to pass settings to your MeiliSearch instance, you can do it here.
-[Read more about MeiliSearch settings](https://docs.meilisearch.com/reference/features/settings.html)
+If you want to pass settings to your meilisearch instance, you can do it here.
+[Read more about meilisearch settings](https://docs.meilisearch.com/reference/features/settings.html)
 
 ### `indexes` (required)
 
@@ -325,7 +325,7 @@ Each `index` object should contain the following fields:
 
 `indexUid` (required)
 
-This is the name of your MeiliSearch index. This is a required field as it is where the retrieved data is added inside MeiliSearch. For example if your `indexUid` is `pages_url`, your content will be indexed inside the `pages_url` index in MeiliSearch.
+This is the name of your meilisearch index. This is a required field as it is where the retrieved data is added inside meilisearch. For example if your `indexUid` is `pages_url`, your content will be indexed inside the `pages_url` index in meilisearch.
 If you provide an index name that already exists, the index will be deleted and recreated.
 
 Example:
@@ -359,10 +359,10 @@ You can also check [our playground's configuration file](playground/gatsby-confi
 
 `transformer` (required)
 
-This is a function that transforms the fetched data before sending it to MeiliSearch.
+This is a function that transforms the fetched data before sending it to meilisearch.
 
 After executing the graphQL query, a data object is received with a structure that can differ from one project to another, depending on the query you provided.
-As MeiliSearch requires a unique identifier at the root of each document and it should avoid nested objects, you will need to transform your data object accordingly. The `transformer` function is the correct place to do so.
+As meilisearch requires a unique identifier at the root of each document and it should avoid nested objects, you will need to transform your data object accordingly. The `transformer` function is the correct place to do so.
 
 Example:
 
@@ -415,7 +415,7 @@ After using the `transformer` function as in the above example, the data will lo
 ];
 ```
 
-If you want to learn more about MeiliSearch's documents structure, you can do so in [our documentation](https://docs.meilisearch.com/learn/core_concepts/documents.html#structure).
+If you want to learn more about meilisearch's documents structure, you can do so in [our documentation](https://docs.meilisearch.com/learn/core_concepts/documents.html#structure).
 
 Full usage example:
 
@@ -442,7 +442,7 @@ Full usage example:
 }
 ```
 
-## 🤖 Compatibility with MeiliSearch and Gatsby
+## 🤖 Compatibility with meilisearch and Gatsby
 
 **Supported Gatsby versions**:
 
@@ -450,9 +450,9 @@ Full usage example:
 
 (This plugin may work with the older Gatsby versions, but these are not tested nor officially supported at this time.)
 
-**Supported MeiliSearch versions**:
+**Supported meilisearch versions**:
 
-This package only guarantees the compatibility with the [version v0.25.0 of MeiliSearch](https://github.com/meilisearch/MeiliSearch/releases/tag/v0.25.0).
+This package only guarantees the compatibility with the [version v0.25.0 of meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.25.0).
 
 **Node / NPM versions**:
 
