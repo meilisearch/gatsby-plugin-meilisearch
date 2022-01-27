@@ -10,7 +10,7 @@ const client = new MeiliSearch({
   apiKey: fakeConfig.apiKey,
 })
 
-describe('Index to MeiliSearch', () => {
+describe('Index to Meilisearch', () => {
   beforeEach(async () => {
     try {
       await Promise.all(
@@ -30,7 +30,7 @@ describe('Index to MeiliSearch', () => {
     )
     expect(fakeReporter.warn).toHaveBeenCalledTimes(1)
     expect(fakeReporter.warn).toHaveBeenCalledWith(
-      `[gatsby-plugin-meilisearch] No indexes provided, nothing has been indexed to MeiliSearch`
+      `[gatsby-plugin-meilisearch] No indexes provided, nothing has been indexed to Meilisearch`
     )
   })
 
@@ -56,7 +56,7 @@ describe('Index to MeiliSearch', () => {
     )
     expect(activity.setStatus).toHaveBeenCalledTimes(1)
     expect(activity.setStatus).toHaveBeenCalledWith(
-      'Failed to index to MeiliSearch'
+      'Failed to index to Meilisearch'
     )
   })
 
@@ -76,11 +76,11 @@ describe('Index to MeiliSearch', () => {
     )
     expect(activity.setStatus).toHaveBeenCalledTimes(1)
     expect(activity.setStatus).toHaveBeenCalledWith(
-      'Failed to index to MeiliSearch'
+      'Failed to index to Meilisearch'
     )
   })
 
-  test('Should fail on wrong document format sent to MeiliSearch', async () => {
+  test('Should fail on wrong document format sent to Meilisearch', async () => {
     const wrongTransformer = data => data
 
     await onPostBuild(
@@ -92,11 +92,11 @@ describe('Index to MeiliSearch', () => {
     )
     expect(fakeReporter.error).toHaveBeenCalledTimes(1)
     expect(fakeReporter.error).toHaveBeenCalledWith(
-      '[gatsby-plugin-meilisearch] Nothing has been indexed to MeiliSearch. Make sure your documents are transformed into an array of objects'
+      '[gatsby-plugin-meilisearch] Nothing has been indexed to Meilisearch. Make sure your documents are transformed into an array of objects'
     )
     expect(activity.setStatus).toHaveBeenCalledTimes(1)
     expect(activity.setStatus).toHaveBeenCalledWith(
-      'Failed to index to MeiliSearch'
+      'Failed to index to Meilisearch'
     )
   })
 
@@ -124,7 +124,7 @@ describe('Index to MeiliSearch', () => {
     )
     expect(activity.setStatus).toHaveBeenCalledTimes(1)
     expect(activity.setStatus).toHaveBeenCalledWith(
-      'Failed to index to MeiliSearch'
+      'Failed to index to Meilisearch'
     )
   })
 
@@ -147,7 +147,7 @@ describe('Index to MeiliSearch', () => {
     )
     expect(activity.setStatus).toHaveBeenCalledTimes(1)
     expect(activity.setStatus).toHaveBeenCalledWith(
-      'Failed to index to MeiliSearch'
+      'Failed to index to Meilisearch'
     )
   })
 
@@ -281,7 +281,7 @@ describe('Index to MeiliSearch', () => {
     )
     expect(activity.setStatus).toHaveBeenCalledTimes(1)
     expect(activity.setStatus).toHaveBeenCalledWith(
-      'Documents added to MeiliSearch'
+      'Documents added to Meilisearch'
     )
   })
 })

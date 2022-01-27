@@ -8,7 +8,7 @@ const {
 } = require('./src/validate')
 
 /**
- * Function triggered after Gatsby's build. Responsible to add the specified data to MeiliSearch.
+ * Function triggered after Gatsby's build. Responsible to add the specified data to Meilisearch.
  *
  * @async
  * @param {Object} gatsbyNodeHelpers - Object containing a set of helpers
@@ -38,7 +38,7 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
     if (!indexes) {
       reporter.warn(
         getErrorMsg(
-          'No indexes provided, nothing has been indexed to MeiliSearch'
+          'No indexes provided, nothing has been indexed to Meilisearch'
         )
       )
       return
@@ -75,7 +75,7 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
         // Prepare data for indexation
         const transformedData = await currentIndex.transformer(data)
 
-        // Index data to MeiliSearch
+        // Index data to Meilisearch
         const enqueuedUpdates = await index.addDocumentsInBatches(
           transformedData,
           batchSize
@@ -83,7 +83,7 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
 
         if (enqueuedUpdates.length === 0) {
           throw getErrorMsg(
-            'Nothing has been indexed to MeiliSearch. Make sure your documents are transformed into an array of objects'
+            'Nothing has been indexed to Meilisearch. Make sure your documents are transformed into an array of objects'
           )
         }
 
@@ -98,10 +98,10 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
       })
     )
 
-    activity.setStatus('Documents added to MeiliSearch')
+    activity.setStatus('Documents added to Meilisearch')
   } catch (err) {
     reporter.error(err.message || err)
-    activity.setStatus('Failed to index to MeiliSearch')
+    activity.setStatus('Failed to index to Meilisearch')
   }
   activity.end()
 }

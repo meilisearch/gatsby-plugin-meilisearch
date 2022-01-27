@@ -32,7 +32,7 @@ const getValidationError = field =>
  * @param {Object} index - Object to verify
  * @param {string} index.indexUid - Index name
  * @param {string} index.query - GraphQL query used to retrieve the user's data
- * @param {function} index.transformer - Function that transforms the data to a format accepted by MeiliSearch
+ * @param {function} index.transformer - Function that transforms the data to a format accepted by Meilisearch
  * @param {number} key - Index position in it's parent array
  */
 const validateIndexOptions = (index, key) => {
@@ -56,7 +56,7 @@ const validateIndexOptions = (index, key) => {
  * Check if the options passed to the plugin are valid
  *
  * @param {Array.<Object>} indexes - List of indexes
- * @param {string} host - MeiliSearch's server address
+ * @param {string} host - Meilisearch's server address
  */
 const validatePluginOptions = (indexes, host) => {
   if (!host) {
