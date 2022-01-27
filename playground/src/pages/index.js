@@ -15,7 +15,7 @@ const searchClient = instantMeiliSearch(SERVER_ADDRESS, API_KEY, {
 
 const App = () => (
   <div className="ais-InstantSearch">
-    <h1>MeiliSearch + React InstantSearch + Gatsby</h1>
+    <h1>Meilisearch + React InstantSearch + Gatsby</h1>
     <h2>Search in this blog’s articles </h2>
     <InstantSearch indexName={INDEX_NAME} searchClient={searchClient}>
       <div style={{ marginBottom: 16 }}>

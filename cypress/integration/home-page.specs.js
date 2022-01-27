@@ -7,7 +7,7 @@ describe(`Home page`, () => {
     cy.url().should('match', new RegExp(Cypress.config('baseUrl')))
   })
   it('Should have a title', () => {
-    cy.contains('MeiliSearch + React InstantSearch + Gatsby')
+    cy.contains('Meilisearch + React InstantSearch + Gatsby')
   })
   it('Should have a search bar', () => {
     cy.contains('Search in this blog’s articles')
@@ -28,7 +28,7 @@ describe(`Home page`, () => {
     cy.get('button[type="reset"]').click()
   })
   it('Should have no matching article', () => {
-    cy.get('input[type="search"]').type('MeiliSearch')
+    cy.get('input[type="search"]').type('Meilisearch')
     cy.get('.ais-Hits-list').children().should('have.length', 0)
     cy.get('button[type="reset"]').click()
   })
