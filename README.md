@@ -5,7 +5,7 @@
 <h1 align="center">Gatsby plugin Meilisearch</h1>
 
 <h4 align="center">
-  <a href="https://github.com/meilisearch/Meilisearch">Meilisearch</a> |
+  <a href="https://github.com/meilisearch/meilisearch">Meilisearch</a> |
   <a href="https://docs.meilisearch.com">Documentation</a> |
   <a href="https://slack.meilisearch.com">Slack</a> |
   <a href="https://www.meilisearch.com">Website</a> |
@@ -452,7 +452,7 @@ Full usage example:
 
 **Supported Meilisearch versions**:
 
-This package only guarantees the compatibility with the [version v0.25.0 of Meilisearch](https://github.com/meilisearch/Meilisearch/releases/tag/v0.25.0).
+This package only guarantees the compatibility with the [version v0.25.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.25.0).
 
 **Node / NPM versions**:
 
