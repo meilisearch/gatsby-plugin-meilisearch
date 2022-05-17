@@ -143,7 +143,7 @@ describe('Index to Meilisearch', () => {
     )
     expect(fakeReporter.error).toHaveBeenCalledTimes(1)
     expect(fakeReporter.error).toHaveBeenCalledWith(
-      `Json deserialize error: unknown field \`wrongSettings\`, expected one of \`displayedAttributes\`, \`searchableAttributes\`, \`filterableAttributes\`, \`sortableAttributes\`, \`rankingRules\`, \`stopWords\`, \`synonyms\`, \`distinctAttribute\` at line 1 column 16`
+      expect.stringMatching(/Json deserialize error: unknown field.*/)
     )
     expect(activity.setStatus).toHaveBeenCalledTimes(1)
     expect(activity.setStatus).toHaveBeenCalledWith(

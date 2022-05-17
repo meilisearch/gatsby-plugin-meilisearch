@@ -62,7 +62,7 @@ For example, if you use Docker:
 
 ```bash
 docker pull getmeili/meilisearch:latest # Fetch the latest version of Meilisearch image from Docker Hub
-docker run -it --rm -p 7700:7700 getmeili/meilisearch:latest ./meilisearch --master-key=masterKey
+docker run -it --rm -p 7700:7700 getmeili/meilisearch:latest meilisearch --master-key=masterKey
 ```
 
 With this command, your Meilisearch instance `host` is `http://localhost:7700` and your master key is `masterKey`
@@ -453,7 +453,7 @@ Full usage example:
 
 **Supported Meilisearch versions**:
 
-This package only guarantees the compatibility with the [version v0.26.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.26.0).
+This package only guarantees the compatibility with the [version v0.27.0 of Meilisearch](https://github.com/meilisearch/meilisearch/releases/tag/v0.27.0).
 
 **Node / NPM versions**:
 
