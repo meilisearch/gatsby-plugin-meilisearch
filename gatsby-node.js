@@ -45,7 +45,14 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
       return
     }
 
-    validatePluginOptions(indexes, host)
+    validatePluginOptions({
+      indexes,
+      host,
+      apiKey,
+      skipIndexing,
+      batchSize,
+      clientAgents,
+    })
     await Promise.all(
       indexes.map(async (currentIndex, key) => {
         // Check that the index options are valid
@@ -56,6 +63,8 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
         if (!data) {
           throw getErrorMsg('You must provide a valid graphQL query')
         }
+
+        console.log({ agents: constructClientAgents(clientAgents) })
 
         const client = new MeiliSearch({
           host: host,

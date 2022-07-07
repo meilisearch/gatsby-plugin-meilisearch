@@ -55,12 +55,47 @@ const validateIndexOptions = (index, key) => {
 /**
  * Check if the options passed to the plugin are valid
  *
- * @param {Array.<Object>} indexes - List of indexes
- * @param {string} host - Meilisearch's server address
+ * @param  {object} config - Information to pass to the constructor.
+ * @param  {String} config.host - Host of the Meilisearch server.
+ * @param  {String} [config.apiKey] - Apikey of the Meilisearch server.
+ * @param  {String} config.indexes - List of indexes.
+ * @param  {String} [config.skipIndexing] - Boolean to disable indexing.
+ * @param  {String} [config.batchSize] - Size of batches of documents when indexing.
+ * @param  {String} [config.clientAgents] - Clients from which the plugin is called.
+ *
  */
-const validatePluginOptions = (indexes, host) => {
+const validatePluginOptions = config => {
+  const {
+    host,
+    apiKey = '',
+    skipIndexing = false,
+    batchSize = 1000,
+    indexes,
+    clientAgents = [],
+  } = config
+
   if (!host) {
     throw getValidationError('"host"')
+  }
+
+  if (typeof apiKey !== 'string') {
+    throw getErrorMsg('The "apiKey" option should be of type string')
+  }
+
+  if (typeof skipIndexing !== 'boolean') {
+    throw getErrorMsg('The "skipIndexing" option should be of type boolean')
+  }
+
+  if (typeof batchSize !== 'number') {
+    throw getErrorMsg('The "batchSize" option should be of type number')
+  }
+
+  if (!Array.isArray(clientAgents)) {
+    throw getErrorMsg('The "clientAgents" option should be of type array')
+  }
+
+  if (!Array.isArray(indexes)) {
+    throw getErrorMsg('The "indexes" option should be of type array')
   }
 
   if (!Array.isArray(indexes)) {
