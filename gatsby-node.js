@@ -1,5 +1,5 @@
 const { MeiliSearch } = require('meilisearch')
-
+const { constructClientAgents } = require('./src/agents')
 const {
   validatePluginOptions,
   validateIndexOptions,
@@ -27,6 +27,7 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
       skipIndexing = false,
       batchSize = 1000,
       indexes,
+      clientAgents = [],
     } = config
 
     if (skipIndexing) {
@@ -59,6 +60,7 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
         const client = new MeiliSearch({
           host: host,
           apiKey: apiKey,
+          clientAgents: constructClientAgents(clientAgents),
         })
 
         const index = client.index(currentIndex.indexUid)
