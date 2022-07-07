@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+const { MeiliSearch } = require('meilisearch')
 
 const fakeConfig = {
   host: process.env.MEILI_HTTP_ADDR || 'http://localhost:7700',
@@ -54,8 +55,23 @@ const fakeReporter = {
   error: jest.fn(() => {}),
 }
 
+const clearAllIndexes = async config => {
+  const client = new MeiliSearch(config)
+
+  const { results } = await client.getRawIndexes()
+  const indexes = results.map(elem => elem.uid)
+
+  const taskIds = []
+  for (const indexUid of indexes) {
+    const { taskUid } = await client.index(indexUid).delete()
+    taskIds.push(taskUid)
+  }
+  await client.waitForTasks(taskIds)
+}
+
 module.exports = {
   fakeConfig,
   fakeGraphql,
+  clearAllIndexes,
   fakeReporter,
 }

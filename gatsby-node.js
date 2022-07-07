@@ -66,7 +66,7 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
 
         // Add settings to Index
         if (currentIndex.settings) {
-          const { uid: settingsUid } = await index.updateSettings(
+          const { taskUid: settingsUid } = await index.updateSettings(
             currentIndex.settings
           )
           index.waitForTask(settingsUid)
@@ -89,10 +89,11 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
 
         // Wait for indexation to be completed
         for (const enqueuedUpdate of enqueuedUpdates) {
-          await index.waitForTask(enqueuedUpdate.uid)
-          const res = await index.getTask(enqueuedUpdate.uid)
-          if (res.status === 'failed') {
-            throw getErrorMsg(`${res.error.message} (${res.error.code})`)
+          await index.waitForTask(enqueuedUpdate.taskUid)
+          const task = await index.getTask(enqueuedUpdate.taskUid)
+
+          if (task.status === 'failed') {
+            throw getErrorMsg(`${task.error?.message} (${task.error?.code})`)
           }
         }
       })
