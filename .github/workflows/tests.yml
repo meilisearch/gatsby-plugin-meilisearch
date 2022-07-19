@@ -70,15 +70,22 @@ jobs:
           - '7700:7700'
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v1
         with:
-          node-version: '16.x'
-          cache: yarn
-          cache-dependency-path: |
-            yarn.lock
-            playground/yarn.lock
+          node-version: '14.x'
+      - name: Cache plugin dependencies
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ hashFiles('yarn.lock') }}
+      - name: Cache playground dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ./playground/node_modules
+          key: ${{ hashFiles('playground/yarn.lock') }}
       - name: Install dependencies
         run: yarn
       - name: Install playground dependencies
