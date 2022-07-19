@@ -19,7 +19,8 @@
   },
   "files": [
     "gatsby-node.js",
-    "src/validate.js"
+    "src/validate.js",
+    "src/agents.js"
   ],
   "repository": {
     "type": "git",

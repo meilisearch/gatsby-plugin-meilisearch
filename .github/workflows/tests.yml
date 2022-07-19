@@ -51,7 +51,7 @@ jobs:
             playground/yarn.lock
       - name: Install dependencies
         run: yarn
-      - name: Jest tests
+      - name: Run tests
         run: yarn test
         env:
           MEILI_HTTP_ADDR: 'http://localhost:7700'
