@@ -13,17 +13,12 @@ jobs:
   linter_check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: '14.x'
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            ./node_modules
-          key: ${{ hashFiles('yarn.lock') }}
+          cache: yarn
       - name: Install dependencies
         run: yarn --dev
       - name: Run style check
@@ -45,16 +40,15 @@ jobs:
           - '7700:7700'
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
-      - name: Cache plugin dependencies
-        uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: ${{ hashFiles('yarn.lock') }}
+          cache: yarn
+          cache-dependency-path: |
+            yarn.lock
+            playground/yarn.lock
       - name: Install dependencies
         run: yarn
       - name: Jest tests
@@ -76,22 +70,15 @@ jobs:
           - '7700:7700'
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: '14.x'
-      - name: Cache plugin dependencies
-        uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: ${{ hashFiles('yarn.lock') }}
-      - name: Cache playground dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            ./playground/node_modules
-          key: ${{ hashFiles('playground/yarn.lock') }}
+          node-version: '16.x'
+          cache: yarn
+          cache-dependency-path: |
+            yarn.lock
+            playground/yarn.lock
       - name: Install dependencies
         run: yarn
       - name: Install playground dependencies
