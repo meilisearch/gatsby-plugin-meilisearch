@@ -59,7 +59,9 @@ jobs:
           MEILI_INDEX_NAME: my_blog
   cypress_tests:
     runs-on: ubuntu-latest
-    container: cypress/browsers:node12.18.3-chrome87-ff82
+    container:
+      image: cypress/browsers:node16.14.2-slim-chrome100-ff99-edge
+      options: --user 1001
     services:
       meilisearch:
         image: getmeili/meilisearch:latest
@@ -70,22 +72,15 @@ jobs:
           - '7700:7700'
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: '14.x'
-      - name: Cache plugin dependencies
-        uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: ${{ hashFiles('yarn.lock') }}
-      - name: Cache playground dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            ./playground/node_modules
-          key: ${{ hashFiles('playground/yarn.lock') }}
+          cache: yarn
+          cache-dependency-path: |
+            yarn.lock
+            playground/yarn.lock
       - name: Install dependencies
         run: yarn
       - name: Install playground dependencies
