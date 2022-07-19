@@ -46,13 +46,18 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
           cache: yarn
-          cache-dependency-path: |
-            yarn.lock
-            playground/yarn.lock
       - name: Install dependencies
         run: yarn
+      - name: Install playground dependencies
+        run: yarn --cwd ./playground
+      - name: Build playground
+        run: yarn playground:build
+      - name: Start playground
+        run: yarn playground:start &
+      - name: Sleep
+        run: sleep 30
       - name: Run tests
-        run: yarn test
+        run: yarn ci:test
         env:
           MEILI_HTTP_ADDR: 'http://localhost:7700'
           MEILI_MASTER_KEY: masterKey
