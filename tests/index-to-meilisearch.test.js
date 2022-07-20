@@ -1,7 +1,12 @@
 /* eslint-disable no-undef */
 const { MeiliSearch } = require('meilisearch')
 const { onPostBuild } = require('../gatsby-node.js')
-const { fakeConfig, fakeGraphql, fakeReporter } = require('./utils')
+const {
+  fakeConfig,
+  fakeGraphql,
+  fakeReporter,
+  clearAllIndexes,
+} = require('./utils')
 
 const activity = fakeReporter.activityTimer()
 
@@ -12,15 +17,10 @@ const client = new MeiliSearch({
 
 describe('Index to Meilisearch', () => {
   beforeEach(async () => {
-    try {
-      await Promise.all(
-        fakeConfig.indexes.map(
-          async index => await client.deleteIndex(index.indexUid)
-        )
-      )
-    } catch (e) {
-      return
-    }
+    return clearAllIndexes({
+      host: fakeConfig.host,
+      apiKey: fakeConfig.apiKey,
+    })
   })
 
   test('Should fail if the indexes field is not provided', async () => {
@@ -205,8 +205,9 @@ describe('Index to Meilisearch', () => {
         ],
       }
     )
-    const indexes = await client.getIndexes()
-    expect(indexes).toHaveLength(2)
+    const { results } = await client.getIndexes()
+
+    expect(results).toHaveLength(2)
   })
 
   test('Should delete index and recreate a new one', async () => {
@@ -252,7 +253,7 @@ describe('Index to Meilisearch', () => {
       .index(fakeConfig.indexes[0].indexUid)
       .search('Axolotl')
 
-    expect(firstQueryResult.nbHits).toBe(1)
+    expect(firstQueryResult.estimatedTotalHits).toBe(1)
 
     await onPostBuild(
       { graphql: fakeGraphql, reporter: fakeReporter },
@@ -271,7 +272,7 @@ describe('Index to Meilisearch', () => {
       .index(fakeConfig.indexes[0].indexUid)
       .search('Axolotl')
 
-    expect(secondQueryResult.nbHits).toBe(0)
+    expect(secondQueryResult.estimatedTotalHits).toBe(0)
   })
 
   test('Should succeed and index with good config format', async () => {
