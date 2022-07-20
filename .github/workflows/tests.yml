@@ -13,17 +13,12 @@ jobs:
   linter_check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: '14.x'
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            ./node_modules
-          key: ${{ hashFiles('yarn.lock') }}
+          cache: yarn
       - name: Install dependencies
         run: yarn --dev
       - name: Run style check
@@ -45,27 +40,33 @@ jobs:
           - '7700:7700'
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
-      - name: Cache plugin dependencies
-        uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: ${{ hashFiles('yarn.lock') }}
+          cache: yarn
       - name: Install dependencies
         run: yarn
-      - name: Jest tests
-        run: yarn test
+      - name: Install playground dependencies
+        run: yarn --cwd ./playground
+      - name: Build playground
+        run: yarn playground:build
+      - name: Start playground
+        run: yarn playground:start &
+      - name: Sleep
+        run: sleep 30
+      - name: Run tests
+        run: yarn ci:test
         env:
           MEILI_HTTP_ADDR: 'http://localhost:7700'
           MEILI_MASTER_KEY: masterKey
           MEILI_INDEX_NAME: my_blog
   cypress_tests:
     runs-on: ubuntu-latest
-    container: cypress/browsers:node12.18.3-chrome87-ff82
+    container:
+      image: cypress/browsers:node16.14.2-slim-chrome100-ff99-edge
+      options: --user 1001
     services:
       meilisearch:
         image: getmeili/meilisearch:latest
@@ -76,22 +77,15 @@ jobs:
           - '7700:7700'
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: '14.x'
-      - name: Cache plugin dependencies
-        uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: ${{ hashFiles('yarn.lock') }}
-      - name: Cache playground dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            ./playground/node_modules
-          key: ${{ hashFiles('playground/yarn.lock') }}
+          cache: yarn
+          cache-dependency-path: |
+            yarn.lock
+            playground/yarn.lock
       - name: Install dependencies
         run: yarn
       - name: Install playground dependencies
