@@ -10,6 +10,7 @@
     "playground:build": "yarn --cwd ./playground build",
     "playground:dev": "yarn --cwd ./playground && yarn --cwd ./playground watch",
     "playground:serve": "yarn --cwd ./playground serve",
+    "ci:test": "jest --testPathPattern=tests --verbose --detectOpenHandles",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "test:e2e": "yarn playground:build && concurrently --kill-others -s first \"yarn --cwd ./playground serve\" \"cypress run\"",
@@ -19,7 +20,8 @@
   },
   "files": [
     "gatsby-node.js",
-    "src/validate.js"
+    "src/validate.js",
+    "src/agents.js"
   ],
   "repository": {
     "type": "git",
@@ -50,12 +52,12 @@
     "eslint-plugin-cypress": "^2.11.3",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.24.0",
-    "gatsby": "^4.14.0",
+    "gatsby": "^4.17.2",
     "jest": "^27.4.7",
     "prettier": "^2.3.2",
     "wait-port": "^0.2.9"
   },
   "dependencies": {
-    "meilisearch": "^0.27.0-beta.1"
+    "meilisearch": "^0.27.0"
   }
 }
