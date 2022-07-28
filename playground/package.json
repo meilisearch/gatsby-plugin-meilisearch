@@ -46,7 +46,6 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.16.0",
-    "kill-port": "^1.6.1",
     "npm-watch": "^0.11.0"
   }
 }
