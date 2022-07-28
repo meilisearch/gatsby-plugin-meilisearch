@@ -1,0 +1,116 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+    # trying and staging branches are for BORS config
+    branches:
+      - trying
+      - staging
+      - main
+
+jobs:
+  meilisearch-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.grep-step.outputs.version }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Grep docker beta version of Meilisearch
+        id: grep-step
+        run: |
+          MEILISEARCH_VERSION=$(curl https://raw.githubusercontent.com/meilisearch/integration-guides/main/scripts/get-latest-meilisearch-rc.sh | sh)
+          echo $MEILISEARCH_VERSION
+          # echo ::set-output name=version::$MEILISEARCH_VERSION
+          echo ::set-output name=version::latest
+  cypress-run:
+    # Will not run if the event is a PR to bump-meilisearch-v* (so a pre-release PR) or a beta
+    # Will still run for each push to bump-meilisearch-v* / beta branch
+    if: github.event_name != 'pull_request' || !startsWith(github.base_ref, 'bump-meilisearch-v')
+    runs-on: ubuntu-latest
+    container:
+      image: cypress/browsers:node16.14.2-slim-chrome100-ff99-edge
+      options: --user 1001
+    services:
+      meilisearch:
+        image: getmeili/meilisearch:${{ needs.meilisearch-version.outputs.version }}
+        env:
+          MEILI_MASTER_KEY: 'masterKey'
+          MEILI_NO_ANALYTICS: 'true'
+        ports:
+          - '7700:7700'
+    name: end-to-end-tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: yarn
+          cache-dependency-path: |
+            yarn.lock
+            playground/yarn.lock
+      - name: Install dependencies
+        run: yarn
+      - name: Install playground dependencies
+        run: yarn --dev && yarn --cwd ./playground
+      - name: Browser tests
+        uses: cypress-io/github-action@v3
+        with:
+          build: yarn playground:build
+          start: yarn playground:serve
+          wait-on: 'http://127.0.0.1:9000'
+          command: yarn cy:run
+          config-file: cypress.json
+        env:
+          GATSBY_MEILI_HTTP_ADDR: 'http://meilisearch:7700'
+          GATSBY_MEILI_MASTER_KEY: masterKey
+          GATSBY_MEILI_INDEX_NAME: my_blog
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-videos
+          path: cypress/videos
+  integration_tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Gatsby >= 4 is not compatible anymore with node 12
+        node: ['14', '16', '18']
+    name: tests-run (Node.js ${{ matrix.node }})
+    services:
+      meilisearch:
+        image: getmeili/meilisearch:latest
+        env:
+          MEILI_MASTER_KEY: 'masterKey'
+          MEILI_NO_ANALYTICS: 'true'
+        ports:
+          - '7700:7700'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          cache: yarn
+      - name: Install dependencies
+        run: yarn
+      - name: Install playground dependencies
+        run: yarn --cwd ./playground
+      - name: Build playground
+        run: yarn playground:build
+      - name: Start playground
+        run: yarn playground:start &
+      - name: Run tests
+        run: yarn test
+        env:
+          MEILI_HTTP_ADDR: 'http://localhost:7700'
+          MEILI_MASTER_KEY: masterKey
+          MEILI_INDEX_NAME: my_blog
