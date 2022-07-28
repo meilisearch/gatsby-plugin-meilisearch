@@ -28,9 +28,6 @@ jobs:
     # Will still run for each push to bump-meilisearch-v* / beta branch
     if: github.event_name != 'pull_request' || !startsWith(github.base_ref, 'bump-meilisearch-v')
     runs-on: ubuntu-latest
-    container:
-      image: cypress/browsers:node16.14.2-slim-chrome100-ff99-edge
-      options: --user 1001
     services:
       meilisearch:
         image: getmeili/meilisearch:${{ needs.meilisearch-version.outputs.version }}
