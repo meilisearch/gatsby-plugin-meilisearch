@@ -26,6 +26,7 @@ jobs:
           MEILI_NO_ANALYTICS: 'true'
         ports:
           - '7700:7700'
+    name: end-to-end-tests
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -65,7 +66,7 @@ jobs:
           path: cypress/videos
   integration_tests:
     # Will not run if the event is a PR to bump-meilisearch-v* (so a pre-release PR) or a beta
-    # Will not run if the event is a PR to bump-meilisearch-v* (so a pre-release PR) or a beta
+    # Will still run for each push to bump-meilisearch-v* / beta branch
     if: github.event_name != 'pull_request' || !startsWith(github.base_ref, 'bump-meilisearch-v')
     runs-on: ubuntu-latest
     strategy:
