@@ -13,8 +13,8 @@
     "build": "gatsby build",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "restart": "kill-port --port 9000 && yarn build && yarn serve",
-    "watch": "npm-watch restart"
+    "restart": "yarn build && yarn serve",
+    "watch": "npm-watch start"
   },
   "watch": {
     "restart": {
@@ -33,7 +33,7 @@
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
     "@meilisearch/instant-meilisearch": "^0.8.0",
-    "gatsby": "^4.3.0",
+    "gatsby": "^4.19.2",
     "gatsby-image": "^3.11.0",
     "gatsby-plugin-mdx": "^3.3.0",
     "gatsby-plugin-sharp": "^4.3.0",

@@ -28,7 +28,7 @@ jobs:
     strategy:
       matrix:
         # Gatsby >= 4 is not compatible anymore with node 12
-        node: ['14', '16']
+        node: ['14', '16', '18']
     name: tests-run (Node.js ${{ matrix.node }})
     services:
       meilisearch:
@@ -54,10 +54,8 @@ jobs:
         run: yarn playground:build
       - name: Start playground
         run: yarn playground:start &
-      - name: Sleep
-        run: sleep 30
       - name: Run tests
-        run: yarn ci:test
+        run: yarn test
         env:
           MEILI_HTTP_ADDR: 'http://localhost:7700'
           MEILI_MASTER_KEY: masterKey
