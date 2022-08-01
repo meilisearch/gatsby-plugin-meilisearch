@@ -1,4 +1,5 @@
-name: Tests
+# Testing the code base against the Meilisearch pre-releases
+name: Pre-Release Tests
 
 on:
   pull_request:
@@ -28,6 +29,7 @@ jobs:
     # Will still run for each push to bump-meilisearch-v* / beta branch
     if: github.event_name != 'pull_request' || !startsWith(github.base_ref, 'bump-meilisearch-v')
     runs-on: ubuntu-latest
+    needs: ['meilisearch-version']
     services:
       meilisearch:
         image: getmeili/meilisearch:${{ needs.meilisearch-version.outputs.version }}

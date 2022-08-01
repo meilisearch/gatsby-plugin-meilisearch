@@ -1,4 +1,5 @@
-name: Tests
+# Testing the code base against a specific Meilisearch feature
+name: Beta tests
 
 on:
   pull_request:
