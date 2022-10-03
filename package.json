@@ -58,6 +58,6 @@
     "wait-port": "^0.3.1"
   },
   "dependencies": {
-    "meilisearch": "^0.27.0"
+    "meilisearch": "^0.28.0"
   }
 }
