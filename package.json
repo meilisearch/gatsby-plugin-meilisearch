@@ -10,7 +10,6 @@
     "playground:build": "yarn --cwd ./playground build",
     "playground:dev": "yarn --cwd ./playground && yarn --cwd ./playground watch",
     "playground:serve": "yarn --cwd ./playground serve",
-    "ci:test": "jest --testPathPattern=tests --verbose --detectOpenHandles",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "test:e2e": "yarn playground:build && concurrently --kill-others -s first \"yarn --cwd ./playground serve\" \"cypress run\"",
