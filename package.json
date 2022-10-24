@@ -54,7 +54,7 @@
     "gatsby": "^4.24.4",
     "jest": "^27.4.7",
     "prettier": "^2.3.2",
-    "wait-port": "^1.0.3"
+    "wait-port": "^1.0.4"
   },
   "dependencies": {
     "meilisearch": "^0.28.0"
