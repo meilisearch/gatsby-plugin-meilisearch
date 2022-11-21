@@ -70,13 +70,16 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
           await index.updateSettings(currentIndex.settings)
         }
 
-        // Prepare data for indexation
+        // Adapt documents to be in a Meilisearch compatible format
         const transformedData = await currentIndex.transformer(data)
 
         const tasks = []
 
+        // Send documents in batches of `batchSize`
         for (let i = 0; i < transformedData.length; i += batchSize) {
-          let documentsActivity = reporter.activityTimer(PLUGIN_NAME)
+          let documentsActivity = reporter.activityTimer(
+            'Send documents to Meilisearch'
+          )
           documentsActivity.start()
           try {
             const documentsBatch = transformedData.slice(i, i + batchSize)
@@ -84,7 +87,7 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
               const task = await index.addDocuments(documentsBatch)
 
               documentsActivity.setStatus(
-                `Adding ${documentsBatch.length} documents to Meilisearch, track the process with the task id : "${task.taskUid}". (doc: https://docs.meilisearch.com/reference/api/tasks.html#get-one-task)`
+                `Adding ${documentsBatch.length} document(s) to Meilisearch, task uid : "${task.taskUid}".`
               )
 
               tasks.push(task)
@@ -105,7 +108,7 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
       })
     )
     activity.setStatus(
-      'Documents are send to Meilisearch, track the indexing progress using the tasks ids.'
+      'Documents are send to Meilisearch, track the indexing progress using the tasks ids.\ndoc: https://docs.meilisearch.com/reference/api/tasks.html#get-one-task'
     )
   } catch (err) {
     reporter.error(err.message || err)
