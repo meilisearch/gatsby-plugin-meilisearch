@@ -69,9 +69,18 @@ const clearAllIndexes = async config => {
   await client.waitForTasks(taskIds)
 }
 
+const waitForLastTask = async client => {
+  // Fetch the latests created task
+  const task = await client.getTasks({ limit: 1 })
+  // By waiting for the latest task, we ensure that all tasks created before
+  // are going to be `processed` as well.
+  await client.waitForTask(task.results[0].uid)
+}
+
 module.exports = {
   fakeConfig,
   fakeGraphql,
   clearAllIndexes,
   fakeReporter,
+  waitForLastTask,
 }
