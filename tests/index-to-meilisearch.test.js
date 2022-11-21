@@ -137,9 +137,12 @@ describe('Index to Meilisearch', () => {
         ],
       }
     )
+    await waitForLastTask(client)
+
     const { searchableAttributes } = await client
       .index(fakeConfig.indexes[0].indexUid)
       .getSettings()
+
     expect(Array.isArray(searchableAttributes)).toBe(true)
     expect(searchableAttributes).toEqual(['title'])
   })
@@ -260,7 +263,7 @@ describe('Index to Meilisearch', () => {
     )
     expect(activity.setStatus).toHaveBeenCalledTimes(2)
     expect(activity.setStatus).toHaveBeenLastCalledWith(
-      `Documents are send to Meilisearch, track the indexing progress using the tasks ids.\ndoc: https://docs.meilisearch.com/reference/api/tasks.html#get-one-task`
+      `Documents are send to Meilisearch, track the indexing progress using the tasks uids.\ndoc: https://docs.meilisearch.com/reference/api/tasks.html#get-one-task`
     )
   })
 })

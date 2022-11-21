@@ -108,7 +108,7 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
       })
     )
     activity.setStatus(
-      'Documents are send to Meilisearch, track the indexing progress using the tasks ids.\ndoc: https://docs.meilisearch.com/reference/api/tasks.html#get-one-task'
+      'Documents are send to Meilisearch, track the indexing progress using the tasks uids.\ndoc: https://docs.meilisearch.com/reference/api/tasks.html#get-one-task'
     )
   } catch (err) {
     reporter.error(err.message || err)
