@@ -75,7 +75,7 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
 
         const tasks = []
 
-        // Send documents in batches of `batchSize`
+        // Creating document batches of `batchSize` and adding them to Meilisearch
         for (let i = 0; i < transformedData.length; i += batchSize) {
           let documentsActivity = reporter.activityTimer(
             'Send documents to Meilisearch'
