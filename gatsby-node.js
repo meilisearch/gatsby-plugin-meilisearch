@@ -25,7 +25,7 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
       host,
       apiKey = '',
       skipIndexing = false,
-      batchSize = 1000,
+      batchSize = 10000,
       indexes,
       clientAgents = [],
     } = config
@@ -63,45 +63,53 @@ exports.onPostBuild = async function ({ graphql, reporter }, config) {
           clientAgents: constructClientAgents(clientAgents),
         })
 
-        const index = client.index(currentIndex.indexUid)
+        const index = await client.index(currentIndex.indexUid)
         await index.delete()
-
         // Add settings to Index
         if (currentIndex.settings) {
-          const { taskUid: settingsUid } = await index.updateSettings(
-            currentIndex.settings
-          )
-          index.waitForTask(settingsUid)
+          await index.updateSettings(currentIndex.settings)
         }
 
-        // Prepare data for indexation
+        // Adapt documents to be in a Meilisearch compatible format
         const transformedData = await currentIndex.transformer(data)
 
-        // Index data to Meilisearch
-        const enqueuedUpdates = await index.addDocumentsInBatches(
-          transformedData,
-          batchSize
-        )
+        const tasks = []
 
-        if (enqueuedUpdates.length === 0) {
-          throw getErrorMsg(
-            'Nothing has been indexed to Meilisearch. Make sure your documents are transformed into an array of objects'
+        // Creating document batches of `batchSize` and adding them to Meilisearch
+        for (let i = 0; i < transformedData.length; i += batchSize) {
+          let documentsActivity = reporter.activityTimer(
+            'Send documents to Meilisearch'
           )
+          documentsActivity.start()
+          try {
+            const documentsBatch = transformedData.slice(i, i + batchSize)
+            if (documentsBatch.length > 0) {
+              const task = await index.addDocuments(documentsBatch)
+
+              documentsActivity.setStatus(
+                `Adding ${documentsBatch.length} document(s) to Meilisearch, task uid : "${task.taskUid}".`
+              )
+
+              tasks.push(task)
+            }
+          } catch (err) {
+            documentsActivity.setStatus(
+              'Failed to send batch of document to Meilisearch'
+            )
+          }
+          documentsActivity.end()
         }
 
-        // Wait for indexation to be completed
-        for (const enqueuedUpdate of enqueuedUpdates) {
-          await index.waitForTask(enqueuedUpdate.taskUid)
-          const task = await index.getTask(enqueuedUpdate.taskUid)
-
-          if (task.status === 'failed') {
-            throw getErrorMsg(`${task.error?.message} (${task.error?.code})`)
-          }
+        if (tasks.length === 0) {
+          throw getErrorMsg(
+            'No documents have been indexed to Meilisearch. Make sure your documents are transformed into an array of objects'
+          )
         }
       })
     )
-
-    activity.setStatus('Documents added to Meilisearch')
+    activity.setStatus(
+      'Documents are send to Meilisearch, track the indexing progress using the tasks uids.\ndoc: https://docs.meilisearch.com/reference/api/tasks.html#get-one-task'
+    )
   } catch (err) {
     reporter.error(err.message || err)
     activity.setStatus('Failed to index to Meilisearch')

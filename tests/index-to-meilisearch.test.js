@@ -6,6 +6,7 @@ const {
   fakeGraphql,
   fakeReporter,
   clearAllIndexes,
+  waitForLastTask,
 } = require('./utils')
 
 const activity = fakeReporter.activityTimer()
@@ -92,35 +93,7 @@ describe('Index to Meilisearch', () => {
     )
     expect(fakeReporter.error).toHaveBeenCalledTimes(1)
     expect(fakeReporter.error).toHaveBeenCalledWith(
-      '[gatsby-plugin-meilisearch] Nothing has been indexed to Meilisearch. Make sure your documents are transformed into an array of objects'
-    )
-    expect(activity.setStatus).toHaveBeenCalledTimes(1)
-    expect(activity.setStatus).toHaveBeenCalledWith(
-      'Failed to index to Meilisearch'
-    )
-  })
-
-  test('Should fail if there are no primary key in the documents', async () => {
-    const wrongQuery = `
-    query MyQuery {
-      allMdx {
-        edges {
-          node {
-            slug
-          }
-        }
-      }
-    }`
-    await onPostBuild(
-      { graphql: fakeGraphql, reporter: fakeReporter },
-      {
-        ...fakeConfig,
-        indexes: [{ ...fakeConfig.indexes[0], query: wrongQuery }],
-      }
-    )
-    expect(fakeReporter.error).toHaveBeenCalledTimes(1)
-    expect(fakeReporter.error).toHaveBeenCalledWith(
-      `[gatsby-plugin-meilisearch] The primary key inference process failed because the engine did not find any fields containing \`id\` substring in their name. If your document identifier does not contain any \`id\` substring, you can set the primary key of the index. (primary_key_inference_failed)`
+      '[gatsby-plugin-meilisearch] No documents have been indexed to Meilisearch. Make sure your documents are transformed into an array of objects'
     )
     expect(activity.setStatus).toHaveBeenCalledTimes(1)
     expect(activity.setStatus).toHaveBeenCalledWith(
@@ -164,9 +137,12 @@ describe('Index to Meilisearch', () => {
         ],
       }
     )
+    await waitForLastTask(client)
+
     const { searchableAttributes } = await client
       .index(fakeConfig.indexes[0].indexUid)
       .getSettings()
+
     expect(Array.isArray(searchableAttributes)).toBe(true)
     expect(searchableAttributes).toEqual(['title'])
   })
@@ -205,6 +181,8 @@ describe('Index to Meilisearch', () => {
         ],
       }
     )
+    await waitForLastTask(client)
+
     const { results } = await client.getIndexes()
 
     expect(results).toHaveLength(2)
@@ -249,6 +227,8 @@ describe('Index to Meilisearch', () => {
       }
     )
 
+    await waitForLastTask(client)
+
     const firstQueryResult = await client
       .index(fakeConfig.indexes[0].indexUid)
       .search('Axolotl')
@@ -267,6 +247,7 @@ describe('Index to Meilisearch', () => {
         ],
       }
     )
+    await waitForLastTask(client)
 
     const secondQueryResult = await client
       .index(fakeConfig.indexes[0].indexUid)
@@ -280,9 +261,9 @@ describe('Index to Meilisearch', () => {
       { graphql: fakeGraphql, reporter: fakeReporter },
       fakeConfig
     )
-    expect(activity.setStatus).toHaveBeenCalledTimes(1)
-    expect(activity.setStatus).toHaveBeenCalledWith(
-      'Documents added to Meilisearch'
+    expect(activity.setStatus).toHaveBeenCalledTimes(2)
+    expect(activity.setStatus).toHaveBeenLastCalledWith(
+      `Documents are send to Meilisearch, track the indexing progress using the tasks uids.\ndoc: https://docs.meilisearch.com/reference/api/tasks.html#get-one-task`
     )
   })
 })
