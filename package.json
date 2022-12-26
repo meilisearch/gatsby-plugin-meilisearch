@@ -51,7 +51,7 @@
     "eslint-plugin-cypress": "^2.11.3",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.24.0",
-    "gatsby": "^4.24.4",
+    "gatsby": "^5.3.3",
     "jest": "^27.4.7",
     "prettier": "^2.3.2",
     "wait-port": "^1.0.4"
