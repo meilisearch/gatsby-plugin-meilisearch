@@ -34,7 +34,7 @@
 
 ## 📖 Documentation
 
-To understand Meilisearch and how it works, see the [Meilisearch's documentation](https://docs.meilisearch.com/learn/what_is_meilisearch/).
+To understand Meilisearch and how it works, see the [Meilisearch's documentation](https://docs.meilisearch.com/).
 
 To understand Gatsby and how it works, see [Gatsby's documentation](https://www.gatsbyjs.com/docs/tutorial/).
 
