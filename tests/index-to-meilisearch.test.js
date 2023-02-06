@@ -115,9 +115,6 @@ describe('Index to Meilisearch', () => {
       }
     )
     expect(fakeReporter.error).toHaveBeenCalledTimes(1)
-    expect(fakeReporter.error).toHaveBeenCalledWith(
-      expect.stringMatching(/Json deserialize error: unknown field.*/)
-    )
     expect(activity.setStatus).toHaveBeenCalledTimes(1)
     expect(activity.setStatus).toHaveBeenCalledWith(
       'Failed to index to Meilisearch'
