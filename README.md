@@ -9,7 +9,7 @@
   <a href="https://docs.meilisearch.com">Documentation</a> |
   <a href="https://discord.meilisearch.com">Discord</a> |
   <a href="https://www.meilisearch.com">Website</a> |
-  <a href="https://docs.meilisearch.com/faq">FAQ</a>
+  <a href="https://www.meilisearch.com/docs/faq">FAQ</a>
 </h4>
 
 <p align="center">
@@ -34,7 +34,7 @@
 
 ## 📖 Documentation
 
-To understand Meilisearch and how it works, see the [Meilisearch's documentation](https://docs.meilisearch.com/).
+To understand Meilisearch and how it works, see the [Meilisearch's documentation](https://www.meilisearch.com/docs/).
 
 To understand Gatsby and how it works, see [Gatsby's documentation](https://www.gatsbyjs.com/docs/tutorial/).
 
@@ -56,7 +56,7 @@ yarn add gatsby-plugin-meilisearch
 
 ### 🏃‍♀️ Run Meilisearch
 
-There are many easy ways to [download and run a Meilisearch instance](https://docs.meilisearch.com/reference/features/installation.html#download-and-launch).
+There are many easy ways to [download and run a Meilisearch instance](https://www.meilisearch.com/docs/reference/features/installation.html#download-and-launch).
 
 For example, if you use Docker:
 
@@ -99,9 +99,9 @@ First, you need to add your Meilisearch credentials.
 The credentials are composed of:
 
 - The `host`: The url to your running Meilisearch instance.
-- The `api_key`: The `master` key or another `key` with the permission to add documents in MeiliSearch. [More about permissions and API keys here](https://docs.meilisearch.com/learn/advanced/security.html).
+- The `api_key`: The `master` key or another `key` with the permission to add documents in MeiliSearch. [More about permissions and API keys here](https://www.meilisearch.com/docs/learn/advanced/security.html).
 
-⚠️ Keys with permissions other than `search` should never be used on your front end. For searching, use the `Default Search Key` key available on [the `key` route](https://docs.meilisearch.com/reference/api/keys.html#get-keys) or [create a custom API key](https://docs.meilisearch.com/learn/advanced/security.html) with only search rights.
+⚠️ Keys with permissions other than `search` should never be used on your front end. For searching, use the `Default Search Key` key available on [the `key` route](https://www.meilisearch.com/docs/reference/api/keys.html#get-keys) or [create a custom API key](https://www.meilisearch.com/docs/learn/advanced/security.html) with only search rights.
 
 Add the credentials the following way in your `gatsby-config.js` file:
 
@@ -209,7 +209,7 @@ should become:
 ]
 ```
 
-The second problem is that each document in Meilisearch requires an unique indentifier called [primary key](https://docs.meilisearch.com/learn/core_concepts/documents.html#primary-field).
+The second problem is that each document in Meilisearch requires an unique indentifier called [primary key](https://www.meilisearch.com/docs/learn/core_concepts/documents.html#primary-field).
 
 Thus every document needs a unique field called `id`.
 For example:
@@ -314,11 +314,11 @@ The number of documents that should be included in each batch. Default to 1000
 ### `settings` (optional)
 
 If you want to pass settings to your Meilisearch instance, you can do it here.
-[Read more about Meilisearch settings](https://docs.meilisearch.com/reference/features/settings.html)
+[Read more about Meilisearch settings](https://www.meilisearch.com/docs/reference/api/settings#settings_parameters)
 
 ### `indexes` (required)
 
-The `indexes` field is an array of objects, each of them represents how to add data to a specific [index](https://docs.meilisearch.com/learn/core_concepts/indexes.html#indexes)
+The `indexes` field is an array of objects, each of them represents how to add data to a specific [index](https://www.meilisearch.com/docs/learn/core_concepts/indexes.html#indexes)
 
 You can have one or multiple `index` objects in `indexes`, which can be useful if you want to index different content in different indexes (or multiple different data to the same index).
 
@@ -335,7 +335,7 @@ Example:
 indexUid: 'pages_url'
 ```
 
-You can [learn more about indexes](https://docs.meilisearch.com/learn/core_concepts/indexes.html) on our documentation.
+You can [learn more about indexes](https://www.meilisearch.com/docs/learn/core_concepts/indexes.html) on our documentation.
 
 `query` (required)
 
@@ -416,7 +416,7 @@ After using the `transformer` function as in the above example, the data will lo
 ];
 ```
 
-If you want to learn more about Meilisearch's documents structure, you can do so in [our documentation](https://docs.meilisearch.com/learn/core_concepts/documents.html#structure).
+If you want to learn more about Meilisearch's documents structure, you can do so in [our documentation](https://www.meilisearch.com/docs/learn/core_concepts/documents.html#structure).
 
 Full usage example:
 
