@@ -260,7 +260,7 @@ describe('Index to Meilisearch', () => {
     )
     expect(activity.setStatus).toHaveBeenCalledTimes(2)
     expect(activity.setStatus).toHaveBeenLastCalledWith(
-      `Documents are send to Meilisearch, track the indexing progress using the tasks uids.\ndoc: https://docs.meilisearch.com/reference/api/tasks.html#get-one-task`
+      `Documents are send to Meilisearch, track the indexing progress using the tasks uids.\ndoc: https://www.meilisearch.com/docs/reference/api/tasks#get-one-task`
     )
   })
 })
