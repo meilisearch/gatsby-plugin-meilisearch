@@ -6,6 +6,7 @@
 
 <h4 align="center">
   <a href="https://github.com/meilisearch/meilisearch">Meilisearch</a> |
+  <a href="https://www.meilisearch.com/pricing?utm_campaign=oss&utm_source=integration&utm_medium=gatsby-plugin-meilisearch">Meilisearch Cloud</a> |
   <a href="https://www.meilisearch.com/docs">Documentation</a> |
   <a href="https://discord.meilisearch.com">Discord</a> |
   <a href="https://www.meilisearch.com">Website</a> |
@@ -26,6 +27,7 @@
 ## Table of Contents
 
 - [📖 Documentation](#-documentation)
+- [⚡ Supercharge your Meilisearch experience](#-supercharge-your-meilisearch-experience)
 - [🔧 Installation](#-installation)
 - [🎬 Getting started](#-getting-started)
 - [🛼 Usage](#-usage)
@@ -37,6 +39,10 @@
 To understand Meilisearch and how it works, see the [Meilisearch's documentation](https://www.meilisearch.com/docs/).
 
 To understand Gatsby and how it works, see [Gatsby's documentation](https://www.gatsbyjs.com/docs/tutorial/).
+
+## ⚡ Supercharge your Meilisearch experience
+
+Say goodbye to server deployment and manual updates with [Meilisearch Cloud](https://www.meilisearch.com/pricing?utm_campaign=oss&utm_source=integration&utm_medium=gatsby-plugin-meilisearch). No credit card required.
 
 ## 🔧 Installation
 
