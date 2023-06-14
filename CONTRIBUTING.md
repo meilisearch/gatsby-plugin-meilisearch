@@ -68,6 +68,8 @@ MEILI_MASTER_KEY="masterKey"
 MEILI_INDEX_NAME="my_index"
 ```
 
+To check if your `yaml` files are correctly formatted, you need to [install yamllint](https://yamllint.readthedocs.io/en/stable/quickstart.html#installing-yamllint) and then run `yamllint .`
+
 ### Run Playground
 
 To test directly your changes with watch mode, you can run the Gatsby playground:
