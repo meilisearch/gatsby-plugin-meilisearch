@@ -60,6 +60,7 @@ yarn add gatsby-plugin-meilisearch
 ⚡️ **Launch, scale, and streamline in minutes with Meilisearch Cloud**—no maintenance, no commitment, cancel anytime. [Try it free now](https://cloud.meilisearch.com/login?utm_campaign=oss&utm_source=github&utm_medium=gatsby-plugin-meilisearch).
 
 🪨  Prefer to self-host? [Download and deploy](https://www.meilisearch.com/docs/learn/self_hosted/getting_started_with_self_hosted_meilisearch?utm_campaign=oss&utm_source=github&utm_medium=gatsby-plugin-meilisearch) our fast, open-source search engine on your own infrastructure.
+
 ### 🚀 Run Gatsby
 
 If you don't have a running Gatsby, you can either launch the [playground present in this project)(./playground/README.md) or [create a Gatsby project](https://www.gatsbyjs.com/docs/tutorial).
@@ -74,7 +75,6 @@ Now that your Gatsby app is running you have access to the following URLs:
 
 - `http://localhost:8000/` URL of your web app.
 - `http://localhost:8000/___graphql`: URL to the GraphiQL tool where you can build graphQL queries on the playground and request them.
-
 
 ## 🚀 Getting started
 
