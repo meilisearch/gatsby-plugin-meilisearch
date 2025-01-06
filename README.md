@@ -27,9 +27,8 @@
 ## Table of Contents
 
 - [📖 Documentation](#-documentation)
-- [⚡ Supercharge your Meilisearch experience](#-supercharge-your-meilisearch-experience)
 - [🔧 Installation](#-installation)
-- [🎬 Getting started](#-getting-started)
+- [🚀 Getting started](#-getting-started)
 - [🛼 Usage](#-usage)
 - [🤖 Compatibility with Meilisearch and Gatsby](#-compatibility-with-meilisearch-and-gatsby)
 - [⚙️ Development Workflow and Contributing](#-development-workflow-and-contributing)
@@ -39,10 +38,6 @@
 To understand Meilisearch and how it works, see the [Meilisearch's documentation](https://www.meilisearch.com/docs/).
 
 To understand Gatsby and how it works, see [Gatsby's documentation](https://www.gatsbyjs.com/docs/tutorial/).
-
-## ⚡ Supercharge your Meilisearch experience
-
-Say goodbye to server deployment and manual updates with [Meilisearch Cloud](https://www.meilisearch.com/cloud?utm_campaign=oss&utm_source=github&utm_medium=gatsby-plugin-meilisearch). Get started with a 14-day free trial! No credit card required.
 
 ## 🔧 Installation
 
@@ -60,18 +55,11 @@ With `yarn`:
 yarn add gatsby-plugin-meilisearch
 ```
 
-### 🏃‍♀️ Run Meilisearch
+### Run Meilisearch <!-- omit in toc -->
 
-There are many easy ways to [download and run a Meilisearch instance](https://www.meilisearch.com/docs/learn/getting_started/installation#installation).
+⚡️ **Launch, scale, and streamline in minutes with Meilisearch Cloud**—no maintenance, no commitment, cancel anytime. [Try it free now](https://cloud.meilisearch.com/login?utm_campaign=oss&utm_source=github&utm_medium=gatsby-plugin-meilisearch).
 
-For example, if you use Docker:
-
-```bash
-docker pull getmeili/meilisearch:latest # Fetch the latest version of Meilisearch image from Docker Hub
-docker run -it --rm -p 7700:7700 getmeili/meilisearch:latest meilisearch --master-key=masterKey
-```
-
-With this command, your Meilisearch instance `host` is `http://localhost:7700` and your master key is `masterKey`
+🪨  Prefer to self-host? [Download and deploy](https://www.meilisearch.com/docs/learn/self_hosted/getting_started_with_self_hosted_meilisearch?utm_campaign=oss&utm_source=github&utm_medium=gatsby-plugin-meilisearch) our fast, open-source search engine on your own infrastructure.
 
 ### 🚀 Run Gatsby
 
@@ -88,7 +76,7 @@ Now that your Gatsby app is running you have access to the following URLs:
 - `http://localhost:8000/` URL of your web app.
 - `http://localhost:8000/___graphql`: URL to the GraphiQL tool where you can build graphQL queries on the playground and request them.
 
-## 🎬 Getting started
+## 🚀 Getting started
 
 Now you should have a running Gatsby app with `gatsby-plugin-meilisearch` installed and a running Meilisearch instance.
 
