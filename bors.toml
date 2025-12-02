@@ -1,8 +1,0 @@
-status = [
-  'linter_check',
-  'tests-run (Node.js 14)',
-  'tests-run (Node.js 16)',
-  'cypress_tests'
-]
-# 1 hour timeout
-timeout-sec = 3600
