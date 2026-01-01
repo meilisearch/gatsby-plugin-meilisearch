@@ -96,12 +96,12 @@ jobs:
           GATSBY_MEILI_HTTP_ADDR: 'http://meilisearch:7700'
           GATSBY_MEILI_MASTER_KEY: masterKey
           GATSBY_MEILI_INDEX_NAME: my_blog
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: cypress-screenshots
           path: cypress/screenshots
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: cypress-videos
