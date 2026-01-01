@@ -11,7 +11,7 @@ jobs:
   linter_check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Setup node
         uses: actions/setup-node@v6
         with:
@@ -42,7 +42,7 @@ jobs:
           - '7700:7700'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup node
         uses: actions/setup-node@v6
         with:
@@ -71,7 +71,7 @@ jobs:
           - '7700:7700'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup node
         uses: actions/setup-node@v6
         with:
