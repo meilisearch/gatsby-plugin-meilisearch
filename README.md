@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/meilisearch/integration-guides/main/assets/logos/meilisearch_gatsby.svg" alt="Meilisearch Gatsby" width="200" height="200" />
 </p>
 
-<h1 align="center">Gatsby plugin Meilisearch</h1>
+<h1 align="center">[ARCHIVED] Gatsby plugin Meilisearch</h1>
 
 <h4 align="center">
   <a href="https://github.com/meilisearch/meilisearch">Meilisearch</a> |
@@ -22,6 +22,8 @@
 <p align="center" style="font-weight:bold;" >A plugin to index your Gatsby content to Meilisearch based on graphQL queries</p>
 
 <br/>
+
+🚨 ARCHIVED DUE TO LACK OF USE 🚨
 
 ## Table of Contents
 
